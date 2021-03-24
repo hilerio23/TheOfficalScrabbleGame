@@ -34,7 +34,7 @@ import com.example.thescrabblegame.game.GameFramework.utilities.IPCoder;
 import com.example.thescrabblegame.game.GameFramework.utilities.Logger;
 import com.example.thescrabblegame.game.GameFramework.utilities.MessageBox;
 import com.example.thescrabblegame.game.GameFramework.utilities.Saving;
-import com.example.thescrabblegame.game.GameFramework.R;
+import com.example.thescrabblegame.R;
 
 /**
  * class GameMainActivity
