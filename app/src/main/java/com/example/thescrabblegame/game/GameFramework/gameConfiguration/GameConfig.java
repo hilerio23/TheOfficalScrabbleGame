@@ -12,11 +12,11 @@ import java.util.Arrays;
 import android.content.Context;
 import android.util.Pair;
 
-import edu.up.cs301.game.GameFramework.GameMainActivity;
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
-import edu.up.cs301.game.GameFramework.players.ProxyPlayer;
-import edu.up.cs301.game.GameFramework.utilities.Logger;
-import static edu.up.cs301.game.GameFramework.utilities.EqualityMethods.arrayEquals;
+import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
+import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
+import com.example.thescrabblegame.game.GameFramework.players.ProxyPlayer;
+import com.example.thescrabblegame.game.GameFramework.utilities.Logger;
+import static com.example.thescrabblegame.game.GameFramework.utilities.EqualityMethods.arrayEquals;
 
 /**
  * GameConfig class

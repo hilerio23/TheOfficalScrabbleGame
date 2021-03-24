@@ -1,6 +1,6 @@
 package com.example.thescrabblegame.game.GameFramework.gameConfiguration;
 
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
+import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
 /**
  * class GamePlayerType

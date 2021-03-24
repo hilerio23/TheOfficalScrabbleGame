@@ -1,12 +1,12 @@
 package com.example.thescrabblegame.game.GameFramework.players;
 
-import edu.up.cs301.game.GameFramework.Game;
-import edu.up.cs301.game.GameFramework.GameMainActivity;
-import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
-import edu.up.cs301.game.GameFramework.infoMessage.BindGameInfo;
-import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
-import edu.up.cs301.game.GameFramework.utilities.NetworkObjectPasser;
-import edu.up.cs301.game.GameFramework.utilities.Logger;
+import com.example.thescrabblegame.game.GameFramework.Game;
+import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
+import com.example.thescrabblegame.game.GameFramework.actionMessage.GameAction;
+import com.example.thescrabblegame.game.GameFramework.infoMessage.BindGameInfo;
+import com.example.thescrabblegame.game.GameFramework.infoMessage.GameInfo;
+import com.example.thescrabblegame.game.GameFramework.utilities.NetworkObjectPasser;
+import com.example.thescrabblegame.game.GameFramework.utilities.Logger;
 
 /**
  * A Player object that is used as a proxy for the real player that is on another

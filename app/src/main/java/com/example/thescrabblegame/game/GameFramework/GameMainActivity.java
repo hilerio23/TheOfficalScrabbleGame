@@ -26,15 +26,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
-import edu.up.cs301.game.GameFramework.gameConfiguration.GameConfig;
-import edu.up.cs301.game.GameFramework.gameConfiguration.GamePlayerType;
-import edu.up.cs301.game.GameFramework.infoMessage.GameState;
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
-import edu.up.cs301.game.GameFramework.utilities.IPCoder;
-import edu.up.cs301.game.GameFramework.utilities.Logger;
-import edu.up.cs301.game.GameFramework.utilities.MessageBox;
-import edu.up.cs301.game.GameFramework.utilities.Saving;
-import edu.up.cs301.game.R;
+import com.example.thescrabblegame.game.GameFramework.gameConfiguration.GameConfig;
+import com.example.thescrabblegame.game.GameFramework.gameConfiguration.GamePlayerType;
+import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
+import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
+import com.example.thescrabblegame.game.GameFramework.utilities.IPCoder;
+import com.example.thescrabblegame.game.GameFramework.utilities.Logger;
+import com.example.thescrabblegame.game.GameFramework.utilities.MessageBox;
+import com.example.thescrabblegame.game.GameFramework.utilities.Saving;
+import com.example.thescrabblegame.game.GameFramework.R;
 
 /**
  * class GameMainActivity

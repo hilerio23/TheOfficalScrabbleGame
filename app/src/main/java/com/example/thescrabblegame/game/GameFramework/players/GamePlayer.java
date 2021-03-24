@@ -1,7 +1,7 @@
 package com.example.thescrabblegame.game.GameFramework.players;
 
-import edu.up.cs301.game.GameFramework.GameMainActivity;
-import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
+import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
+import com.example.thescrabblegame.game.GameFramework.infoMessage.GameInfo;
 
 /**
  * A player who plays a (generic) game. Each class that implements a player for
