@@ -5,9 +5,11 @@
  * @author Samone Watkins
  */
 package com.example.thescrabblegame;
+import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
+
 import java.util.Random;
 
-public class ScrabbleState {
+public class ScrabbleState  extends GameState {
 
     //15 x 15 board
     private ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
@@ -35,6 +37,15 @@ public class ScrabbleState {
 
     //track how empty the percent is
     double percentOfPool = 0.0;
+
+    //id of players
+    private int id;
+    private int player1Score;
+    private int player2Score;
+    private int player3Score;
+    private int player4Score;
+    private int numPlayers;
+
 
     //extra variable for tracking if a move is possible
     boolean isPossible;
@@ -77,6 +88,13 @@ public class ScrabbleState {
         //0 = playing, 1 = pause
         gamePause = 0;
 
+        //sets the id
+        id = 0;
+        player1Score = 0;
+        player2Score = 0;
+        player3Score = 0;
+        player4Score = 0;
+        numPlayers = 2;
     }
 
     //Deep copy of the given Scrabble State
@@ -93,6 +111,12 @@ public class ScrabbleState {
         this.player2Hand = null; //player1 can't see player 2 hand
         this.player3Hand = null;
         this.player4Hand = null;
+        this.id = scrabbleStateCopy.id;
+        this.player1Score = scrabbleStateCopy.player1Score;
+        this.player2Score = scrabbleStateCopy.player2Score;
+        this.player3Score = scrabbleStateCopy.player3Score;
+        this.player4Score = scrabbleStateCopy.player4Score;
+        this.numPlayers = scrabbleStateCopy.numPlayers;
     }
 
     @Override
@@ -156,6 +180,38 @@ public class ScrabbleState {
 
     }
 
+    public void setIdNum(int num){
+        id = num;
+    }
+    public void setPlayer1Score(int score){
+        player1Score = score;
+    }
+    public void setPlayer2Score(int score){
+        player2Score = score;
+    }
+    public void setPlayer3Score(int score){
+        player3Score = score;
+    }
+    public void setPlayer4Score(int score){
+        player4Score = score;
+    }
+
+    public int getIdNum(){
+        return id;
+    }
+    public int getPlayer1Score(){
+        return player1Score;
+    }
+    public int getPlayer2Score(){
+        return player2Score;
+    }
+    public int getPlayer3Score(){
+        return player3Score;
+    }
+    public int getPlayer4Score(){
+        return player4Score;
+    }
+
     /**
      *
      * Methods in actions.txt
@@ -178,13 +234,36 @@ public class ScrabbleState {
         }
     }
 
-    public boolean pass(ScrabbleState scrabbleState){
-        if(isLegal(scrabbleState) == true){
-            return true;
+    public void pass(ScrabbleState scrabbleState){
+
+        if (scrabbleState.getIdNum() == 1) {
+            scrabbleState.setIdNum(2);
         }
-        else{
-            return false;
+
+
+        if (scrabbleState.getIdNum() == 2) {
+            scrabbleState.setIdNum(1);
         }
+
+        /*else if(numPlayers == 3) {
+            if (scrabbleState.getIdNum() == 2) {
+                scrabbleState.setIdNum(3);
+            }
+            if(scrabbleState.getIdNum() == 3){
+                scrabbleState.setIdNum(1);
+            }
+        }
+        else {
+            if (scrabbleState.getIdNum() == 2) {
+                scrabbleState.setIdNum(3);
+            }
+            if(scrabbleState.getIdNum() == 3){
+                scrabbleState.setIdNum(4);
+            }
+            if(scrabbleState.getIdNum() == 4){
+                scrabbleState.setIdNum(1);
+            }
+        }*/
     }
 
     public boolean exchange(ScrabbleState scrabbleState){
