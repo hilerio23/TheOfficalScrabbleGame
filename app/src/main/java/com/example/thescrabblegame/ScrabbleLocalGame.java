@@ -5,6 +5,7 @@ import com.example.thescrabblegame.game.GameFramework.actionMessage.GameAction;
 import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
 public class ScrabbleLocalGame extends LocalGame {
+
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
 
