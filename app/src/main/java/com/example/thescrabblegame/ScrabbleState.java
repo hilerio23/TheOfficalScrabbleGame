@@ -219,60 +219,6 @@ public class ScrabbleState  extends GameState {
      *
      */
 
-    public boolean isLegal(ScrabbleState scrabbleState){
-        return true;
-    }
 
-    //param should be an arraylist of scrabble letters
-    //param which player
-    public boolean playWord(ScrabbleState scrabbleState){
-        if(isLegal(scrabbleState) == true){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    public void pass(ScrabbleState scrabbleState){
-
-        if (scrabbleState.getIdNum() == 1) {
-            scrabbleState.setIdNum(2);
-        }
-
-
-        if (scrabbleState.getIdNum() == 2) {
-            scrabbleState.setIdNum(1);
-        }
-
-        /*else if(numPlayers == 3) {
-            if (scrabbleState.getIdNum() == 2) {
-                scrabbleState.setIdNum(3);
-            }
-            if(scrabbleState.getIdNum() == 3){
-                scrabbleState.setIdNum(1);
-            }
-        }
-        else {
-            if (scrabbleState.getIdNum() == 2) {
-                scrabbleState.setIdNum(3);
-            }
-            if(scrabbleState.getIdNum() == 3){
-                scrabbleState.setIdNum(4);
-            }
-            if(scrabbleState.getIdNum() == 4){
-                scrabbleState.setIdNum(1);
-            }
-        }*/
-    }
-
-    public boolean exchange(ScrabbleState scrabbleState){
-        if(isLegal(scrabbleState) == true){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
 
 }
