@@ -4,11 +4,10 @@ import com.example.thescrabblegame.game.GameFramework.LocalGame;
 import com.example.thescrabblegame.game.GameFramework.actionMessage.GameAction;
 import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
-import java.util.Dictionary;
 
 public class ScrabbleLocalGame extends LocalGame {
     public ScrabbleState state;
-    
+
 
     public ScrabbleLocalGame() {
         state = new ScrabbleState();

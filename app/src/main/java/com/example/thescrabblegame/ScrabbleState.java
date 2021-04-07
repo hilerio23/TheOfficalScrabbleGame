@@ -195,6 +195,9 @@ public class ScrabbleState  extends GameState {
     public void setPlayer4Score(int score){
         player4Score = score;
     }
+    public void setBoard(ScrabbleLetter[][] newBoard){
+        board = newBoard;
+    }
 
     public int getIdNum(){
         return id;
@@ -211,14 +214,8 @@ public class ScrabbleState  extends GameState {
     public int getPlayer4Score(){
         return player4Score;
     }
-
-    /**
-     *
-     * Methods in actions.txt
-     *Also got rid of challenge because I don't think it's necessary
-     *
-     */
-
-
+    public ScrabbleLetter[][] getBoard() {
+        return board;
+    }
 
 }
