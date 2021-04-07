@@ -51,6 +51,7 @@ public class ScrabbleLocalGame extends LocalGame {
                 state.setIdNum(1);
             }
         }
+        return false;
     }
 
 
