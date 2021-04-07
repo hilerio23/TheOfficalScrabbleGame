@@ -50,7 +50,6 @@ public class ScrabbleLetter {
         else{
             return 0;
         }
-
     }
 }
 
