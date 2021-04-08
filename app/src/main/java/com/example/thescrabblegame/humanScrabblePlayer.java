@@ -10,6 +10,7 @@ import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
 public class humanScrabblePlayer extends GameHumanPlayer {
 
     private TextView score = null;
+    private ScrabbleSurfaceView surfaceView;
 
     private GameMainActivity mActivity;
 
@@ -31,6 +32,7 @@ public class humanScrabblePlayer extends GameHumanPlayer {
     public void receiveInfo(GameInfo info) {
         if(info instanceof ScrabbleState){
             score.setText(Integer.toString(((ScrabbleState) info).getPlayer1Score()));
+            surfaceView.drawBoard((ScrabbleState)info);
         }
     }
 
@@ -41,6 +43,8 @@ public class humanScrabblePlayer extends GameHumanPlayer {
         activity.setContentView(R.layout.activity_main);
 
         this.score = (TextView)activity.findViewById(R.id.scoreNumber);
+
+        surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
 
     }
 }
