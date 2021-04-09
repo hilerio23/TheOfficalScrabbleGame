@@ -28,7 +28,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         if(buttonClicked == R.id.pauseGame){
 
         }
-        else if(buttonClicked == R.id.challenge){
+        else if(buttonClicked == R.id.playword){
 
         }
         else if(buttonClicked == R.id.exchange){
@@ -856,49 +856,49 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
             case 'e':
                 return getResources().getDrawable(R.drawable.efinal);
             case 'f':
-                return getResources().getDrawable(R.drawable.fFinal);
+                return getResources().getDrawable(R.drawable.ffinal);
             case 'g':
                 return getResources().getDrawable(R.drawable.gfinal);
             case 'h':
-                return getResources().getDrawable(R.drawable.hFinal);
+                return getResources().getDrawable(R.drawable.hfinal);
             case 'i':
-                return getResources().getDrawable(R.drawable.iFinal);
+                return getResources().getDrawable(R.drawable.ifinal);
             case 'j':
-                return getResources().getDrawable(R.drawable.jFinal);
+                return getResources().getDrawable(R.drawable.jfinal);
             case 'k':
-                return getResources().getDrawable(R.drawable.kFinal);
+                return getResources().getDrawable(R.drawable.kfinal);
             case 'l':
-                return getResources().getDrawable(R.drawable.lFinal);
+                return getResources().getDrawable(R.drawable.lfinal);
             case 'm':
-                return getResources().getDrawable(R.drawable.mFinal);
+                return getResources().getDrawable(R.drawable.mfinal);
             case 'n':
-                return getResources().getDrawable(R.drawable.nFinal);
+                return getResources().getDrawable(R.drawable.nfinal);
             case 'o':
-                return getResources().getDrawable(R.drawable.oFinal);
+                return getResources().getDrawable(R.drawable.ofinal);
             case 'p':
-                return getResources().getDrawable(R.drawable.pFinal);
+                return getResources().getDrawable(R.drawable.pfinal);
             case 'q':
-                return getResources().getDrawable(R.drawable.qFinal);
+                return getResources().getDrawable(R.drawable.qfinal);
             case 'r':
-                return getResources().getDrawable(R.drawable.rFinal);
+                return getResources().getDrawable(R.drawable.rfinal);
             case 's':
-                return getResources().getDrawable(R.drawable.sFinal);
+                return getResources().getDrawable(R.drawable.sfinal);
             case 't':
-                return getResources().getDrawable(R.drawable.tFinal);
+                return getResources().getDrawable(R.drawable.tfinal);
             case 'u':
-                return getResources().getDrawable(R.drawable.uFinal);
+                return getResources().getDrawable(R.drawable.ufinal);
             case 'v':
-                return getResources().getDrawable(R.drawable.vFinal);
+                return getResources().getDrawable(R.drawable.vfinal);
             case 'w':
-                return getResources().getDrawable(R.drawable.wFinal);
+                return getResources().getDrawable(R.drawable.wfinal);
             case 'x':
-                return getResources().getDrawable(R.drawable.xFinal);
+                return getResources().getDrawable(R.drawable.xfinal);
             case 'y':
-                return getResources().getDrawable(R.drawable.yFinal);
+                return getResources().getDrawable(R.drawable.yfinal);
             case 'z':
-                return getResources().getDrawable(R.drawable.zFinal);
+                return getResources().getDrawable(R.drawable.zfinal);
             default:
-                return getResources().getDrawable(R.drawable.backgroundSquare);
+                return getResources().getDrawable(R.drawable.backgroundsquare);
         }
 
     }

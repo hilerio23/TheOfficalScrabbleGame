@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
         //setting all button's on click listener
         Button exchange = (Button)findViewById(R.id.exchange);
         Button pass = (Button)findViewById(R.id.pass);
-        Button challenge = (Button)findViewById(R.id.challenge);
+        Button playword = (Button)findViewById(R.id.playword);
         Button pause = (Button)findViewById(R.id.pauseGame);
         Button exit = (Button)findViewById(R.id.exitGame);
         exchange.setOnClickListener(scrabble);
         pass.setOnClickListener(scrabble);
-        challenge.setOnClickListener(scrabble);
+        playword.setOnClickListener(scrabble);
         pause.setOnClickListener(scrabble);
         exit.setOnClickListener(scrabble);
 
