@@ -3,11 +3,13 @@ package com.example.thescrabblegame;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickListener{
+public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickListener, TextView.OnEditorActionListener{
 
     private ScrabbleState state;
 
@@ -69,5 +71,10 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
 
 
         return id;
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        return false;
     }
 }
