@@ -52,8 +52,9 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         else if(buttonClicked == R.id.pass){
             state.pass();
         }
-        else if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView"){
-            letters.add((ImageView)view);
+        else if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView") {
+            letters.add((ImageView) view);
+        }
         else{
             return;
         }
