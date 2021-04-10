@@ -3,14 +3,17 @@ package com.example.thescrabblegame;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.text.method.Touch;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickListener, TextView.OnEditorActionListener{
+public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickListener, View.OnTouchListener,
+         TextView.OnEditorActionListener{
 
     private ScrabbleState state;
 
@@ -913,6 +916,11 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
         return false;
     }
 }
