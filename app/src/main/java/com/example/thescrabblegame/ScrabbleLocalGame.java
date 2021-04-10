@@ -64,11 +64,11 @@ public class ScrabbleLocalGame extends LocalGame {
             PlayWord theAction = (PlayWord)action;
             //if it is this players turn
             if(state.getIdNum() == 1) {
-                state.playWord(theAction.getWordToPlay());
+                state.playWord(theAction.getWordToPlay(), theAction.getxCoord(), theAction.getyCoord(), theAction.getIsVertical());
                 state.setIdNum(2);
             }
             else{
-                state.playWord(theAction.getWordToPlay());
+                state.playWord(theAction.getWordToPlay(), theAction.getxCoord(), theAction.getyCoord(), theAction.getIsVertical());
                 state.setIdNum(1);
             }
             return true;

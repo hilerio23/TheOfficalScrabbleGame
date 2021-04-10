@@ -250,22 +250,22 @@ public class ScrabbleState  extends GameState {
             if(isLegal(wordToPlay, xCoord, yCoord)) {
                 if (isVertical && xCoord + wordToPlay.length < 15) {
                     //if vertical keep xCoord the same and get row - 1 to get the letter
-                    for (int row = xCoord; row < xCoord + wordToPlay.length; row++) {
-                        board[row][yCoord] = wordToPlay[row - xCoord];
+                    for (int row = (int)xCoord; row < xCoord + wordToPlay.length; row++) {
+                        board[row][(int)yCoord] = wordToPlay[row - (int)xCoord];
                         if (id == 1) {
-                            player1Score += wordToPlay[row - xCoord].getPoints();
+                            player1Score += wordToPlay[row - (int)xCoord].getPoints();
                         } else {
-                            player2Score += wordToPlay[row - xCoord].getPoints();
+                            player2Score += wordToPlay[row - (int)xCoord].getPoints();
                         }
                     }
                 }
                 else if(!isVertical && yCoord + wordToPlay.length < 15) {
-                    for (int col = yCoord; col < yCoord + wordToPlay.length; col++) {
-                        board[xCoord][col] = wordToPlay[col - yCoord];
+                    for (int col = (int)yCoord; col < yCoord + wordToPlay.length; col++) {
+                        board[(int)xCoord][col] = wordToPlay[col - (int)yCoord];
                         if (id == 1) {
-                            player1Score += wordToPlay[col - yCoord].getPoints();
+                            player1Score += wordToPlay[col - (int)yCoord].getPoints();
                         } else {
-                            player2Score += wordToPlay[col - yCoord].getPoints();
+                            player2Score += wordToPlay[col - (int)yCoord].getPoints();
                         }
                     }
                 }
