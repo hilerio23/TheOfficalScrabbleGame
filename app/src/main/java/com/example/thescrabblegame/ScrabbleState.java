@@ -5,8 +5,12 @@
  * @author Samone Watkins
  */
 package com.example.thescrabblegame;
+import android.graphics.Color;
+
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ScrabbleState  extends GameState {
@@ -30,22 +34,23 @@ public class ScrabbleState  extends GameState {
     private int gamePause;
 
     //add score
-    private int playerOneScore = 0;
-    private int playerTwoScore = 0;
-    private int playerThreeScore = 0;
-    private int playerFourScore = 0;
-
-    //track how empty the percent is
-    double percentOfPool = 0.0;
-
-    //id of players
-    private int id;
     private int player1Score;
     private int player2Score;
     private int player3Score;
     private int player4Score;
+
+    //track how empty the percent is
+    double percentOfPool = 0.0;
+
+    //id of players and num of players
+    private int id;
     private int numPlayers;
 
+    //tracks if game is over
+    private int over;
+
+    //count passes
+    private int numPasses;
 
     //extra variable for tracking if a move is possible
     boolean isPossible;
@@ -95,6 +100,8 @@ public class ScrabbleState  extends GameState {
         player3Score = 0;
         player4Score = 0;
         numPlayers = 2;
+        over = 0;
+        numPasses = 0;
     }
 
     //Deep copy of the given Scrabble State
@@ -117,6 +124,8 @@ public class ScrabbleState  extends GameState {
         this.player3Score = scrabbleStateCopy.player3Score;
         this.player4Score = scrabbleStateCopy.player4Score;
         this.numPlayers = scrabbleStateCopy.numPlayers;
+        this.over = scrabbleStateCopy.over;
+        this.numPasses = scrabbleStateCopy.numPasses;
     }
 
     @Override
@@ -198,6 +207,12 @@ public class ScrabbleState  extends GameState {
     public void setBoard(ScrabbleLetter[][] newBoard){
         board = newBoard;
     }
+    public void setOver(int isOver){
+        over = isOver;
+    }
+    public void setNumPasses(int passes){
+        numPasses = passes;
+    }
 
     public int getIdNum(){
         return id;
@@ -216,6 +231,153 @@ public class ScrabbleState  extends GameState {
     }
     public ScrabbleLetter[][] getBoard() {
         return board;
+    }
+    public int getOver(){
+        return over;
+    }
+    public int getNumPasses(){
+        return numPasses;
+    }
+
+    public void playWord(ScrabbleLetter[] wordToPlay, int xCoord, int yCoord, boolean isVertical){
+        numPasses = 0;
+        //this probably needs bounds checking
+        //change to a boolean return value
+        if(over == 0) {
+            if(isLegal(wordToPlay, xCoord, yCoord) == true) {
+                if (isVertical == true) {
+                    //if vertical keep xCoord the same and get row - 1 to get the letter
+                    for (int row = xCoord; row < xCoord + wordToPlay.length; row++) {
+                        board[row][yCoord] = wordToPlay[row - xCoord];
+                        if (id == 1) {
+                            player1Score += wordToPlay[row - xCoord].getPoints();
+                        } else {
+                            player2Score += wordToPlay[row - xCoord].getPoints();
+                        }
+                    }
+                } else {
+                    for (int col = yCoord; col < yCoord + wordToPlay.length; col++) {
+                        board[xCoord][col] = wordToPlay[col - yCoord];
+                        if (id == 1) {
+                            player1Score += wordToPlay[col - yCoord].getPoints();
+                        } else {
+                            player2Score += wordToPlay[col - yCoord].getPoints();
+                        }
+                    }
+                }
+            }
+            else{
+                pass();
+                return;
+            }
+        }
+        if(pool == null){
+            over = 1;
+        }
+        String word = null;
+        //rewritten code
+        /*while(over == 0){
+            for(int i = 0; i < board.length; i++){
+                for(int j = 0; j < board[0].length; i++){
+
+                }
+            }
+            for(int i = 0; i < wordToPlay.length; i++){
+                //word += wordToPlay[i].getLetter();
+                if(1==1) {//if is Legal
+                    int x = wordToPlay[i].getxCoord();
+                    int y = wordToPlay[i].getyCoord();
+                    board[x][y] = wordToPlay[i];
+                    if (id == 1) {
+                        player1Score += wordToPlay[i].getPoints();
+                    } else {
+                        player2Score += wordToPlay[i].getPoints();
+                    }
+                }
+                else{
+                    pass();
+                    break;
+                }
+            }
+            //dict.isLegal(word);
+            if(pool == null){
+                over = 1;
+            }
+        }*/
+    }
+
+    public void exchange(ScrabbleLetter[] lettersToExchange){
+        numPasses = 0;
+        int count = 0;
+        if(id == 1){
+            for(int i = 0; i < lettersToExchange.length; i++){
+                for(int j = 0; j < player1Hand.length; j++){
+                    if(lettersToExchange[i].equals(player1Hand[j])){
+                        player1Hand[j].setName(' ');
+                        break;
+                    }
+                }
+            }
+            for(int i = 0; i < player1Hand.length; i++){
+                if(player1Hand[i].equals(' ')){
+                    player1Hand[i].setName(pool[i].getLetter());
+                    //possibly put in a negative num placeholder
+                    List<ScrabbleLetter> poolArrayList = Arrays.asList(pool);
+                    poolArrayList.remove(i);
+                    poolArrayList.add(lettersToExchange[count]);
+                    ScrabbleLetter[] newPool = new ScrabbleLetter[poolArrayList.size()];
+                    newPool = poolArrayList.toArray(newPool);
+                    pool = newPool;
+                    count++;
+                }
+                if(count == lettersToExchange.length){
+                    break;
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < lettersToExchange.length; i++){
+                for(int j = 0; j < player2Hand.length; j++){
+                    if(lettersToExchange[i].equals(player2Hand[j])){
+                        player2Hand[j].setName(' ');
+                        break;
+                    }
+                }
+            }
+            for(int i = 0; i < player2Hand.length; i++){
+                if(player2Hand[i].equals(' ')){
+                    player2Hand[i].setName(pool[i].getLetter());
+                    List<ScrabbleLetter> poolArrayList = Arrays.asList(pool);
+                    poolArrayList.remove(i);
+                    poolArrayList.add(lettersToExchange[count]);
+                    ScrabbleLetter[] newPool = new ScrabbleLetter[poolArrayList.size()];
+                    newPool = poolArrayList.toArray(newPool);
+                    pool = newPool;
+                    count++;
+                }
+                if(count == lettersToExchange.length){
+                    break;
+                }
+            }
+        }
+    }
+
+    public void pass(){
+        if(numPasses >= 3){
+            over = 1;
+        }
+        if (id == 1) {
+            id = 2;
+        }
+
+        if (id == 2) {
+            id = 1;
+        }
+        numPasses++;
+    }
+
+    public void exitGame(){
+        over = 1;
     }
 
 }
