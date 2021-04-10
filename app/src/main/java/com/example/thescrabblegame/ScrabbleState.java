@@ -371,6 +371,27 @@ public class ScrabbleState  extends GameState {
         }
     }
 
+    public boolean isVertical(double[][] coord){
+        boolean isVertical = false;
+        double prevX = coord[0][0];
+        double prevY = coord[0][0];
+        double xCoord;
+        double yCoord;
+        for(int r = 0; r < coord.length; r++){
+            for(int c = 0; c < coord[0].length; c++){
+                xCoord = coord[r][0];
+                yCoord = coord[0][c];
+                if(yCoord != prevY){
+                    isVertical = true;
+                }
+                if(xCoord != prevX){
+                    isVertical = false;
+                }
+            }
+        }
+        return isVertical;
+    }
+
     public void pass(){
         if(numPasses >= 3){
             over = 1;
