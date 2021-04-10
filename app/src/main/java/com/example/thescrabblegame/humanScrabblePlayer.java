@@ -36,6 +36,7 @@ public class humanScrabblePlayer extends GameHumanPlayer {
         }
     }
 
+
     @Override
     public void setAsGui(GameMainActivity activity) {
         mActivity = activity;

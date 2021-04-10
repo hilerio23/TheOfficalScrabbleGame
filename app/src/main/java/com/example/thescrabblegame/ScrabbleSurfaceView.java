@@ -12,6 +12,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.thescrabblegame.game.GameFramework.Game;
+import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
+import com.example.thescrabblegame.game.GameFramework.actionMessage.GameAction;
+import com.example.thescrabblegame.game.GameFramework.infoMessage.GameInfo;
+import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
+
 import java.util.ArrayList;
 
 public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickListener, View.OnTouchListener,
@@ -32,19 +38,24 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
 
         //determine what button was pushed and then call that method in the state
         if(buttonClicked == R.id.playword){
+            state.playWord();
 
         }
         else if(buttonClicked == R.id.exchange){
+            state.exchange();
 
         }
         else if(buttonClicked == R.id.exitGame){
+            state.exitGame();
 
         }
         else if(buttonClicked == R.id.pass){
-
+            state.pass();
         }
         else if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView"){
             letters.add((ImageView)view);
+        else{
+            return;
         }
     }
 
