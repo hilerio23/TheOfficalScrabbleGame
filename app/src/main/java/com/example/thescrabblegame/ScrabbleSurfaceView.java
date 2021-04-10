@@ -12,10 +12,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickListener, View.OnTouchListener,
          TextView.OnEditorActionListener{
 
     private ScrabbleState state;
+    private ArrayList<ImageView> letters = new ArrayList<>();
 
     public ScrabbleSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,13 +43,12 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         else if(buttonClicked == R.id.pass){
 
         }
-        else{
-
+        else if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView"){
+            letters.add((ImageView)view);
         }
     }
 
     public void drawBoard(ScrabbleState state){
-        int score = state.getPlayer1Score();
         ScrabbleLetter[][] board = state.getBoard();
         ImageView img;
 
@@ -58,7 +60,6 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
                 }
                 else{
                     img.setImageDrawable(getDrawableLetter(board[r][c].getLetter()));
-                    score += board[r][c].getPoints();
                 }
 
             }
