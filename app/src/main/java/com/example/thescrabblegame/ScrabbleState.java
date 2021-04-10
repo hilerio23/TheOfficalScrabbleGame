@@ -15,6 +15,9 @@ import java.util.Random;
 
 public class ScrabbleState  extends GameState {
 
+    private MainActivity activity;
+    private ScrabbleSurfaceView mSurfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
+
     //15 x 15 board
     private ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
 
@@ -244,8 +247,8 @@ public class ScrabbleState  extends GameState {
         //this probably needs bounds checking
         //change to a boolean return value
         if(over == 0) {
-            if(isLegal(wordToPlay, xCoord, yCoord) == true) {
-                if (isVertical == true) {
+            if(isLegal(wordToPlay, xCoord, yCoord)) {
+                if (isVertical && xCoord + wordToPlay.length < 15) {
                     //if vertical keep xCoord the same and get row - 1 to get the letter
                     for (int row = xCoord; row < xCoord + wordToPlay.length; row++) {
                         board[row][yCoord] = wordToPlay[row - xCoord];
@@ -255,7 +258,8 @@ public class ScrabbleState  extends GameState {
                             player2Score += wordToPlay[row - xCoord].getPoints();
                         }
                     }
-                } else {
+                }
+                else if(!isVertical && yCoord + wordToPlay.length < 15) {
                     for (int col = yCoord; col < yCoord + wordToPlay.length; col++) {
                         board[xCoord][col] = wordToPlay[col - yCoord];
                         if (id == 1) {
@@ -265,6 +269,11 @@ public class ScrabbleState  extends GameState {
                         }
                     }
                 }
+                else{
+                    pass();
+                    return;
+                }
+                mSurfaceView.drawBoard(this);
             }
             else{
                 pass();
