@@ -5,8 +5,8 @@ import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
 public class PlayWord extends GameAction {
     private ScrabbleLetter[] wordPlayed;
-    private int xCoord;
-    private int yCoord;
+    private double xCoord;
+    private double yCoord;
     private boolean vertical;
 
     /**
@@ -14,7 +14,7 @@ public class PlayWord extends GameAction {
      *
      * @param player the player who created the action
      */
-    public PlayWord(GamePlayer player, ScrabbleLetter[] wordToPlay, int xCoordinate, int yCoordinate, boolean direction) {
+    public PlayWord(GamePlayer player, ScrabbleLetter[] wordToPlay, double xCoordinate, double yCoordinate, boolean direction) {
         super(player);
         //set this.wordToPlay
         wordPlayed = wordToPlay;
@@ -26,10 +26,10 @@ public class PlayWord extends GameAction {
     public ScrabbleLetter[] getWordToPlay(){
         return wordPlayed;
     }
-    public int getxCoord(){
+    public double getxCoord(){
         return xCoord;
     }
-    public int getyCoord(){
+    public double getyCoord(){
         return yCoord;
     }
     public boolean getIsVertical(){
