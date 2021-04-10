@@ -41,7 +41,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
 
         //determine what button was pushed and then call that method in the state
         if(buttonClicked == R.id.playword){
-            boolean t = isVertical(toDouble(xcoords, ycoords));
+            boolean t = state.isVertical(toDouble(xcoords, ycoords));
             state.playWord(toScrabbleLetter(letters), xcoords.get(xcoords.size() - 1), ycoords.get(ycoords.size() - 1), t);
 
         }
