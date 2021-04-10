@@ -49,12 +49,10 @@ public class MainActivity extends AppCompatActivity {
         Button exchange = (Button)findViewById(R.id.exchange);
         Button pass = (Button)findViewById(R.id.pass);
         Button playword = (Button)findViewById(R.id.playword);
-        Button pause = (Button)findViewById(R.id.pauseGame);
         Button exit = (Button)findViewById(R.id.exitGame);
         exchange.setOnClickListener(scrabble);
         pass.setOnClickListener(scrabble);
         playword.setOnClickListener(scrabble);
-        pause.setOnClickListener(scrabble);
         exit.setOnClickListener(scrabble);
 
         //setting the score board's on click listener

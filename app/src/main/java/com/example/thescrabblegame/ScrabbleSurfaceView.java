@@ -28,10 +28,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         int buttonClicked = view.getId();
 
         //determine what button was pushed and then call that method in the state
-        if(buttonClicked == R.id.pauseGame){
-
-        }
-        else if(buttonClicked == R.id.playword){
+        if(buttonClicked == R.id.playword){
 
         }
         else if(buttonClicked == R.id.exchange){
@@ -56,8 +53,14 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         for(int r = 0; r < board.length; r++){
             for(int c = 0; c < board[r].length; c++){
                 img = getImageView(r,c);
-                img.setImageDrawable(getDrawableLetter(board[r][c].getLetter()));
-                score += board[r][c].getPoints();
+                if(board[r][c] == null){
+                    img.setImageDrawable(img.getDrawable());
+                }
+                else{
+                    img.setImageDrawable(getDrawableLetter(board[r][c].getLetter()));
+                    score += board[r][c].getPoints();
+                }
+
             }
         }
 
