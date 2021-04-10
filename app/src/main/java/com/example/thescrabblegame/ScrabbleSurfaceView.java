@@ -30,7 +30,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     }
 
     @Override
-    public void onClick(View view) { 
+    public void onClick(View view) {
         int buttonClicked = view.getId();
 
         //determine what button was pushed and then call that method in the state
