@@ -242,7 +242,7 @@ public class ScrabbleState  extends GameState {
         return numPasses;
     }
 
-    public void playWord(ScrabbleLetter[] wordToPlay, int xCoord, int yCoord, boolean isVertical){
+    public void playWord(ScrabbleLetter[] wordToPlay, double xCoord, double yCoord, boolean isVertical){
         numPasses = 0;
         //this probably needs bounds checking
         //change to a boolean return value
