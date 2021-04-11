@@ -3,13 +3,13 @@ package com.example.thescrabblegame;
 import com.example.thescrabblegame.game.GameFramework.actionMessage.GameAction;
 import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
-public class RandomShuffle extends GameAction {
+public class ExitGame extends GameAction {
     /**
      * constructor for GameAction
      *
      * @param player the player who created the action
      */
-    public RandomShuffle(GamePlayer player) {
+    public ExitGame(GamePlayer player) {
         super(player);
     }
 }

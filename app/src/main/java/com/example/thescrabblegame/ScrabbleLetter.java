@@ -9,6 +9,8 @@ package com.example.thescrabblegame;
 public class ScrabbleLetter {
     private char letter;
     private int points;
+    private int xCoord;
+    private int yCoord;
 
     // constructor
     public ScrabbleLetter(char myLetter) {
@@ -20,8 +22,25 @@ public class ScrabbleLetter {
 
     public void setPoints(int points) { this.points = points; }
 
+    public void setxCoord(int newXCoord){
+        xCoord = newXCoord;
+    }
+
+    public void setyCoord(int newYCoord){
+        yCoord = newYCoord;
+    }
+
     // Getter methods
     public char getLetter() { return letter; }
+
+    public int getxCoord(){
+        return xCoord;
+    }
+
+    public int getyCoord(){
+        return yCoord;
+    }
+
 
     public int getPoints(){
         if(this.letter == 'a' || this.letter == 'e' || this.letter == 'i' || this.letter == 'l' || this.letter == 'n' || this.letter == 'o'

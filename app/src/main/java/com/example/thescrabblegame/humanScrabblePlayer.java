@@ -1,5 +1,6 @@
 package com.example.thescrabblegame;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,6 +11,7 @@ import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
 public class humanScrabblePlayer extends GameHumanPlayer {
 
     private TextView score = null;
+    private ScrabbleSurfaceView surfaceView;
 
     private GameMainActivity mActivity;
 
@@ -33,6 +35,7 @@ public class humanScrabblePlayer extends GameHumanPlayer {
             score.setText(Integer.toString(((ScrabbleState) info).getPlayer1Score()));
         }
     }
+
 
     @Override
     public void setAsGui(GameMainActivity activity) {
