@@ -34,7 +34,7 @@ public class EasyAI extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
         ScrabbleState scrabbleCopy = new ScrabbleState((ScrabbleState) info);
-        ScrabbleDictonary scrabbleDic = new ScrabbleDictonary();
+        ScrabbleDictionary scrabbleDic = new ScrabbleDictionary();
         ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
         board = scrabbleCopy.getBoard();
         char[] hand = new char[7];
@@ -65,7 +65,7 @@ public class EasyAI extends GameComputerPlayer {
                             playString = testLetter.getLetter() + hand[random1] + hand[random2] + hand[random3] + hand[random4]
                                     + hand[random5] +hand[random6] + hand[random7];
 
-                            if(ScrabbleDictonary.isLegal(playString, board, row, col)){
+                            if(ScrabbleDictionary.isLegal(playString, board, row, col)){
                                 myRow = row;
                                 myCol = col;
                                 foundWord = true;

@@ -162,16 +162,19 @@ public abstract class GameMainActivity extends Activity implements
         Logger.setContext(getApplicationContext());
 
         // Initialize the layout
-        setContentView(R.layout.game_config_main);
+        setContentView(R.layout.activity_main);
 
         // create the default configuration for this game
         this.config = createDefaultConfig();
 
+        /*
         // if there is a saved configuration, modify the default configuration accordingly
         if (!this.config.restoreSavedConfig(saveFileName(), this)) {
             MessageBox.popUpMessage(Resources.getSystem().getString(R.string.Config_Error_Msg),
                     this);
         }
+
+         */
 
         if (this.config.isUserModifiable()) { // normal run: user has chance to modify configuration
 
@@ -193,7 +196,7 @@ public abstract class GameMainActivity extends Activity implements
                 MessageBox.popUpMessage(msg, this);
             }
         }
-
+        /*
         if (((CheckBox) findViewById(R.id.onScreenLogging)).isChecked()) {
             Logger.setToastValue(true);
         } else {
@@ -204,6 +207,9 @@ public abstract class GameMainActivity extends Activity implements
         }else {
             Logger.setDebugValue(false);
         }
+
+         */
+        Logger.setDebugValue(false);
     }// onCreate
 
     /**
@@ -271,7 +277,7 @@ public abstract class GameMainActivity extends Activity implements
             else {
                 // if there is no GUI player, set the layout to be one
                 // with a "no GUI" message
-                setContentView(R.layout.game_no_gui);
+                //setContentView(R.layout.game_no_gui);
             }
         }
     }//onConfigurationChanged
@@ -299,7 +305,7 @@ public abstract class GameMainActivity extends Activity implements
             game = createLocalGame(gameState);
             // verify we have a game
             if (game == null) {
-                return Resources.getSystem().getString(R.string.Game_Creation_Error_Msg);
+                //return Resources.getSystem().getString(R.string.Game_Creation_Error_Msg);
             }
         }
 
@@ -320,7 +326,7 @@ public abstract class GameMainActivity extends Activity implements
             // check that the player name is legal
             if (name.length() <= 0 && gpt != availTypes[availTypes.length-1]) {
                 // disallow an empty player name, unless it's a dummy (proxy) player
-                return getString(R.string.Local_Player_Name_Error_Msg);
+                //return getString(R.string.Local_Player_Name_Error_Msg);
             }
 
             // if the player requires a GUI, count and mark it; otherwise, if a player
@@ -339,13 +345,13 @@ public abstract class GameMainActivity extends Activity implements
             game = createRemoteGame(config.getIpCode());
             // verify we have a game
             if (game == null) {
-                return getString(R.string.Game_Server_Error_Msg);
+                //return getString(R.string.Game_Server_Error_Msg);
             }
         }
 
         // if there is more than one player that requires a GUI, abort
         if (requiresGuiCount >= 2) {
-            return getString(R.string.Mult_GUI_Tabl_Error_Msg);
+            //return getString(R.string.Mult_GUI_Tabl_Error_Msg);
         }
 
         // if there is a player that supports a GUI, link it to the activity,
@@ -355,7 +361,7 @@ public abstract class GameMainActivity extends Activity implements
         }
         else {
             // set the layout to be one with a "no GUI" message
-            setContentView(R.layout.game_no_gui);
+            //setContentView(R.layout.game_no_gui);
         }
 
         // mark the configuration as being completed
@@ -371,6 +377,7 @@ public abstract class GameMainActivity extends Activity implements
     /**
      * initializes the pages in the tabbed dialog
      */
+    /*
     protected void initTabs() {
         // Setup the tabbed dialog on the layout and add the content of each tab
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
@@ -396,6 +403,8 @@ public abstract class GameMainActivity extends Activity implements
 
     }// initTabs
 
+     */
+
     /**
      * initialize the rows in the player table
      */
@@ -407,6 +416,7 @@ public abstract class GameMainActivity extends Activity implements
         boolean savedIsLocal = config.isLocal();
         config.setLocal(true);
 
+        /*
         // put a row in the table for each player in the config
         this.playerTable = (TableLayout) findViewById(R.id.configTableLayout);
         int numPlayers = config.getNumPlayers();
@@ -433,6 +443,8 @@ public abstract class GameMainActivity extends Activity implements
                 }
             }
 
+
+
             // set up our spinner so that when its last element ("Network Player") is selected,
             // the corresponding EditText (the player name) is disabled.
             typeSpinner.setOnItemSelectedListener(new SpinnerListListener(playerName, availTypes.length-1));
@@ -441,9 +453,11 @@ public abstract class GameMainActivity extends Activity implements
 
         // restore the 'isLocal' property of the configuration object
         config.setLocal(savedIsLocal);
+        */
 
     }// initTableRows
 
+    /*
     protected void initRemoteWidgets() {
         //Set the remote name
         EditText remoteNameEditText = (EditText)findViewById(R.id.remoteNameEditText);
@@ -465,6 +479,8 @@ public abstract class GameMainActivity extends Activity implements
         ipCodeEditText.setText(config.getIpCode());
     }
 
+     */
+
     protected void initSettingsTab(){
         //Override if the game has customizable rules
     }
@@ -482,17 +498,18 @@ public abstract class GameMainActivity extends Activity implements
         this.setTitle(config.getGameName() + " Configuration");
 
         // place the pages in the tabbed dialog
-        initTabs();
+        //initTabs();
 
         // Insert a row for each player in the current config
         initTableRows();
 
         // Set the remote widget data
-        initRemoteWidgets();
+        //initRemoteWidgets();
 
         //Set up the Settings Tab
         initSettingsTab();
 
+        /*
         // Set myself as the listener for the buttons
         View v = findViewById(R.id.addPlayerButton);
         v.setOnClickListener(this);
@@ -504,23 +521,28 @@ public abstract class GameMainActivity extends Activity implements
         v.setOnClickListener(this);
         v = findViewById(R.id.debugLogging);
         v.setOnClickListener(this);
+         */
 
 
         String ipCode = IPCoder.encodeLocalIP();
         String ipAddress = IPCoder.getLocalIpAddress();
-        TextView ipText = (TextView)findViewById(R.id.ipCodeLabel);
-        ipText.setText(ipText.getText()+ipCode+" ("+ipAddress+") ");
+        //TextView ipText = (TextView)findViewById(R.id.ipCodeLabel);
+        //ipText.setText(ipText.getText()+ipCode+" ("+ipAddress+") ");
 
     }// initStarterGui
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.game_main, menu);
         return true;
     }//onCreateOptionsMenu
+     */
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        /*
         switch (item.getItemId()) {
             case R.id.menu_help:
                 Logger.log(TAG, "This is the help button!");
@@ -546,7 +568,10 @@ public abstract class GameMainActivity extends Activity implements
             default:
                 return super.onOptionsItemSelected(item);
         }
+         */
+        return false;
     }
+
 
     /**
      * this method is called whenever the user clicks on a button.
@@ -554,6 +579,7 @@ public abstract class GameMainActivity extends Activity implements
      * <p>
      * NOTE: With the current layout it could either be a Button or ImageButton.
      */
+
     public void onClick(View button) {
 
         Logger.log(TAG, "Clicked "+button);
@@ -563,6 +589,7 @@ public abstract class GameMainActivity extends Activity implements
             return;
         }
 
+        /*
         // Add Player Button
         if (button.getId() == R.id.addPlayerButton) {
             addPlayer();
@@ -605,7 +632,6 @@ public abstract class GameMainActivity extends Activity implements
             }
 
         }
-
         //On-screen debugging checkbox
         else if(button.getId() == R.id.onScreenLogging){
             if(((CheckBox)button).isChecked()){
@@ -624,15 +650,18 @@ public abstract class GameMainActivity extends Activity implements
             }
         }
 
+         */
+
     }// onClick
 
+/*
     private String startGame() {
         GameConfig finalConfig = scrapeData();
         //Saving the user's inputs in case they want to restart the game later
         this.restartConfig = finalConfig;
         return launchGame(finalConfig, null);
     }
-
+ */
     /**
      * removePlayer
      *
@@ -642,6 +671,7 @@ public abstract class GameMainActivity extends Activity implements
      * NOTE: this method will refuse to delete a row if the total would drop
      * below the minimum allowed by the game configuration.
      */
+    /*
     private void removePlayer(TableRow row) {
         // first, make sure that we won't exceed the min number of players
         if (this.tableRows.size() <= config.getMinPlayers()) {
@@ -653,6 +683,8 @@ public abstract class GameMainActivity extends Activity implements
 
     }// removePlayer
 
+     */
+
     /**
      * addPlayer
      *
@@ -662,6 +694,7 @@ public abstract class GameMainActivity extends Activity implements
      * @return a reference to the TableRow object that was created or null on
      *         failure
      */
+    /*
     private TableRow addPlayer() {
         // first, make sure that we won't exceed the max number of players
         if (this.tableRows.size() >= config.getMaxPlayers()) {
@@ -712,6 +745,7 @@ public abstract class GameMainActivity extends Activity implements
 
         return row;
     }// addPlayer
+     */
 
     /**
      * scrapeData
@@ -719,6 +753,7 @@ public abstract class GameMainActivity extends Activity implements
      * retrieves all the data from the GUI and creates a new GameConfig object
      * with it
      */
+    /*
     public GameConfig scrapeData() {
 
         // First make a copy of the original config without the players
@@ -762,11 +797,14 @@ public abstract class GameMainActivity extends Activity implements
         return result;
     }// scrapeData
 
+     */
+
     /**
      * Call-back method when a soft key-event happens. Intercepts the "back" button
      * so that the activity is not killed with out user confirmation (unless the
      * game is already over).
      */
+    /*
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && !gameIsOver) {
@@ -797,6 +835,8 @@ public abstract class GameMainActivity extends Activity implements
         }
     }// onKeyDown
 
+     */
+
     /**
      * Gets the port number for this configuration
      *
@@ -818,15 +858,18 @@ public abstract class GameMainActivity extends Activity implements
 
     public boolean getGameOver() { return gameIsOver; }
 
+
     /**
      *  the label for the local tab header
      *
      * @return
      * 		the label for the local tab header
      */
+    /*
     private String localTabString() {
         return this.getResources().getString(R.string.local_tab);
     }// localTabString
+    */
 
     /**
      *  the label for the remote tab header
@@ -834,10 +877,11 @@ public abstract class GameMainActivity extends Activity implements
      * @return
      * 		the label for the remote tab header
      */
+    /*
     private String remoteTabString() {
         return this.getResources().getString(R.string.remote_tab);
     }// remoteTabString
-
+    /*
 
     /**
      *  the label for the settings tab header
@@ -845,10 +889,11 @@ public abstract class GameMainActivity extends Activity implements
      * @return
      * 		the label for the settings tab header
      */
+    /*
     private String settingsTabString(){
         return this.getResources().getString(R.string.settings_tab);
     }
-
+    */
 
     /**
      * Helper-class so that we disable the name fields in the configuration
