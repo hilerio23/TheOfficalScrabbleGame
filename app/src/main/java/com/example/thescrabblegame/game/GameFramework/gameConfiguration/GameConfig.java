@@ -33,6 +33,8 @@ import static com.example.thescrabblegame.game.GameFramework.utilities.EqualityM
  * @version July 2013
  * @see GameMainActivity
  */
+
+
 public class GameConfig {
     //Tag for logging
     private static final String TAG = "GameConfig";
