@@ -259,6 +259,7 @@ public class ScrabbleState  extends GameState {
     public ScrabbleLetter[] getPlayer2Hand(){
         return player2Hand;
     }
+    
     public ScrabbleLetter[] getPlayer3Hand(){
         return player3Hand;
     }

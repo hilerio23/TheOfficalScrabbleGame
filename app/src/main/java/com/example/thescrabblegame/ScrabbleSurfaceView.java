@@ -953,8 +953,8 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
                 return getResources().getDrawable(R.drawable.xfinal);
             case 'y':
                 return getResources().getDrawable(R.drawable.yfinal);
-            //case 'z':
-                //return getResources().getDrawable(R.drawable.zfinal);
+            case 'z':
+                return getResources().getDrawable(R.drawable.zfinal);
             default:
                 return getResources().getDrawable(R.drawable.backgroundsquare);
         }
@@ -1014,8 +1014,8 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
                 return 'x';
             case R.drawable.yfinal:
                 return 'y';
-            //case R.drawable.zfinal:
-                //return 'z';
+            case R.drawable.zfinal:
+                return 'z';
             default:
                 return ' ';
         }
