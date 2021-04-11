@@ -1014,8 +1014,8 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
                 return 'x';
             case R.drawable.yfinal:
                 return 'y';
-            //case R.drawable.zfinal:
-                //return 'z';
+            case R.drawable.zfinal:
+                return 'z';
             default:
                 return ' ';
         }
