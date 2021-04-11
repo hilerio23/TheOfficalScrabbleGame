@@ -37,8 +37,8 @@ public class EasyAI extends GameComputerPlayer {
         ScrabbleDictionary scrabbleDic = new ScrabbleDictionary();
         ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
         board = scrabbleCopy.getBoard();
-        char[] hand = new char[7];
-        hand = scrabbleCopy.getHand();
+        ScrabbleLetter[] hand = new ScrabbleLetter[7];
+        hand = scrabbleCopy.getPlayer2Hand();
         ScrabbleLetter testLetter;
         String playString = null;
         int myRow;
@@ -62,10 +62,18 @@ public class EasyAI extends GameComputerPlayer {
                             int random6 = getRandomWithExclusion(rand, 0, 6, random1, random2, random3, random4, random5);
                             int random7 = getRandomWithExclusion(rand, 0, 6, random1, random2, random3, random4, random5, random6);
 
-                            playString = testLetter.getLetter() + hand[random1] + hand[random2] + hand[random3] + hand[random4]
-                                    + hand[random5] +hand[random6] + hand[random7];
+                            String myString = String.valueOf(testLetter.getLetter());
+                            String myString1 = String.valueOf(hand[random1].getLetter());
+                            String myString2 = String.valueOf(hand[random2].getLetter());
+                            String myString3 = String.valueOf(hand[random3].getLetter());
+                            String myString4 = String.valueOf(hand[random4].getLetter());
+                            String myString5 = String.valueOf(hand[random5].getLetter());
+                            String myString6 = String.valueOf(hand[random6].getLetter());
+                            String myString7 = String.valueOf(hand[random7].getLetter());
 
-                            if(ScrabbleDictionary.isLegal(playString, board, row, col)){
+                            playString = myString + myString1 + myString2 + myString3;
+
+                            if(scrabbleDic.isLegal(playString)){
                                 myRow = row;
                                 myCol = col;
                                 foundWord = true;
