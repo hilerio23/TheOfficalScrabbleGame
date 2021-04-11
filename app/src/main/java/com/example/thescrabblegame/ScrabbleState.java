@@ -216,6 +216,18 @@ public class ScrabbleState  extends GameState {
     public void setNumPasses(int passes){
         numPasses = passes;
     }
+    public void setPlayer1Hand(ScrabbleLetter[] hand){
+        player1Hand = hand;
+    }
+    public void setPlayer2Hand(ScrabbleLetter[] hand){
+        player2Hand = hand;
+    }
+    public void setPlayer3Hand(ScrabbleLetter[] hand){
+        player3Hand = hand;
+    }
+    public void setPlayer4Hand(ScrabbleLetter[] hand){
+        player4Hand = hand;
+    }
 
     public int getIdNum(){
         return id;
@@ -241,13 +253,30 @@ public class ScrabbleState  extends GameState {
     public int getNumPasses(){
         return numPasses;
     }
+    public ScrabbleLetter[] getPlayer1Hand(){
+        return player1Hand;
+    }
+    public ScrabbleLetter[] getPlayer2Hand(){
+        return player2Hand;
+    }
+    public ScrabbleLetter[] getPlayer3Hand(){
+        return player3Hand;
+    }
+    public ScrabbleLetter[] getPlayer4Hand(){
+        return player4Hand;
+    }
 
     public void playWord(ScrabbleLetter[] wordToPlay, double xCoord, double yCoord, boolean isVertical){
+        ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
+        String word = null;
+        for(int i = 0; i < wordToPlay.length; i++){
+            word += String.valueOf(wordToPlay[i].getLetter());
+        }
         //this probably needs bounds checking
         //change to a boolean return value
         if(over == 0) {
-            if(isLegal(wordToPlay, xCoord, yCoord)) {
+            if(dict.isLegal(word)) {
                 if (isVertical && xCoord + wordToPlay.length < 15) {
                     //if vertical keep xCoord the same and get row - 1 to get the letter
                     for (int row = (int)xCoord; row < xCoord + wordToPlay.length; row++) {
@@ -283,7 +312,6 @@ public class ScrabbleState  extends GameState {
         if(pool == null){
             over = 1;
         }
-        String word = null;
         //rewritten code
         /*while(over == 0){
             for(int i = 0; i < board.length; i++){
