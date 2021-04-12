@@ -435,6 +435,9 @@ public class ScrabbleState  extends GameState {
 
     public void exitGame(){
         over = 1;
+        if(over == 1){
+            System.exit(0);
+        }
     }
 
 }

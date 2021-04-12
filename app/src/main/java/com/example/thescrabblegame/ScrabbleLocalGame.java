@@ -1,4 +1,4 @@
-/*
+
 package com.example.thescrabblegame;
 
 import com.example.thescrabblegame.game.GameFramework.LocalGame;
@@ -96,4 +96,4 @@ public class ScrabbleLocalGame extends LocalGame {
 
 
 }
-*/
+

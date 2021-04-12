@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         scrabble = findViewById(R.id.scrabbleSurfaceView);
 
 
-        /*//setting all button's on click listener
+        //setting all button's on click listener
         Button exchange = (Button)findViewById(R.id.exchange);
         Button pass = (Button)findViewById(R.id.pass);
         Button playword = (Button)findViewById(R.id.playword);
@@ -561,6 +561,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView c14r13 = (ImageView)findViewById(R.id.imageView224);
         c14r13.setOnClickListener(scrabble);
         ImageView c14r14 = (ImageView)findViewById(R.id.imageView225);
-        c14r14.setOnClickListener(scrabble);*/
+        c14r14.setOnClickListener(scrabble);
     }
 }
