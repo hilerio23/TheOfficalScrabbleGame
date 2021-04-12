@@ -31,6 +31,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
      */
     public humanScrabblePlayer(String name, ScrabbleSurfaceView surfaceView) {
         super(name);
+        this.surfaceView = surfaceView;
     }
 
     @Override
@@ -74,21 +75,22 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
     public void onClick(View button) {
 
-        boolean isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
+        boolean isVertical;
 
-        if (button.getId() == exchange.getId()) {
+        if (button.getId() == R.id.exchange) {
             Exchange exchange = new Exchange(this, surfaceView.getScrabbleLetter());
             game.sendAction(exchange);
         }
-        else if(button.getId() == passButton.getId()){
+        else if(button.getId() == R.id.pass){
             Pass pass = new Pass(this);
             game.sendAction(pass);
         }
-        else if(button.getId() == playWordButton.getId()){
+        else if(button.getId() == R.id.playword){
+            isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
             PlayWord playWord = new PlayWord(this, surfaceView.getScrabbleLetter(), surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
             game.sendAction(playWord);
         }
-        else if(button.getId() == exitButton.getId()){
+        else if(button.getId() == R.id.exitGame){
             ExitGame exitGame = new ExitGame(this);
             game.sendAction(exitGame);
         }

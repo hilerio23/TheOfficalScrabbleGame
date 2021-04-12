@@ -14,7 +14,6 @@ import java.util.Random;
 
 public class ScrabbleState  extends GameState {
 
-    private MainActivity activity;
     private ScrabbleSurfaceView mSurfaceView;
 
     //15 x 15 board

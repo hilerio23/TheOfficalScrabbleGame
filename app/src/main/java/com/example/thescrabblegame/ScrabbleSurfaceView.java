@@ -36,6 +36,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     private ScrabbleLetter[] letter;
 
 
+
     public ScrabbleSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
