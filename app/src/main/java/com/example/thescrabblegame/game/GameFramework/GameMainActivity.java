@@ -84,7 +84,7 @@ public abstract class GameMainActivity extends Activity implements
     // has started
     private boolean doingConfiguration = true;
 
-    ScrabbleSurfaceView scrabble = null;
+   // ScrabbleSurfaceView scrabble = null;
 
 
     /**
@@ -92,7 +92,7 @@ public abstract class GameMainActivity extends Activity implements
      */
     GameConfig config = null;
 
-    //ScrabbleSurfaceView scrabble = findViewById(R.id.scrabbleSurfaceView);
+    ScrabbleSurfaceView scrabble = findViewById(R.id.scrabbleSurfaceView);
 
     // Each of these is initialized to point to various GUI controls
     TableLayout playerTable = null;
@@ -167,7 +167,7 @@ public abstract class GameMainActivity extends Activity implements
     @Override
     public final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scrabble = findViewById(R.id.scrabbleSurfaceView);
+        //scrabble = findViewById(R.id.scrabbleSurfaceView);
 
         //Set Context for Toast Logging
         Logger.setContext(getApplicationContext());

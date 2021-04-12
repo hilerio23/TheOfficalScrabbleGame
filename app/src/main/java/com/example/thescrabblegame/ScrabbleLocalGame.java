@@ -9,10 +9,14 @@ import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 public class ScrabbleLocalGame extends LocalGame {
     public ScrabbleState state;
 
-
+    /*
     public ScrabbleLocalGame(ScrabbleSurfaceView view) {
         state = new ScrabbleState(view);
+    }*/
+    public ScrabbleLocalGame() {
+
     }
+
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
 

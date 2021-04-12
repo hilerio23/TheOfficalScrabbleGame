@@ -10,7 +10,7 @@ import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameInfo;
 import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
 
-public class humanScrabblePlayer extends GameHumanPlayer {
+public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClickListener {
 
     private TextView score = null;
     private ScrabbleSurfaceView surfaceView;
@@ -21,7 +21,6 @@ public class humanScrabblePlayer extends GameHumanPlayer {
     private Button playWordButton = null;
     private Button exitButton = null;
     public ScrabbleState scrabbleCopy;
-
 
 
 

@@ -35,38 +35,46 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     private double yCoord;
     private ScrabbleLetter[] letter;
 
+
     public ScrabbleSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
         state = new ScrabbleState(this);
+
+    }
+    public SurfaceView getSurfaceView(){
+        return this;
     }
 
     @Override
     public void onClick(View view) {
         int buttonClicked = view.getId();
+        humanScrabblePlayer myHuman = new humanScrabblePlayer("Local Human Player");
 
         //determine what button was pushed and then call that method in the state\
-        /*
+
         if(buttonClicked == R.id.playword){
             boolean t = state.isVertical(toDouble(xcoords, ycoords));
-            state.playWord(toScrabbleLetter(letters), xcoords.get(xcoords.size() - 1), ycoords.get(ycoords.size() - 1), t);
+            //state.playWord(toScrabbleLetter(letters), xcoords.get(xcoords.size() - 1), ycoords.get(ycoords.size() - 1), t);
+            myHuman.onClick(view);
 
         }
         else if(buttonClicked == R.id.exchange){
-            state.exchange(toScrabbleLetter(letters));
-
-
+            //state.exchange(toScrabbleLetter(letters));
+            myHuman.onClick(view);
         }
         else if(buttonClicked == R.id.exitGame){
-            state.exitGame();
+            //state.exitGame();
+            myHuman.onClick(view);
 
         }
         else if(buttonClicked == R.id.pass){
-            state.pass();
+            //state.pass();
+            myHuman.onClick(view);
         }
-        else */
-        if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView") {
+        //else if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView") {
 
+        else if(view instanceof ImageView){
             letters.add((ImageView) view);
             xcoords.add((double)view.getX());
             ycoords.add((double)view.getY());
@@ -75,6 +83,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         else{
             return;
         }
+
     }
 
     public double[][] toDouble(ArrayList<Double> x, ArrayList<Double> y){
