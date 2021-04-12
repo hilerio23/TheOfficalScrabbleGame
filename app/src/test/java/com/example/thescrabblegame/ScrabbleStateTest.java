@@ -8,38 +8,38 @@ public class ScrabbleStateTest extends TestCase {
     }
 
     public void testSetIdNum() throws Exception{
-        ScrabbleState state = new ScrabbleState();
+        ScrabbleState state = new ScrabbleState(this);
         state.setIdNum(1);
         int id = state.getIdNum();
         assertEquals(id,1);
     }
 
     public void testSetPlayer1Score() throws Exception{
-        ScrabbleState scrabbleState = new ScrabbleState();
+        ScrabbleState scrabbleState = new ScrabbleState(this);
         scrabbleState.setPlayer1Score(-20);
         assertEquals(-20, scrabbleState.getPlayer1Score());
     }
 
     public void testSetPlayer2Score() throws Exception{
-        ScrabbleState scrabbleState = new ScrabbleState();
+        ScrabbleState scrabbleState = new ScrabbleState(this);
         scrabbleState.setPlayer2Score(-20);
         assertEquals(-20, scrabbleState.getPlayer2Score());
     }
 
     public void testSetPlayer3Score() throws Exception{
-        ScrabbleState scrabbleState = new ScrabbleState();
+        ScrabbleState scrabbleState = new ScrabbleState(this);
         scrabbleState.setPlayer3Score(-20);
         assertEquals(-20, scrabbleState.getPlayer3Score());
     }
 
     public void testSetPlayer4Score() {
-        ScrabbleState scrabbleState = new ScrabbleState();
+        ScrabbleState scrabbleState = new ScrabbleState(this);
         scrabbleState.setPlayer4Score(-20);
         assertEquals(-20, scrabbleState.getPlayer4Score());
     }
 
     public void testSetBoard() throws Exception{
-        ScrabbleState scrabbleState = new ScrabbleState();
+        ScrabbleState scrabbleState = new ScrabbleState(this);
         ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
         ScrabbleLetter[][] myBoard = new ScrabbleLetter[15][15];
         board = scrabbleState.getBoard();
@@ -49,13 +49,13 @@ public class ScrabbleStateTest extends TestCase {
     }
 
     public void testGetIdNum() {
-        ScrabbleState state = new ScrabbleState();
+        ScrabbleState state = new ScrabbleState(this);
         int id = state.getIdNum();
         assertEquals(id, 0);
     }
 
     public void testGetPlayer1Score() {
-        ScrabbleState state = new ScrabbleState();
+        ScrabbleState state = new ScrabbleState(this);
         int score = state.getPlayer1Score();
         assertEquals(score,0);
     }
@@ -70,7 +70,7 @@ public class ScrabbleStateTest extends TestCase {
     }
 
     public void testGetBoard() throws Exception {
-        ScrabbleState scrabbleState = new ScrabbleState();
+        ScrabbleState scrabbleState = new ScrabbleState(this);
         ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
         board = null;
         scrabbleState.setBoard(board);

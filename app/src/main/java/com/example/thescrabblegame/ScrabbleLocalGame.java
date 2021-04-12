@@ -1,3 +1,4 @@
+/*
 package com.example.thescrabblegame;
 
 import com.example.thescrabblegame.game.GameFramework.LocalGame;
@@ -9,8 +10,8 @@ public class ScrabbleLocalGame extends LocalGame {
     public ScrabbleState state;
 
 
-    public ScrabbleLocalGame() {
-        state = new ScrabbleState();
+    public ScrabbleLocalGame(ScrabbleSurfaceView view) {
+        state = new ScrabbleState(view);
     }
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
@@ -95,3 +96,4 @@ public class ScrabbleLocalGame extends LocalGame {
 
 
 }
+*/

@@ -1,13 +1,10 @@
 package com.example.thescrabblegame;
-import com.example.thescrabblegame.ScrabbleLetter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.*;
 import java.io.*;
 
 public class ScrabbleDictionary {
-    ScrabbleState state = new ScrabbleState();
     public boolean isNeighbors(ScrabbleLetter[][] myLetter, int row, int col, boolean isVertical){
         if(row == myLetter.length && col == myLetter[row].length){
             return false;

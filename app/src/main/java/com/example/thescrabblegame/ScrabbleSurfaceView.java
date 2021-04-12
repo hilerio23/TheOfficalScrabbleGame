@@ -7,6 +7,7 @@ import android.text.method.Touch;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickListener, View.OnTouchListener,
          TextView.OnEditorActionListener{
 
-    private ScrabbleState state;
+    public ScrabbleState state;
     private ArrayList<ImageView> letters = new ArrayList<>();
     private ArrayList<Double> xcoords = new ArrayList<>();
     private ArrayList<Double> ycoords = new ArrayList<>();
@@ -32,7 +33,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     public ScrabbleSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
-        state = new ScrabbleState();
+        state = new ScrabbleState(this);
     }
 
     @Override

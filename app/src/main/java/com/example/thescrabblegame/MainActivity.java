@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.view.InflateException;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thescrabblegame.R;
+import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,9 +49,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ScrabbleSurfaceView scrabble = findViewById(R.id.scrabbleSurfaceView);
 
-        //setting all button's on click listener
+        ScrabbleSurfaceView scrabble = null;
+
+        scrabble = findViewById(R.id.scrabbleSurfaceView);
+
+
+        /*//setting all button's on click listener
         Button exchange = (Button)findViewById(R.id.exchange);
         Button pass = (Button)findViewById(R.id.pass);
         Button playword = (Button)findViewById(R.id.playword);
@@ -551,6 +561,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView c14r13 = (ImageView)findViewById(R.id.imageView224);
         c14r13.setOnClickListener(scrabble);
         ImageView c14r14 = (ImageView)findViewById(R.id.imageView225);
-        c14r14.setOnClickListener(scrabble);
+        c14r14.setOnClickListener(scrabble);*/
     }
 }

@@ -5,7 +5,6 @@
  * @author Samone Watkins
  */
 package com.example.thescrabblegame;
-import android.graphics.Color;
 
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 
@@ -16,7 +15,7 @@ import java.util.Random;
 public class ScrabbleState  extends GameState {
 
     private MainActivity activity;
-    private ScrabbleSurfaceView mSurfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
+    private ScrabbleSurfaceView mSurfaceView;
 
     //15 x 15 board
     private ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
@@ -59,8 +58,8 @@ public class ScrabbleState  extends GameState {
     boolean isPossible;
 
     //constructor
-    public ScrabbleState(){
-
+    public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
+        mSurfaceView = scrabbleSurfaceView;
         //sets board to blanks
         for(int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
@@ -259,7 +258,6 @@ public class ScrabbleState  extends GameState {
     public ScrabbleLetter[] getPlayer2Hand(){
         return player2Hand;
     }
-    
     public ScrabbleLetter[] getPlayer3Hand(){
         return player3Hand;
     }
