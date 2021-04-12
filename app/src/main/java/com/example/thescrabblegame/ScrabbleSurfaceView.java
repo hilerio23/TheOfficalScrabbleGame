@@ -126,6 +126,16 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         return letter;
     }
 
+    public void drawHand(ScrabbleState state){
+        ScrabbleLetter[] hand = state.getPlayer1Hand();
+        ImageView img;
+
+        for(int i = 0; i < hand.length; i++){
+            img = getHandImageView(i);
+            img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
+        }
+    }
+
     public void drawBoard(ScrabbleState state){
         ScrabbleLetter[][] board = state.getBoard();
         ImageView img;
@@ -176,6 +186,25 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         return false;
+    }
+
+    public ImageView getHandImageView(int num){
+        switch(num){
+            case 0:
+                return findViewById(R.id.aButton);
+            case 1:
+                return findViewById(R.id.bButton);
+            case 2:
+                return findViewById(R.id.cButton);
+            case 3:
+                return findViewById(R.id.dButton);
+            case 4:
+                return findViewById(R.id.gButton);
+            case 5:
+                return findViewById(R.id.eButton);
+            default:
+                return null;
+        }
     }
     public ImageView getImageView(int row, int col){
         //this is going to be massive and messy. Sorry.
