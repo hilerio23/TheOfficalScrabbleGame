@@ -36,23 +36,60 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thescrabblegame.R;
+import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
+import com.example.thescrabblegame.game.GameFramework.LocalGame;
+import com.example.thescrabblegame.game.GameFramework.gameConfiguration.GameConfig;
+import com.example.thescrabblegame.game.GameFramework.gameConfiguration.GamePlayerType;
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
+import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends GameMainActivity {
+
+    // the port number that this game will use when playing over the network
+    private static final int PORT_NUMBER = 2278;
+    GameMainActivity activity;
 
     @Override
+    public GameConfig createDefaultConfig() {
+        ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
+
+        // Pig has two player types:  human and computer
+        playerTypes.add(new GamePlayerType("Local Human Player") {
+            public GamePlayer createPlayer(String name) {
+                return new humanScrabblePlayer(name);
+            }});
+        playerTypes.add(new GamePlayerType("Computer Player") {
+            public GamePlayer createPlayer(String name) {
+                return new EasyAI(name);
+            }});
+
+        // Create a game configuration class for Pig:
+        GameConfig defaultConfig = new GameConfig(playerTypes, 1, 2, "Scrabble", PORT_NUMBER);
+        defaultConfig.addPlayer("Human", 0); // player 1: a human player
+        defaultConfig.addPlayer("Computer", 1); // player 2: a computer player
+
+        return defaultConfig;
+    }
+
+    @Override
+    public LocalGame createLocalGame(GameState gameState) {
+        return new ScrabbleLocalGame(activity.getSurfaceView());
+    }
+
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
-        ScrabbleSurfaceView scrabble = null;
 
-        scrabble = findViewById(R.id.scrabbleSurfaceView);
+
 
 
         //setting all button's on click listener
@@ -562,5 +599,5 @@ public class MainActivity extends AppCompatActivity {
         c14r13.setOnClickListener(scrabble);
         ImageView c14r14 = (ImageView)findViewById(R.id.imageView225);
         c14r14.setOnClickListener(scrabble);
-    }
+    }*/
 }

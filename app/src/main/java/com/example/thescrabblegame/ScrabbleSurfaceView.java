@@ -30,6 +30,11 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     private ArrayList<Double> xcoords = new ArrayList<>();
     private ArrayList<Double> ycoords = new ArrayList<>();
 
+    private double[][] xy;
+    private double xCoord;
+    private double yCoord;
+    private ScrabbleLetter[] letter;
+
     public ScrabbleSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
@@ -40,7 +45,8 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     public void onClick(View view) {
         int buttonClicked = view.getId();
 
-        //determine what button was pushed and then call that method in the state
+        //determine what button was pushed and then call that method in the state\
+        /*
         if(buttonClicked == R.id.playword){
             boolean t = state.isVertical(toDouble(xcoords, ycoords));
             state.playWord(toScrabbleLetter(letters), xcoords.get(xcoords.size() - 1), ycoords.get(ycoords.size() - 1), t);
@@ -58,7 +64,9 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         else if(buttonClicked == R.id.pass){
             state.pass();
         }
-        else if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView") {
+        else */
+        if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView") {
+
             letters.add((ImageView) view);
             xcoords.add((double)view.getX());
             ycoords.add((double)view.getY());
@@ -70,24 +78,42 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     }
 
     public double[][] toDouble(ArrayList<Double> x, ArrayList<Double> y){
-        double[][] xy = new double[x.size()][2];
+        this.xy = new double[x.size()][2];
+
+        this.xCoord = x.get(0);
+        this.yCoord = y.get(0);
 
         for(int i = 0; i < x.size(); i++){
-            xy[i][0] = x.get(i);
-            xy[i][1] = y.get(i);
+            this.xy[i][0] = x.get(i);
+            this.xy[i][1] = y.get(i);
         }
 
         return xy;
     }
+
+    public double[][] getXY(){
+        return xy;
+    }
+    public double getxCoord(){
+        return xCoord;
+    }
+    public double getyCoord(){
+        return yCoord;
+    }
+
     public ScrabbleLetter[] toScrabbleLetter(ArrayList<ImageView> arrs){
-        ScrabbleLetter[] letter = new ScrabbleLetter[arrs.size()];
+        this.letter = new ScrabbleLetter[arrs.size()];
 
         for(int i = 0; i < arrs.size(); i++ ){
             arrs.get(i).getDrawable();
             ScrabbleLetter d = new ScrabbleLetter(getCharacter(arrs.get(i).getId()));
-            letter[i] = d;
+            this.letter[i] = d;
         }
 
+        return letter;
+    }
+
+    public ScrabbleLetter[] getScrabbleLetter(){
         return letter;
     }
 

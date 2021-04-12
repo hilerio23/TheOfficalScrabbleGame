@@ -75,15 +75,10 @@ public class humanScrabblePlayer extends GameHumanPlayer {
     }
     public void onClick(View button) {
 
-       /* ScrabbleLetter[][] board = scrabbleCopy.getBoard();
-        ScrabbleLetter[] playerHand = scrabbleCopy.getPlayer1Hand();
-        ScrabbleLetter[] exchangeLetters;
-
-
-
+        boolean isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
 
         if (button.getId() == exchange.getId()) {
-            Exchange exchange = new Exchange();
+            Exchange exchange = new Exchange(this, surfaceView.getScrabbleLetter());
             game.sendAction(exchange);
         }
         else if(button.getId() == passButton.getId()){
@@ -91,13 +86,13 @@ public class humanScrabblePlayer extends GameHumanPlayer {
             game.sendAction(pass);
         }
         else if(button.getId() == playWordButton.getId()){
-            PlayWord playWord = new PlayWord();
+            PlayWord playWord = new PlayWord(this, surfaceView.getScrabbleLetter(), surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
             game.sendAction(playWord);
         }
         else if(button.getId() == exitButton.getId()){
             ExitGame exitGame = new ExitGame(this);
             game.sendAction(exitGame);
-        }*/
+        }
         //surfaceView.onClick(view);
     }
 }

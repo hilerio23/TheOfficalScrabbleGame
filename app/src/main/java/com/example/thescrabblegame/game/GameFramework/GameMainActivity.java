@@ -84,13 +84,15 @@ public abstract class GameMainActivity extends Activity implements
     // has started
     private boolean doingConfiguration = true;
 
+    ScrabbleSurfaceView scrabble = null;
+
 
     /**
      * contains the game configuration this activity will be used to initialize
      */
     GameConfig config = null;
 
-    ScrabbleSurfaceView scrabble = findViewById(R.id.scrabbleSurfaceView);
+    //ScrabbleSurfaceView scrabble = findViewById(R.id.scrabbleSurfaceView);
 
     // Each of these is initialized to point to various GUI controls
     TableLayout playerTable = null;
@@ -165,6 +167,7 @@ public abstract class GameMainActivity extends Activity implements
     @Override
     public final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        scrabble = findViewById(R.id.scrabbleSurfaceView);
 
         //Set Context for Toast Logging
         Logger.setContext(getApplicationContext());
@@ -183,6 +186,7 @@ public abstract class GameMainActivity extends Activity implements
         }
 
          */
+
 
         if (this.config.isUserModifiable()) { // normal run: user has chance to modify configuration
 
@@ -217,449 +221,6 @@ public abstract class GameMainActivity extends Activity implements
         }
 
          */
-        Logger.setDebugValue(false);
-    }// onCreate
-
-    /**
-     * Returns the name of the configuration save-file.
-     *
-     * @return
-     * 		the name of the configuration file for this application to use
-     */
-    private String saveFileName() {
-        return "savedConfig"+getPortNumber()+".dat";
-    }//saveFileName
-
-    /**
-     * hides the soft keyboard so that the use does not need to dismiss it
-     */
-    private void hideSoftKeyboard() {
-        // create a runnable object that waits for things to settle down, and then
-        // hides the window
-        Runnable runner = new Runnable() {
-            public void run() {
-                try {
-                    // wait for one second
-                    Thread.sleep(1000);
-
-                    // hide the keyboard
-                    InputMethodManager inputMethodManager = (InputMethodManager)
-                            getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                            InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                }
-                catch (Exception x) {
-                    // catch and ignore any exceptions we might encounter
-                }
-            }
-        };
-
-        // run the thread
-        Thread t = new Thread(runner);
-        t.start();
-//		try {
-//			// join the thread to that we don't get ahead of it
-//			t.join();
-//		} catch (InterruptedException e) {
-//		}
-
-    }//hideSoftKeyboard
-
-    /**
-     * Callback-method, called when the configuration changes--typically when the tablet
-     * is rotated.
-     */
-    public void onConfigurationChanged(Configuration newConfig) {
-
-        // Perform superclass configuration changes
-        super.onConfigurationChanged(newConfig);
-
-        // if still on the configuration screen, continue showing it;
-        // otherwise, set the new GUI (which may have changed) for the
-        // human player
-        if (!doingConfiguration) {
-            if (guiPlayer != null) {
-                // if there is a GUI player, link it to the activity
-                guiPlayer.gameSetAsGui(this);
-            }
-            else {
-                // if there is no GUI player, set the layout to be one
-                // with a "no GUI" message
-                //setContentView(R.layout.game_no_gui);
-            }
-        }
-    }//onConfigurationChanged
-
-    /**
-     * Creates the game and players, and starts the game.
-     *
-     * @param config
-     *            is the configuration for this game
-     * @param gameState
-     *            the gameState for this game
-     * @return
-     * 			null if the launch was successful; otherwise a message telling
-     * 			why game could not be launched
-     */
-    private final String launchGame(GameConfig config, GameState gameState) {
-
-        // Set the title text with the game's name
-        this.setTitle(config.getGameName());
-
-        // create the game if it's local (we defer remote game creation
-        // until further down so that we do not attempt to make the
-        // network connection until other errors are checked)
-        if (config.isLocal()) { // local game
-            game = createLocalGame(gameState);
-            // verify we have a game
-            if (game == null) {
-                //return Resources.getSystem().getString(R.string.Game_Creation_Error_Msg);
-            }
-        }
-
-        //////////////////////////////////////
-        // create the players
-        //////////////////////////////////////
-        int requiresGuiCount = 0; // the number of players that require a GUI
-        guiPlayer = null; // the player that will be our GUI player
-        players = new GamePlayer[config.getNumPlayers()]; // the array to contains our players
-
-        // loop through each player
-        for (int i = 0; i < players.length; i++) {
-            String name = config.getSelName(i); // the player's name
-            GamePlayerType gpt = config.getSelType(i); // the player's type
-            GamePlayerType[] availTypes = config.getAvailTypes(); // the available player types
-            players[i] = gpt.createPlayer(name); // create the player
-
-            // check that the player name is legal
-            if (name.length() <= 0 && gpt != availTypes[availTypes.length-1]) {
-                // disallow an empty player name, unless it's a dummy (proxy) player
-                //return getString(R.string.Local_Player_Name_Error_Msg);
-            }
-
-            // if the player requires a GUI, count and mark it; otherwise, if a player
-            // supports a GUI and the "requires" count is zero, mark it
-            if (players[i].requiresGui()) {
-                requiresGuiCount++;
-                guiPlayer = players[i];
-            }
-            else if (guiPlayer == null && players[i].supportsGui()) {
-                guiPlayer = players[i];
-            }
-        }
-
-        // create the game if it's remote
-        if (!config.isLocal()) { // remote game
-            game = createRemoteGame(config.getIpCode());
-            // verify we have a game
-            if (game == null) {
-                //return getString(R.string.Game_Server_Error_Msg);
-            }
-        }
-
-        // if there is more than one player that requires a GUI, abort
-        if (requiresGuiCount >= 2) {
-            //return getString(R.string.Mult_GUI_Tabl_Error_Msg);
-        }
-
-        // if there is a player that supports a GUI, link it to the activity,
-        // otherwise set the GUI to be a "dummy" one with a "no GUI" message
-        if (guiPlayer != null) {
-            guiPlayer.gameSetAsGui(this);
-        }
-        else {
-            // set the layout to be one with a "no GUI" message
-            //setContentView(R.layout.game_no_gui);
-        }
-
-        // mark the configuration as being completed
-        doingConfiguration = false;
-
-        // start the game; then return null to indicate that the launch was
-        // successful
-        game.start(players);
-        return null;
-
-    }// launchGame
-
-    /**
-     * initializes the pages in the tabbed dialog
-     */
-    /*
-    protected void initTabs() {
-        // Setup the tabbed dialog on the layout and add the content of each tab
-        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
-        tabHost.setup();
-        //Adding Local Tab for Local Game or Host Game
-        TabSpec localTabSpec = tabHost.newTabSpec(localTabString());
-        localTabSpec.setContent(R.id.localGameTab);
-        localTabSpec.setIndicator(localTabString());
-        //Adding Remote Tab for Remote WiFi Game connection
-        TabSpec remoteTabSpec = tabHost.newTabSpec(remoteTabString());
-        remoteTabSpec.setContent(R.id.remoteGameTab);
-        remoteTabSpec.setIndicator(remoteTabString());
-        //Adding Settings Tab that can be customized to allow for customized rules
-        TabSpec settingsTabSpec = tabHost.newTabSpec(settingsTabString());
-        settingsTabSpec.setContent(R.id.gameSettingsTab);
-        settingsTabSpec.setIndicator(settingsTabString());
-        tabHost.addTab(localTabSpec);
-        tabHost.addTab(remoteTabSpec);
-        tabHost.addTab(settingsTabSpec);
-
-        // make sure the current tab is the right one
-        tabHost.setCurrentTab(config.isLocal() ? 0 : 1);
-
-    }// initTabs
-
-     */
-
-    /**
-     * initialize the rows in the player table
-     */
-    protected void initTableRows() {
-
-        // save away the information about whether we're on the local tab;
-        // set things temporarily ab being true so that the rows end up in
-        // the first tab
-        boolean savedIsLocal = config.isLocal();
-        config.setLocal(true);
-
-        /*
-        // put a row in the table for each player in the config
-        this.playerTable = (TableLayout) findViewById(R.id.configTableLayout);
-        int numPlayers = config.getNumPlayers();
-        for (int i = 0; i < numPlayers; ++i) {
-
-            // add the row
-            TableRow row = addPlayer();
-
-            // Set the player name
-            TextView playerName = (TextView) row
-                    .findViewById(R.id.playerNameEditText);
-            playerName.setText(config.getSelName(i));
-
-            // Set the initial selection for the spinner
-            GamePlayerType[] selTypes = config.getSelTypes(); // the player types in the config
-            GamePlayerType[] availTypes = config.getAvailTypes(); // the available player types
-            Spinner typeSpinner = (Spinner) row
-                    .findViewById(R.id.playerTypeSpinner); // the spinner for the current player
-            // search through to find the one whose label matches; set it as the selection
-            for (int j = 0; j < availTypes.length; ++j) {
-                if (selTypes[i].getTypeName().equals(availTypes[j].getTypeName())) {
-                    typeSpinner.setSelection(j);
-                    break;
-                }
-            }
-
-
-
-            // set up our spinner so that when its last element ("Network Player") is selected,
-            // the corresponding EditText (the player name) is disabled.
-            typeSpinner.setOnItemSelectedListener(new SpinnerListListener(playerName, availTypes.length-1));
-
-        }// for
-
-        // restore the 'isLocal' property of the configuration object
-        config.setLocal(savedIsLocal);
-        */
-
-    }// initTableRows
-
-    /*
-    protected void initRemoteWidgets() {
-        //Set the remote name
-        EditText remoteNameEditText = (EditText)findViewById(R.id.remoteNameEditText);
-        remoteNameEditText.setText(config.getRemoteName());
-
-        // index of remote player type
-        GamePlayerType remotePlayerType = config.getRemoteSelType();
-        GamePlayerType[] availTypes = config.getAvailTypes();
-        Spinner remoteTypeSpinner = (Spinner)findViewById(R.id.remote_player_spinner);
-        for (int j = 0; j < availTypes.length; ++j) {
-            if (remotePlayerType.getTypeName().equals(availTypes[j].getTypeName())) {
-                remoteTypeSpinner.setSelection(j);
-                break;
-            }
-        }
-
-        //Set the IP code
-        EditText ipCodeEditText = (EditText)findViewById(R.id.remoteIPCodeEditText);
-        ipCodeEditText.setText(config.getIpCode());
-    }
-
-     */
-
-    protected void initSettingsTab(){
-        //Override if the game has customizable rules
-    }
-
-    /**
-     * places the data from this.config into the GUI.
-     *
-     */
-    protected void initStarterGui() {
-        // do nothing without a game config
-        if (this.config == null)
-            return;
-
-        // Set the title text using the game's name
-        this.setTitle(config.getGameName() + " Configuration");
-
-        // place the pages in the tabbed dialog
-        //initTabs();
-
-        // Insert a row for each player in the current config
-        initTableRows();
-
-        // Set the remote widget data
-        //initRemoteWidgets();
-
-        //Set up the Settings Tab
-        initSettingsTab();
-
-        /*
-        // Set myself as the listener for the buttons
-        View v = findViewById(R.id.addPlayerButton);
-        v.setOnClickListener(this);
-        v = findViewById(R.id.saveConfigButton);
-        v.setOnClickListener(this);
-        v = findViewById(R.id.playGameButton);
-        v.setOnClickListener(this);
-        v = findViewById(R.id.onScreenLogging);
-        v.setOnClickListener(this);
-        v = findViewById(R.id.debugLogging);
-        v.setOnClickListener(this);
-         */
-
-
-        String ipCode = IPCoder.encodeLocalIP();
-        String ipAddress = IPCoder.getLocalIpAddress();
-        //TextView ipText = (TextView)findViewById(R.id.ipCodeLabel);
-        //ipText.setText(ipText.getText()+ipCode+" ("+ipAddress+") ");
-
-    }// initStarterGui
-
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.game_main, menu);
-        return true;
-    }//onCreateOptionsMenu
-     */
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /*
-        switch (item.getItemId()) {
-            case R.id.menu_help:
-                Logger.log(TAG, "This is the help button!");
-                return true;
-            case R.id.save_game:
-                Logger.log(TAG, "This is the save button!");
-                if( this.game != null){
-                    Logger.log(TAG, "The Game Exists!");
-                    MessageBox.popUpSaveGame("Name your game:", this);
-                } else {
-                    Logger.log(TAG, "No Game Exists!");
-                    MessageBox.popUpMessage("You cannot save a game without first starting a game (Click Anywhere to dismiss).", this);
-                }
-                return true;
-            case R.id.load_game:
-                Logger.log(TAG, "This is the loading button!");
-                MessageBox.popUpLoadGame("Select Your Game: ", this);
-                return true;
-            case R.id.delete_game:
-                Logger.log(TAG, "This is the delete button!");
-                MessageBox.popUpDeleteGame("Select the Game to Delete: ", this);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-         */
-        return false;
-    }
-
-
-    /**
-     * this method is called whenever the user clicks on a button.
-     *
-     * <p>
-     * NOTE: With the current layout it could either be a Button or ImageButton.
-     */
-
-    public void onClick(View button) {
-
-        Logger.log(TAG, "Clicked "+button);
-
-        // if the GUI many not have been fully initialized, ignore
-        if (justStarted) {
-            return;
-        }
-
-        /*
-        // Add Player Button
-        if (button.getId() == R.id.addPlayerButton) {
-            addPlayer();
-            this.playerTable.invalidate(); // show the user the change
-        }
-
-        // Delete Player Button
-        else if (button.getId() == R.id.delPlayerButton) {
-            // Search the existing players to find out which delete button got
-            // clicked
-            for (int i = 0; i < this.tableRows.size(); i++) {
-                TableRow row = tableRows.get(i);
-
-                View v = row.findViewById(R.id.delPlayerButton);
-                if (v == button) {
-                    // found it! remove from the layout and the list
-                    removePlayer(row);
-                }
-            }
-
-        }// else if (delete button)
-
-        //Save Config Button
-        else if (button.getId() == R.id.saveConfigButton) {
-            GameConfig configTemp = scrapeData();
-            if (configTemp.saveConfig(saveFileName(), this)) {
-                MessageBox.popUpMessage(getString(R.string.Saved_Config_Msg), this);
-            }
-            else {
-                MessageBox.popUpMessage(getString(R.string.Saved_Config_Error_Msg), this);
-            }
-        }
-
-        //Start Game Button
-        else if (button.getId() == R.id.playGameButton) {
-            String msg = startGame();
-            if (msg != null) {
-                // we have an error message
-                MessageBox.popUpMessage(msg, this);
-            }
-
-        }
-        //On-screen debugging checkbox
-        else if(button.getId() == R.id.onScreenLogging){
-            if(((CheckBox)button).isChecked()){
-                Logger.setToastValue(true);
-            }else{
-                Logger.setToastValue(false);
-            }
-        }
-
-        //Console debugging checkbox
-        else if(button.getId() == R.id.debugLogging){
-            if(((CheckBox)button).isChecked()){
-                Logger.setDebugValue(true);
-            }else{
-                Logger.setDebugValue(false);
-            }
-        }
-
-         */
-        //setting all button's on click listener
         Button exchange = (Button)findViewById(R.id.exchange);
         Button pass = (Button)findViewById(R.id.pass);
         Button playword = (Button)findViewById(R.id.playword);
@@ -1166,6 +727,455 @@ public abstract class GameMainActivity extends Activity implements
         c14r13.setOnClickListener(scrabble);
         ImageView c14r14 = (ImageView)findViewById(R.id.imageView225);
         c14r14.setOnClickListener(scrabble);
+
+        Logger.setDebugValue(false);
+    }// onCreate
+
+    public ScrabbleSurfaceView getSurfaceView(){
+        return scrabble;
+    }
+
+    /**
+     * Returns the name of the configuration save-file.
+     *
+     * @return
+     * 		the name of the configuration file for this application to use
+     */
+    private String saveFileName() {
+        return "savedConfig"+getPortNumber()+".dat";
+    }//saveFileName
+
+    /**
+     * hides the soft keyboard so that the use does not need to dismiss it
+     */
+    private void hideSoftKeyboard() {
+        // create a runnable object that waits for things to settle down, and then
+        // hides the window
+        Runnable runner = new Runnable() {
+            public void run() {
+                try {
+                    // wait for one second
+                    Thread.sleep(1000);
+
+                    // hide the keyboard
+                    InputMethodManager inputMethodManager = (InputMethodManager)
+                            getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                            InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                }
+                catch (Exception x) {
+                    // catch and ignore any exceptions we might encounter
+                }
+            }
+        };
+
+        // run the thread
+        Thread t = new Thread(runner);
+        t.start();
+//		try {
+//			// join the thread to that we don't get ahead of it
+//			t.join();
+//		} catch (InterruptedException e) {
+//		}
+
+    }//hideSoftKeyboard
+
+    /**
+     * Callback-method, called when the configuration changes--typically when the tablet
+     * is rotated.
+     */
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        // Perform superclass configuration changes
+        super.onConfigurationChanged(newConfig);
+
+        // if still on the configuration screen, continue showing it;
+        // otherwise, set the new GUI (which may have changed) for the
+        // human player
+        if (!doingConfiguration) {
+            if (guiPlayer != null) {
+                // if there is a GUI player, link it to the activity
+                guiPlayer.gameSetAsGui(this);
+            }
+            else {
+                // if there is no GUI player, set the layout to be one
+                // with a "no GUI" message
+                //setContentView(R.layout.game_no_gui);
+            }
+        }
+    }//onConfigurationChanged
+
+    /**
+     * Creates the game and players, and starts the game.
+     *
+     * @param config
+     *            is the configuration for this game
+     * @param gameState
+     *            the gameState for this game
+     * @return
+     * 			null if the launch was successful; otherwise a message telling
+     * 			why game could not be launched
+     */
+    private final String launchGame(GameConfig config, GameState gameState) {
+
+        // Set the title text with the game's name
+        this.setTitle(config.getGameName());
+
+        // create the game if it's local (we defer remote game creation
+        // until further down so that we do not attempt to make the
+        // network connection until other errors are checked)
+        if (config.isLocal()) { // local game
+            game = createLocalGame(gameState);
+            // verify we have a game
+            if (game == null) {
+                //return Resources.getSystem().getString(R.string.Game_Creation_Error_Msg);
+            }
+        }
+
+        //////////////////////////////////////
+        // create the players
+        //////////////////////////////////////
+        int requiresGuiCount = 0; // the number of players that require a GUI
+        guiPlayer = null; // the player that will be our GUI player
+        players = new GamePlayer[config.getNumPlayers()]; // the array to contains our players
+
+        // loop through each player
+        for (int i = 0; i < players.length; i++) {
+            String name = config.getSelName(i); // the player's name
+            GamePlayerType gpt = config.getSelType(i); // the player's type
+            GamePlayerType[] availTypes = config.getAvailTypes(); // the available player types
+            players[i] = gpt.createPlayer(name); // create the player
+
+            // check that the player name is legal
+            if (name.length() <= 0 && gpt != availTypes[availTypes.length-1]) {
+                // disallow an empty player name, unless it's a dummy (proxy) player
+                //return getString(R.string.Local_Player_Name_Error_Msg);
+            }
+
+            // if the player requires a GUI, count and mark it; otherwise, if a player
+            // supports a GUI and the "requires" count is zero, mark it
+            if (players[i].requiresGui()) {
+                requiresGuiCount++;
+                guiPlayer = players[i];
+            }
+            else if (guiPlayer == null && players[i].supportsGui()) {
+                guiPlayer = players[i];
+            }
+        }
+
+        // create the game if it's remote
+        if (!config.isLocal()) { // remote game
+            game = createRemoteGame(config.getIpCode());
+            // verify we have a game
+            if (game == null) {
+                //return getString(R.string.Game_Server_Error_Msg);
+            }
+        }
+
+        // if there is more than one player that requires a GUI, abort
+        if (requiresGuiCount >= 2) {
+            //return getString(R.string.Mult_GUI_Tabl_Error_Msg);
+        }
+
+        // if there is a player that supports a GUI, link it to the activity,
+        // otherwise set the GUI to be a "dummy" one with a "no GUI" message
+        if (guiPlayer != null) {
+            guiPlayer.gameSetAsGui(this);
+        }
+        else {
+            // set the layout to be one with a "no GUI" message
+            //setContentView(R.layout.game_no_gui);
+        }
+
+        // mark the configuration as being completed
+        doingConfiguration = false;
+
+        // start the game; then return null to indicate that the launch was
+        // successful
+        game.start(players);
+        return null;
+
+    }// launchGame
+
+    /**
+     * initializes the pages in the tabbed dialog
+     */
+    /*
+    protected void initTabs() {
+        // Setup the tabbed dialog on the layout and add the content of each tab
+        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
+        //Adding Local Tab for Local Game or Host Game
+        TabSpec localTabSpec = tabHost.newTabSpec(localTabString());
+        localTabSpec.setContent(R.id.localGameTab);
+        localTabSpec.setIndicator(localTabString());
+        //Adding Remote Tab for Remote WiFi Game connection
+        TabSpec remoteTabSpec = tabHost.newTabSpec(remoteTabString());
+        remoteTabSpec.setContent(R.id.remoteGameTab);
+        remoteTabSpec.setIndicator(remoteTabString());
+        //Adding Settings Tab that can be customized to allow for customized rules
+        TabSpec settingsTabSpec = tabHost.newTabSpec(settingsTabString());
+        settingsTabSpec.setContent(R.id.gameSettingsTab);
+        settingsTabSpec.setIndicator(settingsTabString());
+        tabHost.addTab(localTabSpec);
+        tabHost.addTab(remoteTabSpec);
+        tabHost.addTab(settingsTabSpec);
+
+        // make sure the current tab is the right one
+        tabHost.setCurrentTab(config.isLocal() ? 0 : 1);
+
+    }// initTabs
+
+     */
+
+    /**
+     * initialize the rows in the player table
+     */
+    protected void initTableRows() {
+
+        // save away the information about whether we're on the local tab;
+        // set things temporarily ab being true so that the rows end up in
+        // the first tab
+        boolean savedIsLocal = config.isLocal();
+        config.setLocal(true);
+
+        /*
+        // put a row in the table for each player in the config
+        this.playerTable = (TableLayout) findViewById(R.id.configTableLayout);
+        int numPlayers = config.getNumPlayers();
+        for (int i = 0; i < numPlayers; ++i) {
+
+            // add the row
+            TableRow row = addPlayer();
+
+            // Set the player name
+            TextView playerName = (TextView) row
+                    .findViewById(R.id.playerNameEditText);
+            playerName.setText(config.getSelName(i));
+
+            // Set the initial selection for the spinner
+            GamePlayerType[] selTypes = config.getSelTypes(); // the player types in the config
+            GamePlayerType[] availTypes = config.getAvailTypes(); // the available player types
+            Spinner typeSpinner = (Spinner) row
+                    .findViewById(R.id.playerTypeSpinner); // the spinner for the current player
+            // search through to find the one whose label matches; set it as the selection
+            for (int j = 0; j < availTypes.length; ++j) {
+                if (selTypes[i].getTypeName().equals(availTypes[j].getTypeName())) {
+                    typeSpinner.setSelection(j);
+                    break;
+                }
+            }
+
+
+
+            // set up our spinner so that when its last element ("Network Player") is selected,
+            // the corresponding EditText (the player name) is disabled.
+            typeSpinner.setOnItemSelectedListener(new SpinnerListListener(playerName, availTypes.length-1));
+
+        }// for
+
+        // restore the 'isLocal' property of the configuration object
+        config.setLocal(savedIsLocal);
+        */
+
+    }// initTableRows
+
+    /*
+    protected void initRemoteWidgets() {
+        //Set the remote name
+        EditText remoteNameEditText = (EditText)findViewById(R.id.remoteNameEditText);
+        remoteNameEditText.setText(config.getRemoteName());
+
+        // index of remote player type
+        GamePlayerType remotePlayerType = config.getRemoteSelType();
+        GamePlayerType[] availTypes = config.getAvailTypes();
+        Spinner remoteTypeSpinner = (Spinner)findViewById(R.id.remote_player_spinner);
+        for (int j = 0; j < availTypes.length; ++j) {
+            if (remotePlayerType.getTypeName().equals(availTypes[j].getTypeName())) {
+                remoteTypeSpinner.setSelection(j);
+                break;
+            }
+        }
+
+        //Set the IP code
+        EditText ipCodeEditText = (EditText)findViewById(R.id.remoteIPCodeEditText);
+        ipCodeEditText.setText(config.getIpCode());
+    }
+
+     */
+
+    protected void initSettingsTab(){
+        //Override if the game has customizable rules
+    }
+
+    /**
+     * places the data from this.config into the GUI.
+     *
+     */
+    protected void initStarterGui() {
+        // do nothing without a game config
+        if (this.config == null)
+            return;
+
+        // Set the title text using the game's name
+        this.setTitle(config.getGameName() + " Configuration");
+
+        // place the pages in the tabbed dialog
+        //initTabs();
+
+        // Insert a row for each player in the current config
+        initTableRows();
+
+        // Set the remote widget data
+        //initRemoteWidgets();
+
+        //Set up the Settings Tab
+        initSettingsTab();
+
+        /*
+        // Set myself as the listener for the buttons
+        View v = findViewById(R.id.addPlayerButton);
+        v.setOnClickListener(this);
+        v = findViewById(R.id.saveConfigButton);
+        v.setOnClickListener(this);
+        v = findViewById(R.id.playGameButton);
+        v.setOnClickListener(this);
+        v = findViewById(R.id.onScreenLogging);
+        v.setOnClickListener(this);
+        v = findViewById(R.id.debugLogging);
+        v.setOnClickListener(this);
+         */
+
+
+        String ipCode = IPCoder.encodeLocalIP();
+        String ipAddress = IPCoder.getLocalIpAddress();
+        //TextView ipText = (TextView)findViewById(R.id.ipCodeLabel);
+        //ipText.setText(ipText.getText()+ipCode+" ("+ipAddress+") ");
+
+    }// initStarterGui
+
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.game_main, menu);
+        return true;
+    }//onCreateOptionsMenu
+     */
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        /*
+        switch (item.getItemId()) {
+            case R.id.menu_help:
+                Logger.log(TAG, "This is the help button!");
+                return true;
+            case R.id.save_game:
+                Logger.log(TAG, "This is the save button!");
+                if( this.game != null){
+                    Logger.log(TAG, "The Game Exists!");
+                    MessageBox.popUpSaveGame("Name your game:", this);
+                } else {
+                    Logger.log(TAG, "No Game Exists!");
+                    MessageBox.popUpMessage("You cannot save a game without first starting a game (Click Anywhere to dismiss).", this);
+                }
+                return true;
+            case R.id.load_game:
+                Logger.log(TAG, "This is the loading button!");
+                MessageBox.popUpLoadGame("Select Your Game: ", this);
+                return true;
+            case R.id.delete_game:
+                Logger.log(TAG, "This is the delete button!");
+                MessageBox.popUpDeleteGame("Select the Game to Delete: ", this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+         */
+        return false;
+    }
+
+
+    /**
+     * this method is called whenever the user clicks on a button.
+     *
+     * <p>
+     * NOTE: With the current layout it could either be a Button or ImageButton.
+     */
+
+    public void onClick(View button) {
+
+        Logger.log(TAG, "Clicked "+button);
+
+        // if the GUI many not have been fully initialized, ignore
+        if (justStarted) {
+            return;
+        }
+
+        /*
+        // Add Player Button
+        if (button.getId() == R.id.addPlayerButton) {
+            addPlayer();
+            this.playerTable.invalidate(); // show the user the change
+        }
+
+        // Delete Player Button
+        else if (button.getId() == R.id.delPlayerButton) {
+            // Search the existing players to find out which delete button got
+            // clicked
+            for (int i = 0; i < this.tableRows.size(); i++) {
+                TableRow row = tableRows.get(i);
+
+                View v = row.findViewById(R.id.delPlayerButton);
+                if (v == button) {
+                    // found it! remove from the layout and the list
+                    removePlayer(row);
+                }
+            }
+
+        }// else if (delete button)
+
+        //Save Config Button
+        else if (button.getId() == R.id.saveConfigButton) {
+            GameConfig configTemp = scrapeData();
+            if (configTemp.saveConfig(saveFileName(), this)) {
+                MessageBox.popUpMessage(getString(R.string.Saved_Config_Msg), this);
+            }
+            else {
+                MessageBox.popUpMessage(getString(R.string.Saved_Config_Error_Msg), this);
+            }
+        }
+
+        //Start Game Button
+        else if (button.getId() == R.id.playGameButton) {
+            String msg = startGame();
+            if (msg != null) {
+                // we have an error message
+                MessageBox.popUpMessage(msg, this);
+            }
+
+        }
+        //On-screen debugging checkbox
+        else if(button.getId() == R.id.onScreenLogging){
+            if(((CheckBox)button).isChecked()){
+                Logger.setToastValue(true);
+            }else{
+                Logger.setToastValue(false);
+            }
+        }
+
+        //Console debugging checkbox
+        else if(button.getId() == R.id.debugLogging){
+            if(((CheckBox)button).isChecked()){
+                Logger.setDebugValue(true);
+            }else{
+                Logger.setDebugValue(false);
+            }
+        }
+
+         */
+        //setting all button's on click listener
+
 
     }// onClick
 
