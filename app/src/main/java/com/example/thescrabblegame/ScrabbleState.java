@@ -302,6 +302,7 @@ public class ScrabbleState  extends GameState {
                     return;
                 }
                 mSurfaceView.drawBoard(this);
+                mSurfaceView.drawHand(this);
             }
             else{
                 pass();
