@@ -134,6 +134,8 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
             img = getHandImageView(i);
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
         }
+
+        invalidate();
     }
 
     public void drawBoard(ScrabbleState state){
