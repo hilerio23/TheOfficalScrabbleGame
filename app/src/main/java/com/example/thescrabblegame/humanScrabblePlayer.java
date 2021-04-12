@@ -29,7 +29,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
      *
      * @param name the name of the player
      */
-    public humanScrabblePlayer(String name) {
+    public humanScrabblePlayer(String name, ScrabbleSurfaceView surfaceView) {
         super(name);
     }
 
@@ -64,7 +64,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         mActivity = activity;
 
         activity.setContentView(R.layout.activity_main);
-        this.surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
+        //this.surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
         this.score = (TextView)activity.findViewById(R.id.scoreNumber);
         this.exchange = (Button)activity.findViewById(R.id.exchange);
         this.passButton = (Button)activity.findViewById(R.id.pass);

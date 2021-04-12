@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class ScrabbleMainActivity extends GameMainActivity {
     private static final int PORT_NUMBER = 2278;
+    private GameMainActivity game;
     @Override
     public GameConfig createDefaultConfig() {
         // Define the allowed player types
@@ -19,7 +20,7 @@ public class ScrabbleMainActivity extends GameMainActivity {
         // Pig has two player types:  human and computer
         playerTypes.add(new GamePlayerType("Local Human Player") {
             public GamePlayer createPlayer(String name) {
-                return new humanScrabblePlayer(name);
+                return new humanScrabblePlayer(name, game.getSurfaceView());
             }});
         playerTypes.add(new GamePlayerType("Computer Player") {
             public GamePlayer createPlayer(String name) {
