@@ -50,7 +50,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     @Override
     public void onClick(View view) {
         int buttonClicked = view.getId();
-        humanScrabblePlayer myHuman = new humanScrabblePlayer("Local Human Player", this);
+        humanScrabblePlayer myHuman = new humanScrabblePlayer("Local Human Player", R.layout.activity_main);
 
         //determine what button was pushed and then call that method in the state\
 

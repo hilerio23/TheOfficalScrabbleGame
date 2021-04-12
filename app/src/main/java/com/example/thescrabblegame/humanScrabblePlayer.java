@@ -23,16 +23,17 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private Button exitButton = null;
     public ScrabbleState scrabbleCopy;
 
-
+    public int layoutId;
 
     /**
      * constructor
      *
      * @param name the name of the player
      */
-    public humanScrabblePlayer(String name, ScrabbleSurfaceView surfaceView) {
+    public humanScrabblePlayer(String name, int layoutId) {
         super(name);
-        this.surfaceView = surfaceView;
+        //this.surfaceView = surfaceView;
+        this.layoutId = layoutId;
     }
 
     @Override
@@ -64,8 +65,11 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     @Override
     public void setAsGui(GameMainActivity activity) {
         mActivity = activity;
+        activity.setContentView(layoutId);
 
-        activity.setContentView(R.layout.activity_main);
+        //activity.setContentView(R.layout.activity_main);
+        surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
+
 
         Button exchange = (Button)activity.findViewById(R.id.exchange);
         Button pass = (Button)activity.findViewById(R.id.pass);
