@@ -13,6 +13,7 @@ import java.util.Enumeration;
  * @version July 2013
  *
  */
+
 public class IPCoder {
     //Tag for logging
     private static final String TAG = "IPCoder";
@@ -23,6 +24,7 @@ public class IPCoder {
      * 		the IP address of the current device, or and error message if
      * 		an IP address cannot be determined
      */
+
     public static String getLocalIpAddress() {
         try {
             // loop through the device's network interfaces and internet address until one is found

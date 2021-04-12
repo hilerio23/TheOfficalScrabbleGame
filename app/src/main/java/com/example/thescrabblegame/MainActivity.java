@@ -23,6 +23,7 @@
  * Solution: use EditText.append() to append the text on screen.
  *
  */
+/*
 package com.example.thescrabblegame;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -564,3 +565,5 @@ public class MainActivity extends AppCompatActivity {
         c14r14.setOnClickListener(scrabble);
     }
 }
+
+ */
