@@ -44,6 +44,12 @@ public class IPCoder {
             //Log.e("IPCoder"/*this.toString()*/, ex.toString());
             Logger.log(TAG, ""+ex.toString(), Logger.ERROR);
         }
+        /*
+        catch (Exception ex) {
+
+            Logger.log(TAG, "" + ex.toString(), Logger.ERROR);
+        }
+        */
         return "Unable to determine IP address";
     }
 

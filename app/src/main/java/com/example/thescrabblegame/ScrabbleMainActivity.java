@@ -33,7 +33,7 @@ public class ScrabbleMainActivity extends GameMainActivity {
         //defaultConfig.addPlayer("Smart", 1); //adds smart player
         defaultConfig.addPlayer("Computer", 1); // player 2: a computer player
 
-        defaultConfig.setRemoteData("Remote Human Player", "", 0);
+        defaultConfig.setRemoteData("Remote Human Player", "", 1);
 
         return defaultConfig;
     }
