@@ -14,7 +14,7 @@ public class ScrabbleLocalGame extends LocalGame {
         state = new ScrabbleState(view);
     }*/
     public ScrabbleLocalGame() {
-
+        state = new ScrabbleState();
     }
 
     @Override

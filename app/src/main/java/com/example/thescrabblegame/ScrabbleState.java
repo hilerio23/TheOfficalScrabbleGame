@@ -57,8 +57,7 @@ public class ScrabbleState  extends GameState {
     boolean isPossible;
 
     //constructor
-    public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
-        mSurfaceView = scrabbleSurfaceView;
+    public ScrabbleState(){
         //sets board to blanks
         for(int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
@@ -103,6 +102,10 @@ public class ScrabbleState  extends GameState {
         numPlayers = 2;
         over = 0;
         numPasses = 0;
+    }
+    public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
+        mSurfaceView = scrabbleSurfaceView;
+
     }
 
     //Deep copy of the given Scrabble State
