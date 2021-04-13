@@ -1,5 +1,6 @@
 package com.example.thescrabblegame.game.GameFramework;
 
+import com.example.thescrabblegame.ScrabbleState;
 import com.example.thescrabblegame.game.GameFramework.actionMessage.EndTurnAction;
 import com.example.thescrabblegame.game.GameFramework.actionMessage.GameAction;
 import com.example.thescrabblegame.game.GameFramework.actionMessage.GameOverAckAction;
@@ -35,6 +36,8 @@ import android.os.Message;
  * @version July 2013
  */
 public abstract class LocalGame implements Game, Tickable {
+
+
     //Tag for logging
     private static final String TAG = "LocalGame";
 
@@ -66,7 +69,10 @@ public abstract class LocalGame implements Game, Tickable {
     private GameTimer myTimer = new GameTimer(this);
 
     // the game's state
-    protected GameState state;
+    protected ScrabbleState state;
+    public LocalGame() {
+        state = new ScrabbleState();
+    }
 
     /**
      * Returns the game's timer
