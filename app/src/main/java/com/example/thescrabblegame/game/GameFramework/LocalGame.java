@@ -69,9 +69,9 @@ public abstract class LocalGame implements Game, Tickable {
     private GameTimer myTimer = new GameTimer(this);
 
     // the game's state
-    protected ScrabbleState state;
+    protected GameState state;
     public LocalGame() {
-        state = new ScrabbleState();
+
     }
 
     /**

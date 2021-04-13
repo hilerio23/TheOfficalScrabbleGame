@@ -591,6 +591,9 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         boolean isVertical;
 
         if (button.getId() == R.id.exchange) {
+            if(surfaceView.getScrabbleLetter() == null){
+                return;
+            }
             Exchange exchange = new Exchange(this, surfaceView.getScrabbleLetter());
             game.sendAction(exchange);
         }
