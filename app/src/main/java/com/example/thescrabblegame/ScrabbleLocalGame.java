@@ -54,9 +54,9 @@ public class ScrabbleLocalGame extends LocalGame {
 
         if(action instanceof Exchange){
             Exchange exchangeAction = (Exchange) action;
-            if(((ScrabbleState)state).getIdNum() == 1) {
+            if(((ScrabbleState)state).getIdNum() == 0) {
                 ((ScrabbleState)state).exchange(exchangeAction.getLettersToExchange());
-                ((ScrabbleState)state).setIdNum(2);
+                ((ScrabbleState)state).setIdNum(1);
             }
             else{
                 ((ScrabbleState)state).exchange(exchangeAction.getLettersToExchange());
