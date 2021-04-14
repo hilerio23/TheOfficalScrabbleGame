@@ -66,6 +66,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
         //activity.setContentView(R.layout.activity_main);
         surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
+        surfaceView.setMyActivity((ScrabbleMainActivity) activity);
 
 
         Button exchange = (Button)activity.findViewById(R.id.exchange);
