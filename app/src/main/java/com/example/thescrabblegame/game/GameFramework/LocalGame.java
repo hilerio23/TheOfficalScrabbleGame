@@ -71,7 +71,6 @@ public abstract class LocalGame implements Game, Tickable {
     // the game's state
     protected GameState state;
     public LocalGame() {
-
     }
 
     /**

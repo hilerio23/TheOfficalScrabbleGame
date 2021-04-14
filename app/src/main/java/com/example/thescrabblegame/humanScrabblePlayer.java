@@ -64,7 +64,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
     @Override
     public void setAsGui(GameMainActivity activity) {
-        mActivity = activity;
+        myActivity = activity;
         activity.setContentView(layoutId);
 
         //activity.setContentView(R.layout.activity_main);
@@ -588,8 +588,6 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
     public void onClick(View button) {
 
-        boolean isVertical;
-
         if (button.getId() == R.id.exchange) {
             if(surfaceView.getScrabbleLetter() == null){
                 return;
@@ -602,7 +600,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             game.sendAction(pass);
         }
         else if(button.getId() == R.id.playword){
-            isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
+            boolean isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
             PlayWord playWord = new PlayWord(this, surfaceView.getScrabbleLetter(), surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
             game.sendAction(playWord);
         }
