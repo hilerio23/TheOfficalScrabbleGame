@@ -11,19 +11,16 @@ import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameInfo;
 import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
 
+import java.util.ArrayList;
+
 public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClickListener {
 
     private TextView score = null;
     private ScrabbleSurfaceView surfaceView;
-
-    private GameMainActivity mActivity;
-    private Button exchange = null;
-    private Button passButton = null;
-    private Button playWordButton = null;
-    private Button exitButton = null;
     public ScrabbleState scrabbleCopy;
-
     public int layoutId;
+    private ArrayList<ImageView> letters = new ArrayList<>();
+    private ScrabbleLetter[] letter;
 
     /**
      * constructor
@@ -64,7 +61,6 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
     @Override
     public void setAsGui(GameMainActivity activity) {
-        mActivity = activity;
         activity.setContentView(layoutId);
 
         //activity.setContentView(R.layout.activity_main);
@@ -579,22 +575,18 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         c14r14.setOnClickListener(this);
 
         surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
-        this.score = (TextView)activity.findViewById(R.id.scoreNumber);
-        this.exchange = (Button)activity.findViewById(R.id.exchange);
-        this.passButton = (Button)activity.findViewById(R.id.pass);
-        this.playWordButton = (Button)activity.findViewById(R.id.playword);
-        this.exitButton = (Button)activity.findViewById(R.id.exitGame);
-    
+
     }
     public void onClick(View button) {
 
         boolean isVertical;
 
         if (button.getId() == R.id.exchange) {
-            if(surfaceView.getScrabbleLetter() == null){
+            toScrabbleLetter(letters);
+            if(letter == null){
                 return;
             }
-            Exchange exchange = new Exchange(this, surfaceView.getScrabbleLetter());
+            Exchange exchange = new Exchange(this, letter);
             game.sendAction(exchange);
         }
         else if(button.getId() == R.id.pass){
@@ -603,13 +595,90 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         else if(button.getId() == R.id.playword){
             isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
-            PlayWord playWord = new PlayWord(this, surfaceView.getScrabbleLetter(), surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
+            PlayWord playWord = new PlayWord(this, letter, surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
             game.sendAction(playWord);
         }
         else if(button.getId() == R.id.exitGame){
             ExitGame exitGame = new ExitGame(this);
             game.sendAction(exitGame);
         }
-        //surfaceView.onClick(view);
+        else if(button instanceof ImageView){
+            this.letters.add((ImageView) button);
+        }
+    }
+
+
+    public ScrabbleLetter[] toScrabbleLetter(ArrayList<ImageView> arrs){
+        this.letter = new ScrabbleLetter[arrs.size()];
+
+        for(int i = 0; i < arrs.size(); i++ ){
+            arrs.get(i).getDrawable();
+            ScrabbleLetter d = new ScrabbleLetter(getCharacter(arrs.get(i).getId()));
+            this.letter[i] = d;
+        }
+
+        return letter;
+    }
+
+
+
+    public char getCharacter(int id) {
+
+        switch (id) {
+            case R.drawable.afinal:
+                return 'a';
+            case R.drawable.bfinal:
+                return 'b';
+            case R.drawable.cfinal:
+                return 'c';
+            case R.drawable.dfinal:
+                return 'd';
+            case R.drawable.efinal:
+                return 'e';
+            case R.drawable.ffinal:
+                return 'f';
+            case R.drawable.gfinal:
+                return 'g';
+            case R.drawable.hfinal:
+                return 'h';
+            case R.drawable.ifinal:
+                return 'i';
+            case R.drawable.jfinal:
+                return 'j';
+            case R.drawable.kfinal:
+                return 'k';
+            case R.drawable.lfinal:
+                return 'l';
+            case R.drawable.mfinal:
+                return 'm';
+            case R.drawable.nfinal:
+                return 'n';
+            case R.drawable.ofinal:
+                return 'o';
+            case R.drawable.pfinal:
+                return 'p';
+            case R.drawable.qfinal:
+                return 'q';
+            case R.drawable.rfinal:
+                return 'r';
+            case R.drawable.sfinal:
+                return 's';
+            case R.drawable.tfinal:
+                return 't';
+            case R.drawable.ufinal:
+                return 'u';
+            case R.drawable.vfinal:
+                return 'v';
+            case R.drawable.wfinal:
+                return 'w';
+            case R.drawable.xfinal:
+                return 'x';
+            case R.drawable.yfinal:
+                return 'y';
+            case R.drawable.zfinal:
+                return 'z';
+            default:
+                return ' ';
+        }
     }
 }
