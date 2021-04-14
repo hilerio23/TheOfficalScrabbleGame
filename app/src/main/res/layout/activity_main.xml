@@ -1884,7 +1884,13 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:clickable="true"
-                android:src="@drawable/efinal" />
+                android:src="@drawable/efinal"/>
+            <ImageView
+                android:id="@+id/fButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:src="@drawable/ffinal"/>
 
         </LinearLayout>
 

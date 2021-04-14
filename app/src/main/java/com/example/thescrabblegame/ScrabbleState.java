@@ -24,7 +24,7 @@ public class ScrabbleState  extends GameState {
     //an in to tell whos move it is 0 for human 1 for AI
     private int playerToMove;
 
-    //array of SrabbleLetters for hand
+    //array of ScrabbleLetters for hand
     private ScrabbleLetter[] player1Hand = new ScrabbleLetter[7];
     private ScrabbleLetter[] player2Hand = new ScrabbleLetter[7];
     private ScrabbleLetter[] player3Hand = new ScrabbleLetter[7];
@@ -67,7 +67,7 @@ public class ScrabbleState  extends GameState {
             }
         }
 
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < 7; i++){
             //generating random chars for each player
             Random rnd = new Random();
             char randomChar1 = (char) ('a' + rnd.nextInt(26));
@@ -95,6 +95,7 @@ public class ScrabbleState  extends GameState {
         //0 = playing, 1 = pause
         gamePause = 0;
 
+
         //sets the id
         id = 1;
         player1Score = 0;
@@ -107,8 +108,10 @@ public class ScrabbleState  extends GameState {
     }
     public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
         mSurfaceView = scrabbleSurfaceView;
-
+        mSurfaceView.drawHand(this);
     }
+
+
 
     //Deep copy of the given Scrabble State
     public ScrabbleState(ScrabbleState scrabbleStateCopy){

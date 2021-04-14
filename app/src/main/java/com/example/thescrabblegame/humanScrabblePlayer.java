@@ -31,6 +31,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         super(name);
         //this.surfaceView = surfaceView;
         this.layoutId = layoutId;
+        scrabbleCopy = new ScrabbleState();
     }
 
     @Override
@@ -76,6 +77,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         playword.setOnClickListener(this);
         exit.setOnClickListener(this);
 
+        surfaceView.drawHand(scrabbleCopy);
+
         //setting the score board's on click listener
         TextView scoreboard = (TextView)activity.findViewById(R.id.scoreText);
         //scoreboard.setOnEditorActionListener(this);
@@ -93,6 +96,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         fourth.setOnClickListener(this);
         fifth.setOnClickListener(this);
         sixth.setOnClickListener(this);
+
 
         //setting the board's on click listener
         ImageView c0r0 = (ImageView)activity.findViewById(R.id.imageView);

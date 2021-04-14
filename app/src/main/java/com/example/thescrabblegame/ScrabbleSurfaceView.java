@@ -43,12 +43,9 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         super(context, attrs);
         setWillNotDraw(false);
         setOnTouchListener(this);
-
-
+        state = new ScrabbleState();
     }
-    public SurfaceView getSurfaceView(){
-        return this;
-    }
+
 
     /*
     public void onClick(View view) {
@@ -92,8 +89,10 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         ScrabbleLetter[] hand = state.getPlayer1Hand();
         ImageView img;
 
+
         for(int i = 0; i < hand.length; i++){
             img = getHandImageView(i);
+
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
         }
 
@@ -163,17 +162,19 @@ public class ScrabbleSurfaceView extends SurfaceView implements
     public ImageView getHandImageView(int num){
         switch(num){
             case 0:
-                return findViewById(R.id.aButton);
+                return (ImageView)findViewById(R.id.aButton);
             case 1:
-                return findViewById(R.id.bButton);
+                return (ImageView) findViewById(R.id.bButton);
             case 2:
-                return findViewById(R.id.cButton);
+                return (ImageView)findViewById(R.id.cButton);
             case 3:
-                return findViewById(R.id.dButton);
+                return (ImageView)findViewById(R.id.dButton);
             case 4:
-                return findViewById(R.id.gButton);
+                return (ImageView)findViewById(R.id.gButton);
             case 5:
-                return findViewById(R.id.eButton);
+                return (ImageView)findViewById(R.id.eButton);
+            case 6:
+                return (ImageView)findViewById(R.id.fButton);
             default:
                 return null;
         }
