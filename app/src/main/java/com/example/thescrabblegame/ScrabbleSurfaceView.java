@@ -50,32 +50,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     @Override
     public void onClick(View view) {
         int buttonClicked = view.getId();
-        humanScrabblePlayer myHuman = new humanScrabblePlayer("Local Human Player", R.layout.activity_main);
-
-        //determine what button was pushed and then call that method in the state\
-
-        if(buttonClicked == R.id.playword){
-            boolean t = state.isVertical(toDouble(xcoords, ycoords));
-            //state.playWord(toScrabbleLetter(letters), xcoords.get(xcoords.size() - 1), ycoords.get(ycoords.size() - 1), t);
-            myHuman.onClick(view);
-
-        }
-        else if(buttonClicked == R.id.exchange){
-            //state.exchange(toScrabbleLetter(letters));
-            myHuman.onClick(view);
-        }
-        else if(buttonClicked == R.id.exitGame){
-            //state.exitGame();
-            myHuman.onClick(view);
-
-        }
-        else if(buttonClicked == R.id.pass){
-            //state.pass();
-            myHuman.onClick(view);
-        }
-        //else if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView") {
-
-        else if(view instanceof ImageView){
+        if(view instanceof ImageView){
             letters.add((ImageView) view);
             xcoords.add((double)view.getX());
             ycoords.add((double)view.getY());
@@ -84,7 +59,6 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         else{
             return;
         }
-
     }
 
     public double[][] toDouble(ArrayList<Double> x, ArrayList<Double> y){

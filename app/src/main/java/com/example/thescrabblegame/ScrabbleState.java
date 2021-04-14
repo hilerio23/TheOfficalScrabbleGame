@@ -65,7 +65,7 @@ public class ScrabbleState  extends GameState {
             }
         }
 
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < 6; i++){
             //generating random chars for each player
             Random rnd = new Random();
             char randomChar1 = (char) ('a' + rnd.nextInt(26));
