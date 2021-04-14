@@ -6,6 +6,8 @@
  */
 package com.example.thescrabblegame;
 
+import android.util.Log;
+
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 
 import java.util.Arrays;
@@ -22,7 +24,7 @@ public class ScrabbleState  extends GameState {
     //an in to tell whos move it is 0 for human 1 for AI
     private int playerToMove;
 
-    //array of SrabbleLetters for hand
+    //array of ScrabbleLetters for hand
     private ScrabbleLetter[] player1Hand = new ScrabbleLetter[7];
     private ScrabbleLetter[] player2Hand = new ScrabbleLetter[7];
     private ScrabbleLetter[] player3Hand = new ScrabbleLetter[7];
@@ -93,8 +95,9 @@ public class ScrabbleState  extends GameState {
         //0 = playing, 1 = pause
         gamePause = 0;
 
+
         //sets the id
-        id = 0;
+        id = 1;
         player1Score = 0;
         player2Score = 0;
         player3Score = 0;
@@ -105,8 +108,10 @@ public class ScrabbleState  extends GameState {
     }
     public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
         mSurfaceView = scrabbleSurfaceView;
-
+        mSurfaceView.drawHand(this);
     }
+
+
 
     //Deep copy of the given Scrabble State
     public ScrabbleState(ScrabbleState scrabbleStateCopy){
@@ -372,6 +377,11 @@ public class ScrabbleState  extends GameState {
                 if(count == lettersToExchange.length){
                     break;
                 }
+            }
+            char myChar = player1Hand[2].getLetter();
+            String myString = Character.toString(myChar);
+            for(int i = 0; i < 100; i++){
+                Log.e("why", myString);
             }
         }
         else{

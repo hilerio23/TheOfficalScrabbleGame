@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.thescrabblegame.game.GameFramework.Game;
 import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
 import com.example.thescrabblegame.game.GameFramework.actionMessage.GameAction;
@@ -22,8 +24,8 @@ import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickListener, View.OnTouchListener,
-         TextView.OnEditorActionListener{
+public class ScrabbleSurfaceView extends SurfaceView implements
+         TextView.OnEditorActionListener, View.OnTouchListener{
 
     public ScrabbleState state;
     private ArrayList<ImageView> letters = new ArrayList<>();
@@ -40,53 +42,24 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
     public ScrabbleSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
-        state = new ScrabbleState(this);
-
-    }
-    public SurfaceView getSurfaceView(){
-        return this;
+        setOnTouchListener(this);
+        state = new ScrabbleState();
     }
 
-    @Override
+
+    /*
     public void onClick(View view) {
         int buttonClicked = view.getId();
-        humanScrabblePlayer myHuman = new humanScrabblePlayer("Local Human Player", R.layout.activity_main);
-
-        //determine what button was pushed and then call that method in the state\
-
-        if(buttonClicked == R.id.playword){
-            boolean t = state.isVertical(toDouble(xcoords, ycoords));
-            //state.playWord(toScrabbleLetter(letters), xcoords.get(xcoords.size() - 1), ycoords.get(ycoords.size() - 1), t);
-            myHuman.onClick(view);
-
-        }
-        else if(buttonClicked == R.id.exchange){
-            //state.exchange(toScrabbleLetter(letters));
-            myHuman.onClick(view);
-        }
-        else if(buttonClicked == R.id.exitGame){
-            //state.exitGame();
-            myHuman.onClick(view);
-
-        }
-        else if(buttonClicked == R.id.pass){
-            //state.pass();
-            myHuman.onClick(view);
-        }
-        //else if ( ((Object)buttonClicked).getClass().getSimpleName() == "ImageView") {
-
-        else if(view instanceof ImageView){
+        if(view instanceof ImageView){
             letters.add((ImageView) view);
             xcoords.add((double)view.getX());
             ycoords.add((double)view.getY());
-
         }
         else{
             return;
         }
-
     }
-
+*/
     public double[][] toDouble(ArrayList<Double> x, ArrayList<Double> y){
         this.xy = new double[x.size()][2];
 
@@ -111,28 +84,15 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
         return yCoord;
     }
 
-    public ScrabbleLetter[] toScrabbleLetter(ArrayList<ImageView> arrs){
-        this.letter = new ScrabbleLetter[arrs.size()];
-
-        for(int i = 0; i < arrs.size(); i++ ){
-            arrs.get(i).getDrawable();
-            ScrabbleLetter d = new ScrabbleLetter(getCharacter(arrs.get(i).getId()));
-            this.letter[i] = d;
-        }
-
-        return letter;
-    }
-
-    public ScrabbleLetter[] getScrabbleLetter(){
-        return letter;
-    }
 
     public void drawHand(ScrabbleState state){
         ScrabbleLetter[] hand = state.getPlayer1Hand();
         ImageView img;
 
+
         for(int i = 0; i < hand.length; i++){
             img = getHandImageView(i);
+
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
         }
 
@@ -188,23 +148,33 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        return false;
+        if(view instanceof ImageView) {
+            letters.add((ImageView) view);
+            xcoords.add((double) view.getX());
+            ycoords.add((double) view.getY());
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public ImageView getHandImageView(int num){
         switch(num){
             case 0:
-                return findViewById(R.id.aButton);
+                return (ImageView)findViewById(R.id.aButton);
             case 1:
-                return findViewById(R.id.bButton);
+                return (ImageView) findViewById(R.id.bButton);
             case 2:
-                return findViewById(R.id.cButton);
+                return (ImageView)findViewById(R.id.cButton);
             case 3:
-                return findViewById(R.id.dButton);
+                return (ImageView)findViewById(R.id.dButton);
             case 4:
-                return findViewById(R.id.gButton);
+                return (ImageView)findViewById(R.id.gButton);
             case 5:
-                return findViewById(R.id.eButton);
+                return (ImageView)findViewById(R.id.eButton);
+            case 6:
+                return (ImageView)findViewById(R.id.fButton);
             default:
                 return null;
         }
@@ -1029,73 +999,10 @@ public class ScrabbleSurfaceView extends SurfaceView implements View.OnClickList
 
     }
 
-    public char getCharacter(int id) {
-
-        switch (id) {
-            case R.drawable.afinal:
-                return 'a';
-            case R.drawable.bfinal:
-                return 'b';
-            case R.drawable.cfinal:
-                return 'c';
-            case R.drawable.dfinal:
-                return 'd';
-            case R.drawable.efinal:
-                return 'e';
-            case R.drawable.ffinal:
-                return 'f';
-            case R.drawable.gfinal:
-                return 'g';
-            case R.drawable.hfinal:
-                return 'h';
-            case R.drawable.ifinal:
-                return 'i';
-            case R.drawable.jfinal:
-                return 'j';
-            case R.drawable.kfinal:
-                return 'k';
-            case R.drawable.lfinal:
-                return 'l';
-            case R.drawable.mfinal:
-                return 'm';
-            case R.drawable.nfinal:
-                return 'n';
-            case R.drawable.ofinal:
-                return 'o';
-            case R.drawable.pfinal:
-                return 'p';
-            case R.drawable.qfinal:
-                return 'q';
-            case R.drawable.rfinal:
-                return 'r';
-            case R.drawable.sfinal:
-                return 's';
-            case R.drawable.tfinal:
-                return 't';
-            case R.drawable.ufinal:
-                return 'u';
-            case R.drawable.vfinal:
-                return 'v';
-            case R.drawable.wfinal:
-                return 'w';
-            case R.drawable.xfinal:
-                return 'x';
-            case R.drawable.yfinal:
-                return 'y';
-            case R.drawable.zfinal:
-                return 'z';
-            default:
-                return ' ';
-        }
-    }
-
         //this gets the linear layout cell that we want to change
     private int getLinearLayout(int x, int y){
         int id = -1;
-
-
         return id;
     }
-
 
 }
