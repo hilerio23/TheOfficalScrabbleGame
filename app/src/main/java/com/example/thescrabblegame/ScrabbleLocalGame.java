@@ -12,12 +12,17 @@ public class ScrabbleLocalGame extends LocalGame {
     public ScrabbleLocalGame(ScrabbleSurfaceView view) {
         state = new ScrabbleState(view);
     }*/
+
     public ScrabbleLocalGame() {
-        state = new ScrabbleState();
+        super();
+        super.state = new ScrabbleState();
     }
 
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
+
+        ScrabbleState copyState = new ScrabbleState(super.state);
+        p.sendInfo(myScrabbleState);
 
     }
 

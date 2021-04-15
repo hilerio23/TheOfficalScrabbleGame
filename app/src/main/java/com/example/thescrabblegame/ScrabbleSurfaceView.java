@@ -51,19 +51,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         myActivity = activity;
     }
 
-    /*
-    public void onClick(View view) {
-        int buttonClicked = view.getId();
-        if(view instanceof ImageView){
-            letters.add((ImageView) view);
-            xcoords.add((double)view.getX());
-            ycoords.add((double)view.getY());
-        }
-        else{
-            return;
-        }
-    }
-*/
+
     public double[][] toDouble(ArrayList<Double> x, ArrayList<Double> y){
         this.xy = new double[x.size()][2];
 
