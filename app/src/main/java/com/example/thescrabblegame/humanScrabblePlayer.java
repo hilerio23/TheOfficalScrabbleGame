@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,9 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     public int layoutId;
     private ArrayList<String> letters = new ArrayList<>();
     private ScrabbleLetter[] letter;
+    private ArrayList<Integer> tempInts = new ArrayList<>();
+    private ArrayList<Integer> tempXCords = new ArrayList<>();
+    private ArrayList<Integer> tempYCords = new ArrayList<>();
 
     /**
      * constructor
@@ -607,9 +611,9 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         else if(button.getId() == R.id.playword){
             toScrabbleLetter(letters);
 
-            isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
+            isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
 
-            PlayWord playWord = new PlayWord(this, letter, surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
+            PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
         }
         else if(button.getId() == R.id.exitGame){
@@ -623,10 +627,26 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             letters.add(myString);
         }
         else if(button instanceof ImageView){
-            getSquare(button);
+            tempInts.add(getSquare(button));
         }
     }
 
+    public int[] getXCoord(ArrayList<Integer> tempInts){
+        int[] xArray;
+        xArray = new int[tempInts.size()];
+        for(int i = 0; i < tempInts.size(); i++){
+            xArray[i] = 0;
+        }
+        return xArray;
+    }
+    public int[] getYCoord(ArrayList<Integer> tempInts){
+        int[] yArray;
+        yArray = new int[tempInts.size()];
+        for(int i = 0; i < tempInts.size(); i++){
+            yArray[i] = 0;
+        }
+        return yArray;
+    }
 
     public ScrabbleLetter[] toScrabbleLetter(ArrayList<String> arrs){
         this.letter = new ScrabbleLetter[arrs.size()];
@@ -692,6 +712,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return 12;
             case R.id.imageView13:
                 return 13;
+            case R.id.imageView113:
+                return 113;
             default:
                 return -1;
         }

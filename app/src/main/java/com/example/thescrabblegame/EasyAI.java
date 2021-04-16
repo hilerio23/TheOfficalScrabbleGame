@@ -99,8 +99,9 @@ public class EasyAI extends GameComputerPlayer {
                                     myCol = col;
                                     ScrabbleLetter[] addToBoard = {testLetter, hand[random1], hand[random2], hand[random3]};
                                     foundWord = true;
-                                    PlayWord playWord = new PlayWord(this, addToBoard, myRow, myCol, true); //true  = vertical
-                                    game.sendAction(playWord);
+
+                                    //PlayWord playWord = new PlayWord(this, addToBoard, myRow, myCol, true); //true  = vertical
+                                    //game.sendAction(playWord);
                                     break; //break out of for loop
                                 }
                             }
