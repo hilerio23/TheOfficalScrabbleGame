@@ -144,7 +144,6 @@ public class ScrabbleSurfaceView extends SurfaceView implements
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(view instanceof ImageView) {
-            letters.add((ImageView) view);
             xcoords.add((double) view.getX());
             ycoords.add((double) view.getY());
             return true;

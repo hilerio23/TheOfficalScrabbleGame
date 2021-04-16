@@ -603,7 +603,9 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             game.sendAction(pass);
         }
         else if(button.getId() == R.id.playword){
+            toScrabbleLetter(letters);
             isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
+
             PlayWord playWord = new PlayWord(this, letter, surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
             game.sendAction(playWord);
         }
@@ -611,6 +613,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             ExitGame exitGame = new ExitGame(this);
             game.sendAction(exitGame);
         }
+        /*else if(button.getId() == R.id.aButton || button.getId() == R.id.bButton || button.getId() == R.id.cButton ||
+                button.getId() == R.id.dButton || button.getId() == R.id.eButton || button.getId() == R.id.fButton || button.getId() == R.id.gButton){*/
         else if(button instanceof ImageView){
             char myChar = getCharacter(button);
             String myString = Character.toString(myChar);
