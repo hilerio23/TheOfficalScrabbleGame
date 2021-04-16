@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -610,7 +611,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         else if(button.getId() == R.id.playword){
             toScrabbleLetter(letters);
 
-            isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
+            isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
 
             PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
@@ -646,7 +647,6 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         return yArray;
     }
-
 
     public ScrabbleLetter[] toScrabbleLetter(ArrayList<String> arrs){
         this.letter = new ScrabbleLetter[arrs.size()];

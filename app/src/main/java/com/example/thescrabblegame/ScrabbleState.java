@@ -282,20 +282,20 @@ public class ScrabbleState  extends GameState {
         //finds missing letter
         if(isVertical == true){
             for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][yPositions[i+1]] != null){
+                if(myBoard[xPositions[i]][yPositions[i+1]].getLetter() != ' '){
                     missingLetter = myBoard[xPositions[i]][yPositions[i+1]];
                 }
-                else if(myBoard[xPositions[i]][yPositions[i-1]] != null){
+                else if(myBoard[xPositions[i]][yPositions[i-1]].getLetter() != ' '){
                     missingLetter = myBoard[xPositions[i]][yPositions[i-1]];
                 }
             }
         }
         else{
             for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i+1]][yPositions[i]] != null){
+                if(myBoard[xPositions[i+1]][yPositions[i]].getLetter() != ' '){
                     missingLetter = myBoard[xPositions[i+1]][yPositions[i]];
                 }
-                else if(myBoard[xPositions[i-1]][yPositions[i]] != null){
+                else if(myBoard[xPositions[i-1]][yPositions[i]].getLetter() != ' '){
                     missingLetter = myBoard[xPositions[i-1]][yPositions[i]];
                 }
             }
@@ -451,8 +451,8 @@ public class ScrabbleState  extends GameState {
         }
     }
 
-    public boolean isVertical(double[][] coord){
-        boolean isVertical = false;
+    public boolean isVertical(int[] xArray, int[] yArray){
+       /* boolean isVertical = false;
         double prevX = coord[0][0];
         double prevY = coord[0][0];
         double xCoord;
@@ -469,7 +469,8 @@ public class ScrabbleState  extends GameState {
                 }
             }
         }
-        return isVertical;
+        return isVertical;*/
+        return true;
     }
 
     public void pass(){
