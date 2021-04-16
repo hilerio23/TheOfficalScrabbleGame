@@ -712,6 +712,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return 12;
             case R.id.imageView13:
                 return 13;
+            case R.id.imageView113:
+                return 113;
             default:
                 return -1;
         }

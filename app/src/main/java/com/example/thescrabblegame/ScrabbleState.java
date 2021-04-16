@@ -55,6 +55,8 @@ public class ScrabbleState  extends GameState {
     //count passes
     private int numPasses;
 
+    private int firstTurn; //0 for first turn
+
     //extra variable for tracking if a move is possible
     boolean isPossible;
 
@@ -105,6 +107,8 @@ public class ScrabbleState  extends GameState {
         numPlayers = 2;
         over = 0;
         numPasses = 0;
+        firstTurn = 0;
+
     }
     /*public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
         mSurfaceView = scrabbleSurfaceView;
@@ -135,6 +139,7 @@ public class ScrabbleState  extends GameState {
         this.numPlayers = scrabbleStateCopy.numPlayers;
         this.over = scrabbleStateCopy.over;
         this.numPasses = scrabbleStateCopy.numPasses;
+        this.firstTurn = scrabbleStateCopy.firstTurn;
     }
 
     @Override
@@ -282,21 +287,27 @@ public class ScrabbleState  extends GameState {
         //finds missing letter
         if(isVertical == true){
             for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][yPositions[i+1]].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]][yPositions[i+1]];
+                if(myBoard[xPositions[i]][yPositions[i]+1] == null || myBoard[xPositions[i]][yPositions[i]=1] == null){
+                    return;
                 }
-                else if(myBoard[xPositions[i]][yPositions[i-1]].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]][yPositions[i-1]];
+                if(myBoard[xPositions[i]][yPositions[i]+1].getLetter() != ' '){
+                    missingLetter = myBoard[xPositions[i]][yPositions[i]+1];
+                }
+                else if(myBoard[xPositions[i]][yPositions[i]-1].getLetter() != ' '){
+                    missingLetter = myBoard[xPositions[i]][yPositions[i]-1];
                 }
             }
         }
         else{
             for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i+1]][yPositions[i]].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i+1]][yPositions[i]];
+                if(myBoard[xPositions[i]][yPositions[i]+1] == null || myBoard[xPositions[i]][yPositions[i]-1] == null){
+                    return;
                 }
-                else if(myBoard[xPositions[i-1]][yPositions[i]].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i-1]][yPositions[i]];
+                if(myBoard[xPositions[i]+1][yPositions[i]].getLetter() != ' '){
+                    missingLetter = myBoard[xPositions[i]+1][yPositions[i]];
+                }
+                else if(myBoard[xPositions[i]-1][yPositions[i]].getLetter() != ' '){
+                    missingLetter = myBoard[xPositions[i]-1][yPositions[i]];
                 }
             }
         }
@@ -312,12 +323,17 @@ public class ScrabbleState  extends GameState {
             }
         }
         //adds missing lettter to points
-        if(id == 0){
-            player1Score += missingLetter.getPoints();
+        if(firstTurn != 0) {
+            if (id == 0) {
+                this.player1Score += missingLetter.getPoints();
+            } else if (id == 1) {
+                this.player2Score += missingLetter.getPoints();
+            }
         }
-        else if(id == 1){
-            player2Score += missingLetter.getPoints();
-        }
+        //adds one to first turn
+        this.firstTurn++;
+        this.board = myBoard;
+
         mSurfaceView.drawBoard(this);
         mSurfaceView.drawHand(this);
 
