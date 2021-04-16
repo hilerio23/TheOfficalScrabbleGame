@@ -97,7 +97,7 @@ public class ScrabbleState  extends GameState {
 
 
         //sets the id
-        id = 1;
+        id = 0;
         player1Score = 0;
         player2Score = 0;
         player3Score = 0;
@@ -106,10 +106,10 @@ public class ScrabbleState  extends GameState {
         over = 0;
         numPasses = 0;
     }
-    public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
+    /*public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
         mSurfaceView = scrabbleSurfaceView;
         mSurfaceView.drawHand(this);
-    }
+    }*/
 
 
 
@@ -353,7 +353,7 @@ public class ScrabbleState  extends GameState {
     public void exchange(ScrabbleLetter[] lettersToExchange){
         numPasses = 0;
         int count = 0;
-        if(id == 1){
+        if(id == 0){
             for(int i = 0; i < lettersToExchange.length; i++){
                 for(int j = 0; j < player1Hand.length; j++){
                     if(lettersToExchange[i].equals(player1Hand[j])){
@@ -377,11 +377,6 @@ public class ScrabbleState  extends GameState {
                 if(count == lettersToExchange.length){
                     break;
                 }
-            }
-            char myChar = player1Hand[2].getLetter();
-            String myString = Character.toString(myChar);
-            for(int i = 0; i < 100; i++){
-                Log.e("why", myString);
             }
         }
         else{

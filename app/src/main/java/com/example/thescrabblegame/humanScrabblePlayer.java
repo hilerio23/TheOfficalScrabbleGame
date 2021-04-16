@@ -42,6 +42,9 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     @Override
     public void receiveInfo(GameInfo info) {
         if (info instanceof ScrabbleState) {
+            if((ScrabbleState) info == null){
+                return;
+            }
             score.setText(Integer.toString(((ScrabbleState) info).getPlayer1Score()));
             this.scrabbleCopy = new ScrabbleState((ScrabbleState) info);
             if (playerNum == ((ScrabbleState) info).getIdNum()) {
@@ -81,7 +84,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         surfaceView.drawHand(scrabbleCopy);
 
         //setting the score board's on click listener
-        TextView scoreboard = (TextView)activity.findViewById(R.id.scoreText);
+        TextView scoreboard = (TextView)activity.findViewById(R.id.scoreNumber);
+        this.score = scoreboard;
         //scoreboard.setOnEditorActionListener(this);
 
         //setting the hand's on click listener

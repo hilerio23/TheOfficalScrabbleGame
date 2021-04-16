@@ -8,22 +8,20 @@ import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
 public class ScrabbleLocalGame extends LocalGame {
 
-    /*
-    public ScrabbleLocalGame(ScrabbleSurfaceView view) {
-        state = new ScrabbleState(view);
-    }*/
+    //private ScrabbleState state;
 
     public ScrabbleLocalGame() {
         super();
-        super.state = new ScrabbleState();
+        state = new ScrabbleState();
     }
-
+    public ScrabbleLocalGame(ScrabbleState scrabbleState){
+        super();
+        state = new ScrabbleState(scrabbleState);
+    }
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
-
-        ScrabbleState copyState = new ScrabbleState(super.state);
+        ScrabbleState myScrabbleState = new ScrabbleState((ScrabbleState)state);
         p.sendInfo(myScrabbleState);
-
     }
 
     @Override
