@@ -597,6 +597,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
             Exchange exchange = new Exchange(this, letter);
             game.sendAction(exchange);
+            surfaceView.drawHand(scrabbleCopy);
+
         }
         else if(button.getId() == R.id.pass){
             Pass pass = new Pass(this);

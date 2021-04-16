@@ -1,4 +1,4 @@
-package com.example.thescrabblegame;
+ package com.example.thescrabblegame;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -90,8 +90,6 @@ public class ScrabbleSurfaceView extends SurfaceView implements
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
             invalidate();
         }
-
-
     }
 
     public void drawBoard(ScrabbleState state){
