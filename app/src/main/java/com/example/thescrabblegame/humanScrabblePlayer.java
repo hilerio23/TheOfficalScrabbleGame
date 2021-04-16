@@ -1,6 +1,7 @@
 package com.example.thescrabblegame;
 
 import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
@@ -70,7 +71,6 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         //activity.setContentView(R.layout.activity_main);
         surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
         surfaceView.setMyActivity((ScrabbleMainActivity) activity);
-
 
         Button exchange = (Button)activity.findViewById(R.id.exchange);
         Button pass = (Button)activity.findViewById(R.id.pass);
@@ -604,6 +604,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         else if(button.getId() == R.id.playword){
             toScrabbleLetter(letters);
+
             isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
 
             PlayWord playWord = new PlayWord(this, letter, surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
@@ -613,12 +614,14 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             ExitGame exitGame = new ExitGame(this);
             game.sendAction(exitGame);
         }
-        /*else if(button.getId() == R.id.aButton || button.getId() == R.id.bButton || button.getId() == R.id.cButton ||
-                button.getId() == R.id.dButton || button.getId() == R.id.eButton || button.getId() == R.id.fButton || button.getId() == R.id.gButton){*/
-        else if(button instanceof ImageView){
+        else if(button.getId() == R.id.aButton || button.getId() == R.id.bButton || button.getId() == R.id.cButton ||
+                button.getId() == R.id.dButton || button.getId() == R.id.eButton || button.getId() == R.id.fButton || button.getId() == R.id.gButton){
             char myChar = getCharacter(button);
             String myString = Character.toString(myChar);
             letters.add(myString);
+        }
+        else if(button instanceof ImageView){
+            getSquare(button);
         }
     }
 
@@ -659,4 +662,37 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return ' ';
         }
     }
+    public int getSquare(View view){
+        switch(view.getId()){
+            case R.id.imageView:
+                return 1;
+            case R.id.imageView2:
+                return 2;
+            case R.id.imageView3:
+                return 3;
+            case R.id.imageView4:
+                return 4;
+            case R.id.imageView5:
+                return 5;
+            case R.id.imageView6:
+                return 6;
+            case R.id.imageView7:
+                return 7;
+            case R.id.imageView8:
+                return 8;
+            case R.id.imageView9:
+                return 9;
+            case R.id.imageView10:
+                return 10;
+            case R.id.imageView11:
+                return 11;
+            case R.id.imageView12:
+                return 12;
+            case R.id.imageView13:
+                return 13;
+            default:
+                return -1;
+        }
+    }
+
 }

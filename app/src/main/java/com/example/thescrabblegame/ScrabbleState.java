@@ -272,16 +272,61 @@ public class ScrabbleState  extends GameState {
         return player4Hand;
     }
 
-    public void playWord(ScrabbleLetter[] wordToPlay, double xCoord, double yCoord, boolean isVertical){
+    public void playWord(ScrabbleLetter[] wordToPlay, int[] xPositions, int[] yPositions, boolean isVertical){
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
-        String word = null;
-        for(int i = 0; i < wordToPlay.length; i++){
-            word += String.valueOf(wordToPlay[i].getLetter());
+        ScrabbleLetter missingLetter = null;
+        ScrabbleLetter[][] myBoard = this.board;
+
+
+        //finds missing letter
+        if(isVertical == true){
+            for(int i = 0; i < wordToPlay.length; i ++){
+                if(myBoard[xPositions[i]][yPositions[i+1]] != null){
+                    missingLetter = myBoard[xPositions[i]][yPositions[i+1]];
+                }
+                else if(myBoard[xPositions[i]][yPositions[i-1]] != null){
+                    missingLetter = myBoard[xPositions[i]][yPositions[i-1]];
+                }
+            }
         }
+        else{
+            for(int i = 0; i < wordToPlay.length; i ++){
+                if(myBoard[xPositions[i+1]][yPositions[i]] != null){
+                    missingLetter = myBoard[xPositions[i+1]][yPositions[i]];
+                }
+                else if(myBoard[xPositions[i-1]][yPositions[i]] != null){
+                    missingLetter = myBoard[xPositions[i-1]][yPositions[i]];
+                }
+            }
+        }
+
+        //adds words to score and adds points as well
+        for(int i = 0; i < wordToPlay.length; i++){
+            myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
+            if(id == 0){
+                this.player1Score += wordToPlay[i].getPoints();
+            }
+            else if(id == 1){
+                this.player2Score += wordToPlay[i].getPoints();
+            }
+        }
+        //adds missing lettter to points
+        if(id == 0){
+            player1Score += missingLetter.getPoints();
+        }
+        else if(id == 1){
+            player2Score += missingLetter.getPoints();
+        }
+        mSurfaceView.drawBoard(this);
+        mSurfaceView.drawHand(this);
+
+
+
+
         //this probably needs bounds checking
         //change to a boolean return value
-        if(over == 0) {
+       /* if(over == 0) {
             if(dict.isLegal(word)) {
                 if (isVertical && xCoord + wordToPlay.length < 15) {
                     //if vertical keep xCoord the same and get row - 1 to get the letter
@@ -318,7 +363,7 @@ public class ScrabbleState  extends GameState {
         }
         if(pool == null){
             over = 1;
-        }
+        }*/
         //rewritten code
         /*while(over == 0){
             for(int i = 0; i < board.length; i++){
