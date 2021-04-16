@@ -22,6 +22,9 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     public int layoutId;
     private ArrayList<String> letters = new ArrayList<>();
     private ScrabbleLetter[] letter;
+    private ArrayList<Integer> tempInts = new ArrayList<>();
+    private ArrayList<Integer> tempXCords = new ArrayList<>();
+    private ArrayList<Integer> tempYCords = new ArrayList<>();
 
     /**
      * constructor
@@ -609,7 +612,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
             isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
 
-            PlayWord playWord = new PlayWord(this, letter, surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
+            PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
         }
         else if(button.getId() == R.id.exitGame){
@@ -623,8 +626,25 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             letters.add(myString);
         }
         else if(button instanceof ImageView){
-            getSquare(button);
+            tempInts.add(getSquare(button));
         }
+    }
+
+    public int[] getXCoord(ArrayList<Integer> tempInts){
+        int[] xArray;
+        xArray = new int[tempInts.size()];
+        for(int i = 0; i < tempInts.size(); i++){
+            xArray[i] = 0;
+        }
+        return xArray;
+    }
+    public int[] getYCoord(ArrayList<Integer> tempInts){
+        int[] yArray;
+        yArray = new int[tempInts.size()];
+        for(int i = 0; i < tempInts.size(); i++){
+            yArray[i] = 0;
+        }
+        return yArray;
     }
 
 
