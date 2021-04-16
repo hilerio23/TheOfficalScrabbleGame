@@ -1,6 +1,7 @@
 package com.example.thescrabblegame;
 
 import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ScrabbleSurfaceView surfaceView;
     public ScrabbleState scrabbleCopy;
     public int layoutId;
-    private ArrayList<ImageView> letters = new ArrayList<>();
+    private ArrayList<String> letters = new ArrayList<>();
     private ScrabbleLetter[] letter;
 
     /**
@@ -42,6 +43,9 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     @Override
     public void receiveInfo(GameInfo info) {
         if (info instanceof ScrabbleState) {
+            if((ScrabbleState) info == null){
+                return;
+            }
             score.setText(Integer.toString(((ScrabbleState) info).getPlayer1Score()));
             this.scrabbleCopy = new ScrabbleState((ScrabbleState) info);
             if (playerNum == ((ScrabbleState) info).getIdNum()) {
@@ -66,7 +70,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
         //activity.setContentView(R.layout.activity_main);
         surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
-
+        surfaceView.setMyActivity((ScrabbleMainActivity) activity);
 
         Button exchange = (Button)activity.findViewById(R.id.exchange);
         Button pass = (Button)activity.findViewById(R.id.pass);
@@ -80,7 +84,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         surfaceView.drawHand(scrabbleCopy);
 
         //setting the score board's on click listener
-        TextView scoreboard = (TextView)activity.findViewById(R.id.scoreText);
+        TextView scoreboard = (TextView)activity.findViewById(R.id.scoreNumber);
+        this.score = scoreboard;
         //scoreboard.setOnEditorActionListener(this);
 
         //setting the hand's on click listener
@@ -592,13 +597,18 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
             Exchange exchange = new Exchange(this, letter);
             game.sendAction(exchange);
+            surfaceView.drawHand(scrabbleCopy);
+
         }
         else if(button.getId() == R.id.pass){
             Pass pass = new Pass(this);
             game.sendAction(pass);
         }
         else if(button.getId() == R.id.playword){
+            toScrabbleLetter(letters);
+
             isVertical = scrabbleCopy.isVertical(surfaceView.getXY());
+
             PlayWord playWord = new PlayWord(this, letter, surfaceView.getxCoord(), surfaceView.getyCoord(), isVertical);
             game.sendAction(playWord);
         }
@@ -606,18 +616,23 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             ExitGame exitGame = new ExitGame(this);
             game.sendAction(exitGame);
         }
+        else if(button.getId() == R.id.aButton || button.getId() == R.id.bButton || button.getId() == R.id.cButton ||
+                button.getId() == R.id.dButton || button.getId() == R.id.eButton || button.getId() == R.id.fButton || button.getId() == R.id.gButton){
+            char myChar = getCharacter(button);
+            String myString = Character.toString(myChar);
+            letters.add(myString);
+        }
         else if(button instanceof ImageView){
-            this.letters.add((ImageView) button);
+            getSquare(button);
         }
     }
 
 
-    public ScrabbleLetter[] toScrabbleLetter(ArrayList<ImageView> arrs){
+    public ScrabbleLetter[] toScrabbleLetter(ArrayList<String> arrs){
         this.letter = new ScrabbleLetter[arrs.size()];
 
         for(int i = 0; i < arrs.size(); i++ ){
-            arrs.get(i).getDrawable();
-            ScrabbleLetter d = new ScrabbleLetter(getCharacter(arrs.get(i).getId()));
+            ScrabbleLetter d = new ScrabbleLetter(arrs.get(i).charAt(0));
             this.letter[i] = d;
         }
 
@@ -626,63 +641,60 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
 
 
-    public char getCharacter(int id) {
+    public char getCharacter(View view) {
 
-        switch (id) {
-            case R.drawable.afinal:
-                return 'a';
-            case R.drawable.bfinal:
-                return 'b';
-            case R.drawable.cfinal:
-                return 'c';
-            case R.drawable.dfinal:
-                return 'd';
-            case R.drawable.efinal:
-                return 'e';
-            case R.drawable.ffinal:
-                return 'f';
-            case R.drawable.gfinal:
-                return 'g';
-            case R.drawable.hfinal:
-                return 'h';
-            case R.drawable.ifinal:
-                return 'i';
-            case R.drawable.jfinal:
-                return 'j';
-            case R.drawable.kfinal:
-                return 'k';
-            case R.drawable.lfinal:
-                return 'l';
-            case R.drawable.mfinal:
-                return 'm';
-            case R.drawable.nfinal:
-                return 'n';
-            case R.drawable.ofinal:
-                return 'o';
-            case R.drawable.pfinal:
-                return 'p';
-            case R.drawable.qfinal:
-                return 'q';
-            case R.drawable.rfinal:
-                return 'r';
-            case R.drawable.sfinal:
-                return 's';
-            case R.drawable.tfinal:
-                return 't';
-            case R.drawable.ufinal:
-                return 'u';
-            case R.drawable.vfinal:
-                return 'v';
-            case R.drawable.wfinal:
-                return 'w';
-            case R.drawable.xfinal:
-                return 'x';
-            case R.drawable.yfinal:
-                return 'y';
-            case R.drawable.zfinal:
-                return 'z';
-            default:
+        ScrabbleLetter[] myHand = scrabbleCopy.getPlayer1Hand();
+        switch (view.getId()) {
+
+            case R.id.aButton:
+                return myHand[0].getLetter();
+            case R.id.bButton:
+                return myHand[1].getLetter();
+            case R.id.cButton:
+                return myHand[2].getLetter();
+            case R.id.dButton:
+                return myHand[3].getLetter();
+            case R.id.gButton:
+                return myHand[4].getLetter();
+            case R.id.eButton:
+                return myHand[5].getLetter();
+            case R.id.fButton:
+                return myHand[6].getLetter();
+                default:
                 return ' ';
         }
     }
+    public int getSquare(View view){
+        switch(view.getId()){
+            case R.id.imageView:
+                return 1;
+            case R.id.imageView2:
+                return 2;
+            case R.id.imageView3:
+                return 3;
+            case R.id.imageView4:
+                return 4;
+            case R.id.imageView5:
+                return 5;
+            case R.id.imageView6:
+                return 6;
+            case R.id.imageView7:
+                return 7;
+            case R.id.imageView8:
+                return 8;
+            case R.id.imageView9:
+                return 9;
+            case R.id.imageView10:
+                return 10;
+            case R.id.imageView11:
+                return 11;
+            case R.id.imageView12:
+                return 12;
+            case R.id.imageView13:
+                return 13;
+            default:
+                return -1;
+        }
+    }
+
 }

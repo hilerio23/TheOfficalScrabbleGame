@@ -1,4 +1,4 @@
-package com.example.thescrabblegame;
+ package com.example.thescrabblegame;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -36,6 +36,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements
     private double xCoord;
     private double yCoord;
     private ScrabbleLetter[] letter;
+    private ScrabbleMainActivity myActivity;
 
 
 
@@ -46,20 +47,11 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         state = new ScrabbleState();
     }
 
-
-    /*
-    public void onClick(View view) {
-        int buttonClicked = view.getId();
-        if(view instanceof ImageView){
-            letters.add((ImageView) view);
-            xcoords.add((double)view.getX());
-            ycoords.add((double)view.getY());
-        }
-        else{
-            return;
-        }
+    public void setMyActivity(ScrabbleMainActivity activity){
+        myActivity = activity;
     }
-*/
+
+
     public double[][] toDouble(ArrayList<Double> x, ArrayList<Double> y){
         this.xy = new double[x.size()][2];
 
@@ -90,13 +82,14 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         ImageView img;
 
 
-        for(int i = 0; i < hand.length; i++){
+        for(int i = 0; i < 7; i++){
             img = getHandImageView(i);
-
+            if(img == null){
+                int x = 2;
+            }
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
+            invalidate();
         }
-
-        invalidate();
     }
 
     public void drawBoard(ScrabbleState state){
@@ -149,7 +142,6 @@ public class ScrabbleSurfaceView extends SurfaceView implements
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(view instanceof ImageView) {
-            letters.add((ImageView) view);
             xcoords.add((double) view.getX());
             ycoords.add((double) view.getY());
             return true;
@@ -162,19 +154,19 @@ public class ScrabbleSurfaceView extends SurfaceView implements
     public ImageView getHandImageView(int num){
         switch(num){
             case 0:
-                return (ImageView)findViewById(R.id.aButton);
+                return (ImageView)myActivity.findViewById(R.id.aButton);
             case 1:
-                return (ImageView) findViewById(R.id.bButton);
+                return (ImageView) myActivity.findViewById(R.id.bButton);
             case 2:
-                return (ImageView)findViewById(R.id.cButton);
+                return (ImageView)myActivity.findViewById(R.id.cButton);
             case 3:
-                return (ImageView)findViewById(R.id.dButton);
+                return (ImageView)myActivity.findViewById(R.id.dButton);
             case 4:
-                return (ImageView)findViewById(R.id.gButton);
+                return (ImageView)myActivity.findViewById(R.id.gButton);
             case 5:
-                return (ImageView)findViewById(R.id.eButton);
+                return (ImageView)myActivity.findViewById(R.id.eButton);
             case 6:
-                return (ImageView)findViewById(R.id.fButton);
+                return (ImageView)myActivity.findViewById(R.id.fButton);
             default:
                 return null;
         }
