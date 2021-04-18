@@ -133,7 +133,7 @@ public class ScrabbleState  extends GameState {
             }
         }
         this.player1Hand = scrabbleStateCopy.player1Hand;
-        this.player2Hand = null; //player1 can't see player 2 hand
+        this.player2Hand = scrabbleStateCopy.player2Hand; //player1 can't see player 2 hand
         this.player3Hand = null;
         this.player4Hand = null;
         this.id = scrabbleStateCopy.id;

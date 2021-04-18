@@ -48,8 +48,7 @@ public class EasyAI extends GameComputerPlayer {
         board = scrabbleCopy.getBoard();
 
         //creates copy of hand
-        ScrabbleLetter[] hand = new ScrabbleLetter[7];
-        hand = scrabbleCopy.getPlayer2Hand();
+        ScrabbleLetter[] hand = scrabbleCopy.getPlayer2Hand();
 
         //initializing variables
         ScrabbleLetter testLetter;
@@ -57,9 +56,9 @@ public class EasyAI extends GameComputerPlayer {
         double myRow;
         double myCol;
         boolean foundWord = false;
-        if (scrabbleCopy.getIdNum() == 2) {
+        if (scrabbleCopy.getIdNum() == 1) {
 
-
+            /*
             //nested for loop goes through board and sets testLetter to a non null Letter
             for (int row = 0; row < 15; row++) {
                 for (int col = 0; col < 15; col++) {
@@ -108,7 +107,7 @@ public class EasyAI extends GameComputerPlayer {
                         }
                     }
                 }
-            }
+            }*/
 
             //if we wern't able to find a word (Exchange)
 
@@ -126,19 +125,54 @@ public class EasyAI extends GameComputerPlayer {
                 //https://stackoverflow.com/questions/28970799/how-to-create-a-array-with-n-random-integers/44487538
                 int n = rand.nextInt(7);
                 int x = n + 1;
-                ArrayList<ScrabbleLetter> list = new ArrayList<ScrabbleLetter>(x);
-                for (int i = 0; i < x; i++) {
-                    list.add(hand[i]);
-                }
-                Object[] exchangeArray = list.toArray();
-                ScrabbleLetter[] scrabbleLetterArrayExchange = new ScrabbleLetter[exchangeArray.length];
+                ArrayList<ScrabbleLetter> list = new ArrayList<ScrabbleLetter>();
+                ScrabbleLetter[] tempHand = new ScrabbleLetter[x];
 
-                // copy elements from object array to integer array
-                //https://www.techiedelight.com/convert-object-array-integer-array-java/
-                for (int i = 0; i < exchangeArray.length; i++) {
-                    scrabbleLetterArrayExchange[i] = (ScrabbleLetter) exchangeArray[i];
+                if (x == 1) {
+                    tempHand[0] = hand[random1];
                 }
-                Exchange exchange = new Exchange(this, scrabbleLetterArrayExchange);
+                else if(x == 2){
+                    tempHand[0] = hand[random1];
+                    tempHand[1] = hand[random2];
+                }
+                else if(x == 3){
+                    tempHand[0] = hand[random1];
+                    tempHand[1] = hand[random2];
+                    tempHand[2] = hand[random3];
+                }
+                else if(x == 4){
+                    tempHand[0] = hand[random1];
+                    tempHand[1] = hand[random2];
+                    tempHand[2] = hand[random3];
+                    tempHand[3] = hand[random4];
+                }
+                else if(x == 5){
+                    tempHand[0] = hand[random1];
+                    tempHand[1] = hand[random2];
+                    tempHand[2] = hand[random3];
+                    tempHand[3] = hand[random4];
+                    tempHand[4] = hand[random5];
+                }
+                else if(x == 6){
+                    tempHand[0] = hand[random1];
+                    tempHand[1] = hand[random2];
+                    tempHand[2] = hand[random3];
+                    tempHand[3] = hand[random4];
+                    tempHand[4] = hand[random5];
+                    tempHand[5] = hand[random6];
+                }
+                else if(x == 7){
+                    tempHand[0] = hand[random1];
+                    tempHand[1] = hand[random2];
+                    tempHand[2] = hand[random3];
+                    tempHand[3] = hand[random4];
+                    tempHand[4] = hand[random5];
+                    tempHand[5] = hand[random6];
+                    tempHand[6] = hand[random7];
+                }
+
+
+                Exchange exchange = new Exchange(this, tempHand);
                 game.sendAction(exchange);
             }
         }
