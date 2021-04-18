@@ -1,6 +1,7 @@
 package com.example.thescrabblegame;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -27,6 +28,15 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ArrayList<Integer> tempXCords = new ArrayList<>();
     private ArrayList<Integer> tempYCords = new ArrayList<>();
 
+    private ImageView first;
+    private ImageView second;
+    private ImageView third;
+    private ImageView fourth;
+    private ImageView fifth;
+    private ImageView sixth;
+    private ImageView seventh;
+
+
     /**
      * constructor
      *
@@ -46,6 +56,17 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
     @Override
     public void receiveInfo(GameInfo info) {
+        first.invalidate();
+        second.invalidate();
+        third.invalidate();
+        fourth.invalidate();
+        fifth.invalidate();
+        sixth.invalidate();
+        seventh.invalidate();
+        ScrabbleState infoScrabbleState = (ScrabbleState) info;
+        this.scrabbleCopy = infoScrabbleState;
+        drawHand(infoScrabbleState);
+
         if (info instanceof ScrabbleState) {
             if((ScrabbleState) info == null){
                 return;
@@ -73,8 +94,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         activity.setContentView(layoutId);
 
         //activity.setContentView(R.layout.activity_main);
-        surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
-        surfaceView.setMyActivity((ScrabbleMainActivity) activity);
+       // surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
+        myActivity = ((ScrabbleMainActivity) activity);
 
         Button exchange = (Button)activity.findViewById(R.id.exchange);
         Button pass = (Button)activity.findViewById(R.id.pass);
@@ -85,26 +106,27 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         playword.setOnClickListener(this);
         exit.setOnClickListener(this);
 
-        surfaceView.drawHand(scrabbleCopy);
-
+        //drawHand(scrabbleCopy);
         //setting the score board's on click listener
         TextView scoreboard = (TextView)activity.findViewById(R.id.scoreNumber);
         this.score = scoreboard;
         //scoreboard.setOnEditorActionListener(this);
 
         //setting the hand's on click listener
-        ImageView first = (ImageView)activity.findViewById(R.id.aButton);
-        ImageView second = (ImageView)activity.findViewById(R.id.bButton);
-        ImageView third = (ImageView)activity.findViewById(R.id.cButton);
-        ImageView fourth = (ImageView)activity.findViewById(R.id.dButton);
-        ImageView fifth = (ImageView)activity.findViewById(R.id.eButton);
-        ImageView sixth = (ImageView)activity.findViewById(R.id.gButton);
+         first = (ImageView)activity.findViewById(R.id.aButton);
+         second = (ImageView)activity.findViewById(R.id.bButton);
+         third = (ImageView)activity.findViewById(R.id.cButton);
+         fourth = (ImageView)activity.findViewById(R.id.dButton);
+         fifth = (ImageView)activity.findViewById(R.id.eButton);
+         sixth = (ImageView)activity.findViewById(R.id.fButton);
+         seventh = (ImageView)activity.findViewById(R.id.gButton);
         first.setOnClickListener(this);
         second.setOnClickListener(this);
         third.setOnClickListener(this);
         fourth.setOnClickListener(this);
         fifth.setOnClickListener(this);
         sixth.setOnClickListener(this);
+        seventh.setOnClickListener(this);
 
 
         //setting the board's on click listener
@@ -587,7 +609,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         ImageView c14r14 = (ImageView)activity.findViewById(R.id.imageView225);
         c14r14.setOnClickListener(this);
 
-        surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
+       // surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
 
     }
     public void onClick(View button) {
@@ -601,7 +623,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
             Exchange exchange = new Exchange(this, letter);
             game.sendAction(exchange);
-            surfaceView.drawHand(scrabbleCopy);
+            //drawHand(scrabbleCopy);
 
         }
         else if(button.getId() == R.id.pass){
@@ -635,7 +657,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         int[] xArray;
         xArray = new int[tempInts.size()];
         for(int i = 0; i < tempInts.size(); i++){
-            xArray[i] = 0;
+            xArray[i] = tempInts.get(i)/15;
         }
         return xArray;
     }
@@ -643,7 +665,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         int[] yArray;
         yArray = new int[tempInts.size()];
         for(int i = 0; i < tempInts.size(); i++){
-            yArray[i] = 0;
+            yArray[i] = tempInts.get(i) % 15;
         }
         return yArray;
     }
@@ -930,6 +952,100 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             default:
                 return -1;
         }
+    }
+    public void drawHand(ScrabbleState state){
+        ScrabbleLetter[] hand = state.getPlayer1Hand();
+        ImageView img;
+
+
+        for(int i = 0; i < 7; i++){
+            img = getHandImageView(i);
+            if(img == null){
+                int x = 2;
+            }
+            img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
+        }
+    }
+
+    public ImageView getHandImageView(int num){
+        switch(num){
+            case 0:
+                return (ImageView)myActivity.findViewById(R.id.aButton);
+            case 1:
+                return (ImageView) myActivity.findViewById(R.id.bButton);
+            case 2:
+                return (ImageView)myActivity.findViewById(R.id.cButton);
+            case 3:
+                return (ImageView)myActivity.findViewById(R.id.dButton);
+            case 4:
+                return (ImageView)myActivity.findViewById(R.id.gButton);
+            case 5:
+                return (ImageView)myActivity.findViewById(R.id.eButton);
+            case 6:
+                return (ImageView)myActivity.findViewById(R.id.fButton);
+            default:
+                return null;
+        }
+    }
+    public Drawable getDrawableLetter(char letter){
+
+        switch(letter){
+            case 'a':
+                return myActivity.getDrawable(R.drawable.afinal);
+            case 'b':
+                return myActivity.getResources().getDrawable(R.drawable.bfinal);
+            case 'c':
+                return myActivity.getResources().getDrawable(R.drawable.cfinal);
+            case 'd':
+                return myActivity.getResources().getDrawable(R.drawable.dfinal);
+            case 'e':
+                return myActivity.getResources().getDrawable(R.drawable.efinal);
+            case 'f':
+                return myActivity.getResources().getDrawable(R.drawable.ffinal);
+            case 'g':
+                return myActivity.getResources().getDrawable(R.drawable.gfinal);
+            case 'h':
+                return myActivity.getResources().getDrawable(R.drawable.hfinal);
+            case 'i':
+                return myActivity.getResources().getDrawable(R.drawable.ifinal);
+            case 'j':
+                return myActivity.getResources().getDrawable(R.drawable.jfinal);
+            case 'k':
+                return myActivity.getResources().getDrawable(R.drawable.kfinal);
+            case 'l':
+                return myActivity.getResources().getDrawable(R.drawable.lfinal);
+            case 'm':
+                return myActivity.getResources().getDrawable(R.drawable.mfinal);
+            case 'n':
+                return myActivity.getResources().getDrawable(R.drawable.nfinal);
+            case 'o':
+                return myActivity.getResources().getDrawable(R.drawable.ofinal);
+            case 'p':
+                return myActivity.getResources().getDrawable(R.drawable.pfinal);
+            case 'q':
+                return myActivity.getResources().getDrawable(R.drawable.qfinal);
+            case 'r':
+                return myActivity.getResources().getDrawable(R.drawable.rfinal);
+            case 's':
+                return myActivity.getResources().getDrawable(R.drawable.sfinal);
+            case 't':
+                return myActivity.getResources().getDrawable(R.drawable.tfinal);
+            case 'u':
+                return myActivity.getResources().getDrawable(R.drawable.ufinal);
+            case 'v':
+                return myActivity.getResources().getDrawable(R.drawable.vfinal);
+            case 'w':
+                return myActivity.getResources().getDrawable(R.drawable.wfinal);
+            case 'x':
+                return myActivity.getResources().getDrawable(R.drawable.xfinal);
+            case 'y':
+                return myActivity.getResources().getDrawable(R.drawable.yfinal);
+            case 'z':
+                return myActivity.getResources().getDrawable(R.drawable.zfinal);
+            default:
+                return myActivity.getResources().getDrawable(R.drawable.backgroundsquare);
+        }
+
     }
 
 }

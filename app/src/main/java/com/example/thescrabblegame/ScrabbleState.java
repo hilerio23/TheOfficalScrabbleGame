@@ -7,6 +7,7 @@
 package com.example.thescrabblegame;
 
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 
@@ -59,6 +60,9 @@ public class ScrabbleState  extends GameState {
 
     //extra variable for tracking if a move is possible
     boolean isPossible;
+    private ScrabbleMainActivity myActivity;
+
+    private int poolCounter;
 
     //constructor
     public ScrabbleState(){
@@ -108,6 +112,7 @@ public class ScrabbleState  extends GameState {
         over = 0;
         numPasses = 0;
         firstTurn = 0;
+        poolCounter = 0;
 
     }
     /*public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
@@ -140,7 +145,9 @@ public class ScrabbleState  extends GameState {
         this.over = scrabbleStateCopy.over;
         this.numPasses = scrabbleStateCopy.numPasses;
         this.firstTurn = scrabbleStateCopy.firstTurn;
+        this.poolCounter = scrabbleStateCopy.poolCounter;
     }
+
 
     @Override
     public String toString(){
@@ -334,9 +341,6 @@ public class ScrabbleState  extends GameState {
         this.firstTurn++;
         this.board = myBoard;
 
-        mSurfaceView.drawBoard(this);
-        mSurfaceView.drawHand(this);
-
 
 
 
@@ -417,26 +421,23 @@ public class ScrabbleState  extends GameState {
         if(id == 0){
             for(int i = 0; i < lettersToExchange.length; i++){
                 for(int j = 0; j < player1Hand.length; j++){
-                    if(lettersToExchange[i].equals(player1Hand[j])){
+                    char tempChar1 = lettersToExchange[i].getLetter();
+                    char tempChar2 = player1Hand[j].getLetter();
+                    if(tempChar1 == tempChar2){
                         player1Hand[j].setName(' ');
-                        break;
+                      //  break;
                     }
                 }
             }
-            for(int i = 0; i < player1Hand.length; i++){
-                if(player1Hand[i].equals(' ')){
-                    player1Hand[i].setName(pool[i].getLetter());
+            for(int i = 0; i < player1Hand.length; i++) {
+                if (player1Hand[i].getLetter() == ' ') {
+                    player1Hand[i] = pool[poolCounter];
+                    poolCounter++;
                     //possibly put in a negative num placeholder
-                    List<ScrabbleLetter> poolArrayList = Arrays.asList(pool);
-                    poolArrayList.remove(i);
-                    poolArrayList.add(lettersToExchange[count]);
-                    ScrabbleLetter[] newPool = new ScrabbleLetter[poolArrayList.size()];
-                    newPool = poolArrayList.toArray(newPool);
-                    pool = newPool;
-                    count++;
-                }
-                if(count == lettersToExchange.length){
-                    break;
+
+                    if (count == lettersToExchange.length) {
+                        break;
+                    }
                 }
             }
         }

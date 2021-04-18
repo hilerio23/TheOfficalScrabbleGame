@@ -46,10 +46,10 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         setOnTouchListener(this);
         state = new ScrabbleState();
     }
-
+/*
     public void setMyActivity(ScrabbleMainActivity activity){
         myActivity = activity;
-    }
+    }*/
 
 
     public double[][] toDouble(ArrayList<Double> x, ArrayList<Double> y){
@@ -77,7 +77,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements
     }
 
 
-    public void drawHand(ScrabbleState state){
+   /* public void drawHand(ScrabbleState state){
         ScrabbleLetter[] hand = state.getPlayer1Hand();
         ImageView img;
 
@@ -88,10 +88,12 @@ public class ScrabbleSurfaceView extends SurfaceView implements
                 int x = 2;
             }
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
-            invalidate();
         }
+        invalidate();
     }
 
+    */
+/*
     public void drawBoard(ScrabbleState state){
         ScrabbleLetter[][] board = state.getBoard();
         ImageView img;
@@ -110,8 +112,8 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         }
 
         invalidate();
-    }
-
+    }*/
+/*
     public void makeMove(char[] word, int[][] points){
 
         String name;
@@ -133,7 +135,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         }
         invalidate();
     }
-
+*/
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         return false;
@@ -150,7 +152,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements
             return false;
         }
     }
-
+/*
     public ImageView getHandImageView(int num){
         switch(num){
             case 0:
@@ -170,7 +172,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements
             default:
                 return null;
         }
-    }
+    }*/
     public ImageView getImageView(int row, int col){
         //this is going to be massive and messy. Sorry.
         if(row == 0){
@@ -928,7 +930,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements
             return null;
         }
     }
-
+/*
     //this is a massive case switch to get the letter
     public Drawable getDrawableLetter(char letter){
 
@@ -989,7 +991,7 @@ public class ScrabbleSurfaceView extends SurfaceView implements
                 return getResources().getDrawable(R.drawable.backgroundsquare);
         }
 
-    }
+    }*/
 
         //this gets the linear layout cell that we want to change
     private int getLinearLayout(int x, int y){
