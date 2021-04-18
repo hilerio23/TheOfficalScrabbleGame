@@ -294,7 +294,7 @@ public class ScrabbleState  extends GameState {
         //finds missing letter
         if(isVertical == true){
             for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][yPositions[i]+1] == null || myBoard[xPositions[i]][yPositions[i]=1] == null){
+                if(myBoard[xPositions[i]][yPositions[i]+1] == null || myBoard[xPositions[i]][yPositions[i]-1] == null){
                     return;
                 }
                 if(myBoard[xPositions[i]][yPositions[i]+1].getLetter() != ' '){

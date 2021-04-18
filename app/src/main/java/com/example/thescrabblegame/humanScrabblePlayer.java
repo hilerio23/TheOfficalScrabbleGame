@@ -2,12 +2,15 @@ package com.example.thescrabblegame;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
@@ -635,7 +638,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             toScrabbleLetter(letters);
 
             isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
-
+            int myTempXCoords[] = getXCoord(tempInts);
+            int myTempYCoords[] = getYCoord(tempInts);
             PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
         }
@@ -666,7 +670,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         int[] yArray;
         yArray = new int[tempInts.size()];
         for(int i = 0; i < tempInts.size(); i++){
-            yArray[i] = tempInts.get(i) % 15;
+            yArray[i] = (tempInts.get(i) % 15) - 1;
         }
         return yArray;
     }
@@ -1055,6 +1059,12 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         for(int r = 0; r < board.length; r++){
             for(int c = 0; c < board[r].length; c++){
                 img = getImageView(r,c);
+                //https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
+                int width = 60;
+                int height = 60;
+                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
+                img.setLayoutParams(parms);
+
                 if(board[r][c].getLetter() == ' '){
                     img.setImageDrawable(img.getDrawable());
                 }
