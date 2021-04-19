@@ -1,12 +1,16 @@
 package com.example.thescrabblegame;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
@@ -27,6 +31,15 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ArrayList<Integer> tempXCords = new ArrayList<>();
     private ArrayList<Integer> tempYCords = new ArrayList<>();
 
+    private ImageView first;
+    private ImageView second;
+    private ImageView third;
+    private ImageView fourth;
+    private ImageView fifth;
+    private ImageView sixth;
+    private ImageView seventh;
+
+
     /**
      * constructor
      *
@@ -46,6 +59,18 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
     @Override
     public void receiveInfo(GameInfo info) {
+        first.invalidate();
+        second.invalidate();
+        third.invalidate();
+        fourth.invalidate();
+        fifth.invalidate();
+        sixth.invalidate();
+        seventh.invalidate();
+        ScrabbleState infoScrabbleState = (ScrabbleState) info;
+        this.scrabbleCopy = infoScrabbleState;
+        drawHand(infoScrabbleState);
+        drawBoard(infoScrabbleState);
+
         if (info instanceof ScrabbleState) {
             if((ScrabbleState) info == null){
                 return;
@@ -73,8 +98,8 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         activity.setContentView(layoutId);
 
         //activity.setContentView(R.layout.activity_main);
-        surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
-        surfaceView.setMyActivity((ScrabbleMainActivity) activity);
+       // surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
+        myActivity = ((ScrabbleMainActivity) activity);
 
         Button exchange = (Button)activity.findViewById(R.id.exchange);
         Button pass = (Button)activity.findViewById(R.id.pass);
@@ -85,26 +110,27 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         playword.setOnClickListener(this);
         exit.setOnClickListener(this);
 
-        surfaceView.drawHand(scrabbleCopy);
-
+        //drawHand(scrabbleCopy);
         //setting the score board's on click listener
         TextView scoreboard = (TextView)activity.findViewById(R.id.scoreNumber);
         this.score = scoreboard;
         //scoreboard.setOnEditorActionListener(this);
 
         //setting the hand's on click listener
-        ImageView first = (ImageView)activity.findViewById(R.id.aButton);
-        ImageView second = (ImageView)activity.findViewById(R.id.bButton);
-        ImageView third = (ImageView)activity.findViewById(R.id.cButton);
-        ImageView fourth = (ImageView)activity.findViewById(R.id.dButton);
-        ImageView fifth = (ImageView)activity.findViewById(R.id.eButton);
-        ImageView sixth = (ImageView)activity.findViewById(R.id.gButton);
+         first = (ImageView)activity.findViewById(R.id.aButton);
+         second = (ImageView)activity.findViewById(R.id.bButton);
+         third = (ImageView)activity.findViewById(R.id.cButton);
+         fourth = (ImageView)activity.findViewById(R.id.dButton);
+         fifth = (ImageView)activity.findViewById(R.id.eButton);
+         sixth = (ImageView)activity.findViewById(R.id.fButton);
+         seventh = (ImageView)activity.findViewById(R.id.gButton);
         first.setOnClickListener(this);
         second.setOnClickListener(this);
         third.setOnClickListener(this);
         fourth.setOnClickListener(this);
         fifth.setOnClickListener(this);
         sixth.setOnClickListener(this);
+        seventh.setOnClickListener(this);
 
 
         //setting the board's on click listener
@@ -587,7 +613,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         ImageView c14r14 = (ImageView)activity.findViewById(R.id.imageView225);
         c14r14.setOnClickListener(this);
 
-        surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
+       // surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
 
     }
     public void onClick(View button) {
@@ -601,7 +627,11 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
             Exchange exchange = new Exchange(this, letter);
             game.sendAction(exchange);
-            surfaceView.drawHand(scrabbleCopy);
+            //have to delete arrayLists otherwise they are stored and ruin future words
+            tempInts.removeAll(tempInts);
+            tempXCords.removeAll(tempXCords);
+            tempYCords.removeAll(tempYCords);
+            letters.removeAll(letters);
 
         }
         else if(button.getId() == R.id.pass){
@@ -612,9 +642,15 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             toScrabbleLetter(letters);
 
             isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
-
+            int myTempXCoords[] = getXCoord(tempInts);
+            int myTempYCoords[] = getYCoord(tempInts);
             PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
+            //have to delete arrayLists otherwise they are stored and ruin future words
+            tempInts.removeAll(tempInts);
+            tempXCords.removeAll(tempXCords);
+            tempYCords.removeAll(tempYCords);
+            letters.removeAll(letters);
         }
         else if(button.getId() == R.id.exitGame){
             ExitGame exitGame = new ExitGame(this);
@@ -635,7 +671,7 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         int[] xArray;
         xArray = new int[tempInts.size()];
         for(int i = 0; i < tempInts.size(); i++){
-            xArray[i] = 0;
+            xArray[i] = tempInts.get(i)/15;
         }
         return xArray;
     }
@@ -643,9 +679,16 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         int[] yArray;
         yArray = new int[tempInts.size()];
         for(int i = 0; i < tempInts.size(); i++){
-            yArray[i] = 0;
+            yArray[i] = (tempInts.get(i) % 15) - 1;
         }
         return yArray;
+    }
+    public int[] getIntVal(ArrayList<Integer> tempInts){
+        int[] tempArray = new int[tempInts.size()];
+        for(int i = 0; i < tempInts.size(); i++){
+            tempArray[i] = tempInts.get(i);
+        }
+        return tempArray;
     }
 
     public ScrabbleLetter[] toScrabbleLetter(ArrayList<String> arrs){
@@ -929,6 +972,881 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             case R.id.imageView225	: return	225	;
             default:
                 return -1;
+        }
+    }
+    public void drawHand(ScrabbleState state){
+        ScrabbleLetter[] hand = state.getPlayer1Hand();
+        ImageView img;
+
+
+        for(int i = 0; i < 7; i++){
+            img = getHandImageView(i);
+            if(img == null){
+                int x = 2;
+            }
+            img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
+        }
+    }
+
+    public ImageView getHandImageView(int num){
+        switch(num){
+            case 0:
+                return (ImageView)myActivity.findViewById(R.id.aButton);
+            case 1:
+                return (ImageView) myActivity.findViewById(R.id.bButton);
+            case 2:
+                return (ImageView)myActivity.findViewById(R.id.cButton);
+            case 3:
+                return (ImageView)myActivity.findViewById(R.id.dButton);
+            case 4:
+                return (ImageView)myActivity.findViewById(R.id.gButton);
+            case 5:
+                return (ImageView)myActivity.findViewById(R.id.eButton);
+            case 6:
+                return (ImageView)myActivity.findViewById(R.id.fButton);
+            default:
+                return null;
+        }
+    }
+    public Drawable getDrawableLetter(char letter){
+
+        switch(letter){
+            case 'a':
+                return myActivity.getDrawable(R.drawable.afinal);
+            case 'b':
+                return myActivity.getResources().getDrawable(R.drawable.bfinal);
+            case 'c':
+                return myActivity.getResources().getDrawable(R.drawable.cfinal);
+            case 'd':
+                return myActivity.getResources().getDrawable(R.drawable.dfinal);
+            case 'e':
+                return myActivity.getResources().getDrawable(R.drawable.efinal);
+            case 'f':
+                return myActivity.getResources().getDrawable(R.drawable.ffinal);
+            case 'g':
+                return myActivity.getResources().getDrawable(R.drawable.gfinal);
+            case 'h':
+                return myActivity.getResources().getDrawable(R.drawable.hfinal);
+            case 'i':
+                return myActivity.getResources().getDrawable(R.drawable.ifinal);
+            case 'j':
+                return myActivity.getResources().getDrawable(R.drawable.jfinal);
+            case 'k':
+                return myActivity.getResources().getDrawable(R.drawable.kfinal);
+            case 'l':
+                return myActivity.getResources().getDrawable(R.drawable.lfinal);
+            case 'm':
+                return myActivity.getResources().getDrawable(R.drawable.mfinal);
+            case 'n':
+                return myActivity.getResources().getDrawable(R.drawable.nfinal);
+            case 'o':
+                return myActivity.getResources().getDrawable(R.drawable.ofinal);
+            case 'p':
+                return myActivity.getResources().getDrawable(R.drawable.pfinal);
+            case 'q':
+                return myActivity.getResources().getDrawable(R.drawable.qfinal);
+            case 'r':
+                return myActivity.getResources().getDrawable(R.drawable.rfinal);
+            case 's':
+                return myActivity.getResources().getDrawable(R.drawable.sfinal);
+            case 't':
+                return myActivity.getResources().getDrawable(R.drawable.tfinal);
+            case 'u':
+                return myActivity.getResources().getDrawable(R.drawable.ufinal);
+            case 'v':
+                return myActivity.getResources().getDrawable(R.drawable.vfinal);
+            case 'w':
+                return myActivity.getResources().getDrawable(R.drawable.wfinal);
+            case 'x':
+                return myActivity.getResources().getDrawable(R.drawable.xfinal);
+            case 'y':
+                return myActivity.getResources().getDrawable(R.drawable.yfinal);
+            case 'z':
+                return myActivity.getResources().getDrawable(R.drawable.zfinal);
+            default:
+                return myActivity.getResources().getDrawable(R.drawable.backgroundsquare);
+        }
+
+    }
+    public void drawBoard(ScrabbleState state){
+        ScrabbleLetter[][] board = state.getBoard();
+        ImageView img;
+
+        for(int r = 0; r < board.length; r++){
+            for(int c = 0; c < board[r].length; c++){
+                img = getImageView(r,c);
+                //https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
+                int width = 60;
+                int height = 60;
+                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
+                img.setLayoutParams(parms);
+
+                if(board[r][c].getLetter() == ' '){
+                    img.setImageDrawable(img.getDrawable());
+                }
+                else{
+                    img.setImageDrawable(getDrawableLetter(board[r][c].getLetter()));
+                }
+
+            }
+        }
+    }
+
+    public ImageView getImageView(int row, int col){
+        //this is going to be massive and messy. Sorry.
+        if(row == 0){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView2);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView3);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView4);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView5);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView6);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView7);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView8);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView9);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView10);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView11);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView12);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView13);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView14);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView15);
+            }
+            else{
+                return null;
+            }
+
+        }
+        else if (row == 1 ){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView16);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView17);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView18);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView19);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView20);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView21);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView22);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView23);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView24);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView25);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView26);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView27);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView28);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView29);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView30);
+            }
+            else{
+                return null;
+            }
+        }
+        else if(row == 2){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView31);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView32);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView33);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView34);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView35);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView36);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView37);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView38);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView39);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView40);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView41);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView42);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView43);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView44);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView45);
+            }
+            else{
+                return null;
+            }
+        }
+        else if(row == 3){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView46);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView47);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView48);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView49);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView50);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView51);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView52);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView53);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView54);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView55);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView56);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView57);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView58);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView59);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView60);
+            }
+            else{
+                return null;
+            }
+        }
+        else if(row == 4){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView61);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView62);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView63);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView64);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView65);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView66);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView67);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView68);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView69);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView70);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView71);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView72);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView73);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView74);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView75);
+            }
+            else{
+                return null;
+            }
+        }
+        else if(row == 5){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView76);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView77);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView78);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView79);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView80);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView81);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView82);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView83);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView84);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView85);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView86);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView87);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView88);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView89);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView90);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 6){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView91);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView92);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView93);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView94);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView95);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView96);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView97);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView98);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView99);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView100);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView101);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView102);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView103);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView104);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView105);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 7){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView106);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView107);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView108);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView109);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView110);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView111);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView112);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView113);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView114);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView115);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView116);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView117);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView118);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView119);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView120);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 8){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView121);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView122);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView123);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView124);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView125);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView126);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView127);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView128);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView129);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView130);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView131);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView132);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView133);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView134);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView135);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 9){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView136);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView137);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView138);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView139);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView140);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView141);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView142);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView143);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView144);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView145);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView146);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView147);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView148);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView149);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView150);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 10){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView151);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView152);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView153);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView154);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView155);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView156);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView157);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView158);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView159);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView160);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView161);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView162);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView163);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView164);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView165);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 11){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView166);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView167);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView168);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView169);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView170);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView171);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView172);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView173);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView174);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView175);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView176);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView177);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView178);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView79);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView180);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 12){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView181);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView182);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView183);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView184);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView185);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView186);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView187);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView188);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView189);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView190);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView191);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView192);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView193);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView194);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView195);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 13){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView196);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView197);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView198);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView199);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView200);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView201);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView202);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView203);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView204);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView205);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView206);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView207);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView208);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView209);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView210);
+            }
+            else{
+                return null;
+            }
+        }
+        else if (row == 14){
+            if(col == 0){
+                return myActivity.findViewById(R.id.imageView211);
+            }
+            else if (col == 1){
+                return myActivity.findViewById(R.id.imageView212);
+            }
+            else if (col == 2){
+                return myActivity.findViewById(R.id.imageView213);
+            }
+            else if (col == 3){
+                return myActivity.findViewById(R.id.imageView214);
+            }
+            else if (col == 4){
+                return myActivity.findViewById(R.id.imageView215);
+            }
+            else if (col == 5){
+                return myActivity.findViewById(R.id.imageView216);
+            }
+            else if (col ==6){
+                return myActivity.findViewById(R.id.imageView217);
+            }
+            else if (col == 7){
+                return myActivity.findViewById(R.id.imageView218);
+            }
+            else if (col == 8){
+                return myActivity.findViewById(R.id.imageView219);
+            }
+            else if (col == 9){
+                return myActivity.findViewById(R.id.imageView220);
+            }
+            else if (col == 10){
+                return myActivity.findViewById(R.id.imageView221);
+            }
+            else if (col == 11){
+                return myActivity.findViewById(R.id.imageView222);
+            }
+            else if (col == 12){
+                return myActivity.findViewById(R.id.imageView223);
+            }
+            else if (col == 13){
+                return myActivity.findViewById(R.id.imageView224);
+            }
+            else if (col == 14){
+                return myActivity.findViewById(R.id.imageView225);
+            }
+            else{
+                return null;
+            }
+        }
+        else{
+            return null;
         }
     }
 

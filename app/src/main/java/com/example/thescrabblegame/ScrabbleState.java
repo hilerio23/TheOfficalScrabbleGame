@@ -7,6 +7,7 @@
 package com.example.thescrabblegame;
 
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 
@@ -59,6 +60,9 @@ public class ScrabbleState  extends GameState {
 
     //extra variable for tracking if a move is possible
     boolean isPossible;
+    private ScrabbleMainActivity myActivity;
+
+    private int poolCounter;
 
     //constructor
     public ScrabbleState(){
@@ -108,6 +112,7 @@ public class ScrabbleState  extends GameState {
         over = 0;
         numPasses = 0;
         firstTurn = 0;
+        poolCounter = 0;
 
     }
     /*public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
@@ -128,7 +133,7 @@ public class ScrabbleState  extends GameState {
             }
         }
         this.player1Hand = scrabbleStateCopy.player1Hand;
-        this.player2Hand = null; //player1 can't see player 2 hand
+        this.player2Hand = scrabbleStateCopy.player2Hand; //player1 can't see player 2 hand
         this.player3Hand = null;
         this.player4Hand = null;
         this.id = scrabbleStateCopy.id;
@@ -140,7 +145,9 @@ public class ScrabbleState  extends GameState {
         this.over = scrabbleStateCopy.over;
         this.numPasses = scrabbleStateCopy.numPasses;
         this.firstTurn = scrabbleStateCopy.firstTurn;
+        this.poolCounter = scrabbleStateCopy.poolCounter;
     }
+
 
     @Override
     public String toString(){
@@ -287,7 +294,7 @@ public class ScrabbleState  extends GameState {
         //finds missing letter
         if(isVertical == true){
             for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][yPositions[i]+1] == null || myBoard[xPositions[i]][yPositions[i]=1] == null){
+                if(myBoard[xPositions[i]][(yPositions[i])+1] == null || myBoard[xPositions[i]][(yPositions[i])-1] == null){
                     return;
                 }
                 if(myBoard[xPositions[i]][yPositions[i]+1].getLetter() != ' '){
@@ -333,9 +340,6 @@ public class ScrabbleState  extends GameState {
         //adds one to first turn
         this.firstTurn++;
         this.board = myBoard;
-
-        mSurfaceView.drawBoard(this);
-        mSurfaceView.drawHand(this);
 
 
 
@@ -417,26 +421,23 @@ public class ScrabbleState  extends GameState {
         if(id == 0){
             for(int i = 0; i < lettersToExchange.length; i++){
                 for(int j = 0; j < player1Hand.length; j++){
-                    if(lettersToExchange[i].equals(player1Hand[j])){
+                    char tempChar1 = lettersToExchange[i].getLetter();
+                    char tempChar2 = player1Hand[j].getLetter();
+                    if(tempChar1 == tempChar2){
                         player1Hand[j].setName(' ');
-                        break;
+                      //  break;
                     }
                 }
             }
-            for(int i = 0; i < player1Hand.length; i++){
-                if(player1Hand[i].equals(' ')){
-                    player1Hand[i].setName(pool[i].getLetter());
+            for(int i = 0; i < player1Hand.length; i++) {
+                if (player1Hand[i].getLetter() == ' ') {
+                    player1Hand[i] = pool[poolCounter];
+                    poolCounter++;
                     //possibly put in a negative num placeholder
-                    List<ScrabbleLetter> poolArrayList = Arrays.asList(pool);
-                    poolArrayList.remove(i);
-                    poolArrayList.add(lettersToExchange[count]);
-                    ScrabbleLetter[] newPool = new ScrabbleLetter[poolArrayList.size()];
-                    newPool = poolArrayList.toArray(newPool);
-                    pool = newPool;
-                    count++;
-                }
-                if(count == lettersToExchange.length){
-                    break;
+
+                    if (count == lettersToExchange.length) {
+                        break;
+                    }
                 }
             }
         }
@@ -468,25 +469,16 @@ public class ScrabbleState  extends GameState {
     }
 
     public boolean isVertical(int[] xArray, int[] yArray){
-       /* boolean isVertical = false;
-        double prevX = coord[0][0];
-        double prevY = coord[0][0];
-        double xCoord;
-        double yCoord;
-        for(int r = 0; r < coord.length; r++){
-            for(int c = 0; c < coord[0].length; c++){
-                xCoord = coord[r][0];
-                yCoord = coord[0][c];
-                if(yCoord != prevY){
-                    isVertical = true;
-                }
-                if(xCoord != prevX){
-                    isVertical = false;
-                }
-            }
+        boolean isVertical = false;
+        int firstXCoord = xArray[0];
+
+        //x's will be different if horizontal
+        if(firstXCoord == xArray[1]){
+            return true;
         }
-        return isVertical;*/
-        return true;
+        else{
+            return false;
+        }
     }
 
     public void pass(){
