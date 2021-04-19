@@ -627,7 +627,11 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
             Exchange exchange = new Exchange(this, letter);
             game.sendAction(exchange);
-            //drawHand(scrabbleCopy);
+            //have to delete arrayLists otherwise they are stored and ruin future words
+            tempInts.removeAll(tempInts);
+            tempXCords.removeAll(tempXCords);
+            tempYCords.removeAll(tempYCords);
+            letters.removeAll(letters);
 
         }
         else if(button.getId() == R.id.pass){
@@ -642,6 +646,11 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             int myTempYCoords[] = getYCoord(tempInts);
             PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
+            //have to delete arrayLists otherwise they are stored and ruin future words
+            tempInts.removeAll(tempInts);
+            tempXCords.removeAll(tempXCords);
+            tempYCords.removeAll(tempYCords);
+            letters.removeAll(letters);
         }
         else if(button.getId() == R.id.exitGame){
             ExitGame exitGame = new ExitGame(this);
@@ -673,6 +682,13 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             yArray[i] = (tempInts.get(i) % 15) - 1;
         }
         return yArray;
+    }
+    public int[] getIntVal(ArrayList<Integer> tempInts){
+        int[] tempArray = new int[tempInts.size()];
+        for(int i = 0; i < tempInts.size(); i++){
+            tempArray[i] = tempInts.get(i);
+        }
+        return tempArray;
     }
 
     public ScrabbleLetter[] toScrabbleLetter(ArrayList<String> arrs){

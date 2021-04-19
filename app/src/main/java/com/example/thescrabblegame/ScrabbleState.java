@@ -294,7 +294,7 @@ public class ScrabbleState  extends GameState {
         //finds missing letter
         if(isVertical == true){
             for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][yPositions[i]+1] == null || myBoard[xPositions[i]][yPositions[i]-1] == null){
+                if(myBoard[xPositions[i]][(yPositions[i])+1] == null || myBoard[xPositions[i]][(yPositions[i])-1] == null){
                     return;
                 }
                 if(myBoard[xPositions[i]][yPositions[i]+1].getLetter() != ' '){
@@ -469,25 +469,16 @@ public class ScrabbleState  extends GameState {
     }
 
     public boolean isVertical(int[] xArray, int[] yArray){
-       /* boolean isVertical = false;
-        double prevX = coord[0][0];
-        double prevY = coord[0][0];
-        double xCoord;
-        double yCoord;
-        for(int r = 0; r < coord.length; r++){
-            for(int c = 0; c < coord[0].length; c++){
-                xCoord = coord[r][0];
-                yCoord = coord[0][c];
-                if(yCoord != prevY){
-                    isVertical = true;
-                }
-                if(xCoord != prevX){
-                    isVertical = false;
-                }
-            }
+        boolean isVertical = false;
+        int firstXCoord = xArray[0];
+
+        //x's will be different if horizontal
+        if(firstXCoord == xArray[1]){
+            return true;
         }
-        return isVertical;*/
-        return true;
+        else{
+            return false;
+        }
     }
 
     public void pass(){
