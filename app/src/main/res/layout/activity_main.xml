@@ -14,8 +14,8 @@
 
     <ImageView
         android:id="@+id/backgroundColor"
-        android:layout_height="1351dp"
-        android:layout_width="811dp"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
         android:background="#fffaf1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
