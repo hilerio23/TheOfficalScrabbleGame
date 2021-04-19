@@ -31,7 +31,7 @@ public class ScrabbleDictionary {
 
         try {
             BufferedReader wordIn = new BufferedReader(new FileReader(
-                    "/usr/share/dict/american-english"));
+                    "words_alpha.txt"));
             String s;
             while ((s = wordIn.readLine()) != null) {
                 if (s.indexOf(word) != -1) {
