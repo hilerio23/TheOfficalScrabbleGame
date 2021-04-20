@@ -14,7 +14,10 @@ public class Exchange extends GameAction {
     public Exchange(GamePlayer player, ScrabbleLetter[] letterExchange) {
         super(player);
         //set this.wordToExchange
-        lettersToExchange = letterExchange;
+        lettersToExchange = new  ScrabbleLetter[letterExchange.length];
+        for(int i = 0; i < letterExchange.length; i++) {
+            lettersToExchange[i] = letterExchange[i];
+        }
     }
     //add a getter for wordToExchange
     public ScrabbleLetter[] getLettersToExchange(){

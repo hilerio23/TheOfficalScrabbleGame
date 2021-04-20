@@ -19,7 +19,7 @@ import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
 
 import java.util.ArrayList;
 
-public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClickListener {
+public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClickListener {
 
     private TextView score = null;
     private ScrabbleSurfaceView surfaceView;
@@ -30,7 +30,6 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ArrayList<Integer> tempInts = new ArrayList<>();
     private ArrayList<Integer> tempXCords = new ArrayList<>();
     private ArrayList<Integer> tempYCords = new ArrayList<>();
-
     private ImageView first;
     private ImageView second;
     private ImageView third;
@@ -39,13 +38,12 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ImageView sixth;
     private ImageView seventh;
 
-
     /**
      * constructor
      *
      * @param name the name of the player
      */
-    public humanScrabblePlayer(String name, int layoutId) {
+    public HumanScrabblePlayer(String name, int layoutId) {
         super(name);
         //this.surfaceView = surfaceView;
         this.layoutId = layoutId;
@@ -117,13 +115,13 @@ public class humanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         //scoreboard.setOnEditorActionListener(this);
 
         //setting the hand's on click listener
-         first = (ImageView)activity.findViewById(R.id.aButton);
-         second = (ImageView)activity.findViewById(R.id.bButton);
-         third = (ImageView)activity.findViewById(R.id.cButton);
-         fourth = (ImageView)activity.findViewById(R.id.dButton);
-         fifth = (ImageView)activity.findViewById(R.id.eButton);
-         sixth = (ImageView)activity.findViewById(R.id.fButton);
-         seventh = (ImageView)activity.findViewById(R.id.gButton);
+        first = (ImageView)activity.findViewById(R.id.aButton);
+        second = (ImageView)activity.findViewById(R.id.bButton);
+        third = (ImageView)activity.findViewById(R.id.cButton);
+        fourth = (ImageView)activity.findViewById(R.id.dButton);
+        fifth = (ImageView)activity.findViewById(R.id.eButton);
+        sixth = (ImageView)activity.findViewById(R.id.fButton);
+        seventh = (ImageView)activity.findViewById(R.id.gButton);
         first.setOnClickListener(this);
         second.setOnClickListener(this);
         third.setOnClickListener(this);
