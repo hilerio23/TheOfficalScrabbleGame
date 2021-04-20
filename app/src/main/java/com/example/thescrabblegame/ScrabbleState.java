@@ -290,6 +290,10 @@ public class ScrabbleState  extends GameState {
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
+        //if it's not continuous it's invalid so exit trying
+        if(!isContinuous(xPositions, yPositions)){
+            return;
+        }
 
         //finds missing letter
         if(isVertical == true){
@@ -472,52 +476,63 @@ public class ScrabbleState  extends GameState {
     }
 
     /**
+     * Performs an insertion sort on an int array
+     * @param points
+     * @return
+     */
+    public int[] sort(int[] points) {
+
+        for (int i = 1; i < points.length; ++i) {
+            int key = points[i];
+            int j = i - 1;
+
+            while (j >= 0 && points[j] > key) {
+                points[j + 1] = points[j];
+                j = j - 1;
+            }
+            points[j + 1] = key;
+
+        }
+        return points;
+    }
+    /**
      *
      * @param xPoints
      * @param yPoints
      * @return
      */
     public boolean isContinuous(int[] xPoints, int[] yPoints){
-        int xPrev = -1;
+        xPoints = sort(xPoints);
+        yPoints = sort(yPoints);
+
         int xCurr = -1;
-        int yPrev = -1;
         int yCurr = -1;
         boolean xChange = true;
-        for(int i = 0; i < xPoints.length; i++){
-            //setting current and previous values
-            if(i == 0){
-                xCurr = xPoints[i];
-                yCurr = yPoints[i];
-                yPrev = -1;
-                xPrev = -1;
-            }
-            else if (i == 1){ //adjusting xChange
-                if (xPrev == xCurr){
+        for(int i = 1; i < xPoints.length; i++) {
+            xCurr = xPoints[i];
+            yCurr = yPoints[i];
+            if (i == 1) { //adjusting xChange
+                if (xPoints[0] == xCurr) {
                     xChange = false;
                 }
-                else if (yCurr == yPrev){
+                else if (yCurr == yPoints[0]) {
                     xChange = true;
                 }
-                xPrev = xCurr;
-                yPrev = yCurr;
-                yCurr = yPoints[i];
-                xCurr = xPoints[i];
             }
-            else{
-                xPrev = xCurr;
-                yPrev = yCurr;
-                yCurr = yPoints[i];
-                xCurr = xPoints[i];
-            }
-
-            //determining if the word is continuous
-            if (xChange && yCurr != yPrev){
-                return false;
-            }
-            else if ( !xChange && xCurr != xPrev){
-                return false;
+            else {
+                if(xChange){
+                    if(xCurr != 1 + xPoints[i - 1]){
+                        return false;
+                    }
+                }
+                else{
+                    if(yCurr != 1 + yPoints[i - 1]){
+                        return false;
+                    }
+                }
             }
         }
+
         return true;
     }
 

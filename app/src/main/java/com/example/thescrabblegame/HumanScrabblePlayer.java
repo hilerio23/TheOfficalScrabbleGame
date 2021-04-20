@@ -626,10 +626,10 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             Exchange exchange = new Exchange(this, letter);
             game.sendAction(exchange);
             //have to delete arrayLists otherwise they are stored and ruin future words
-            tempInts.removeAll(tempInts);
-            tempXCords.removeAll(tempXCords);
-            tempYCords.removeAll(tempYCords);
-            letters.removeAll(letters);
+            tempInts.clear();
+            tempXCords.clear();
+            tempYCords.clear();
+            letters.clear();
 
         }
         else if(button.getId() == R.id.pass){
@@ -640,15 +640,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             toScrabbleLetter(letters);
 
             isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
-            int myTempXCoords[] = getXCoord(tempInts);
-            int myTempYCoords[] = getYCoord(tempInts);
             PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
             //have to delete arrayLists otherwise they are stored and ruin future words
-            tempInts.removeAll(tempInts);
-            tempXCords.removeAll(tempXCords);
-            tempYCords.removeAll(tempYCords);
-            letters.removeAll(letters);
+            tempInts.clear();
+            tempXCords.clear();
+            tempYCords.clear();
+            letters.clear();
         }
         else if(button.getId() == R.id.exitGame){
             ExitGame exitGame = new ExitGame(this);
