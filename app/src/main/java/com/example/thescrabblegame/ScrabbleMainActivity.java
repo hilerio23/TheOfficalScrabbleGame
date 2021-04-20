@@ -20,7 +20,7 @@ public class ScrabbleMainActivity extends GameMainActivity {
         // Pig has two player types:  human and computer
         playerTypes.add(new GamePlayerType("Local Human Player") {
             public GamePlayer createPlayer(String name) {
-                return new humanScrabblePlayer(name, R.layout.activity_main);
+                return new HumanScrabblePlayer(name, R.layout.activity_main);
             }});
         playerTypes.add(new GamePlayerType("Computer Player") {
             public GamePlayer createPlayer(String name) {

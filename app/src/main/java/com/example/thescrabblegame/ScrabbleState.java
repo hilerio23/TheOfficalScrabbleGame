@@ -320,28 +320,11 @@ public class ScrabbleState  extends GameState {
         }
 
         //adds words to score and adds points as well
-        for(int i = 0; i < wordToPlay.length; i++){
-            myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
-            if(id == 0){
-                this.player1Score += wordToPlay[i].getPoints();
-            }
-            else if(id == 1){
-                this.player2Score += wordToPlay[i].getPoints();
-            }
-        }
-        //adds missing lettter to points
-        if(firstTurn != 0) {
-            if (id == 0) {
-                this.player1Score += missingLetter.getPoints();
-            } else if (id == 1) {
-                this.player2Score += missingLetter.getPoints();
-            }
-        }
+        score(wordToPlay, myBoard, xPositions, yPositions, missingLetter);
+
         //adds one to first turn
         this.firstTurn++;
         this.board = myBoard;
-
-
 
 
         //this probably needs bounds checking
@@ -413,6 +396,26 @@ public class ScrabbleState  extends GameState {
                 over = 1;
             }
         }*/
+    }
+
+    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter){
+        for(int i = 0; i < wordToPlay.length; i++){
+            myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
+            if(id == 0){
+                this.player1Score += wordToPlay[i].getPoints();
+            }
+            else if(id == 1){
+                this.player2Score += wordToPlay[i].getPoints();
+            }
+        }
+        //adds missing lettter to points
+        if(firstTurn != 0) {
+            if (id == 0) {
+                this.player1Score += missingLetter.getPoints();
+            } else if (id == 1) {
+                this.player2Score += missingLetter.getPoints();
+            }
+        }
     }
 
     public void exchange(ScrabbleLetter[] lettersToExchange){
