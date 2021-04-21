@@ -293,7 +293,6 @@ public class ScrabbleState  extends GameState {
         return word;
     }
 
-    public void playWord(ScrabbleLetter[] wordToPlay, int[] xPositions, int[] yPositions, boolean isVertical){
     public void playWord(ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xPositions, int[] yPositions, boolean isVertical){
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;

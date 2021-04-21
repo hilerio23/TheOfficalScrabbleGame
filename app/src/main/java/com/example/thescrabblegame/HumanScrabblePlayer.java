@@ -645,7 +645,6 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             int myTempXCoords[] = getXCoord(tempInts);
             int myTempYCoords[] = getYCoord(tempInts);
             PlayWord playWord = new PlayWord(this, letter, specialTileArray,getXCoord(tempInts), getYCoord(tempInts), isVertical);
-            PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
             //have to delete arrayLists otherwise they are stored and ruin future words
             tempInts.clear();
