@@ -322,6 +322,8 @@ public class ScrabbleState  extends GameState {
         //adds words to score and adds points as well
         score(wordToPlay, myBoard, xPositions, yPositions, missingLetter, specialTiles);
 
+        replaceTiles(wordToPlay);
+
         //adds one to first turn
         this.firstTurn++;
         this.board = myBoard;
@@ -439,6 +441,58 @@ public class ScrabbleState  extends GameState {
                 this.player1Score += missingLetter.getPoints();
             } else if (id == 1) {
                 this.player2Score += missingLetter.getPoints();
+            }
+        }
+    }
+
+    public void replaceTiles(ScrabbleLetter[] lettersToExchange){
+        numPasses = 0;
+        int count = 0;
+        if(id == 0){
+            for(int i = 0; i < lettersToExchange.length; i++){
+                for(int j = 0; j < player1Hand.length; j++){
+                    char tempChar1 = lettersToExchange[i].getLetter();
+                    char tempChar2 = player1Hand[j].getLetter();
+                    if(tempChar1 == tempChar2){
+                        player1Hand[j].setName(' ');
+                        //  break;
+                    }
+                }
+            }
+            for(int i = 0; i < player1Hand.length; i++) {
+                if (player1Hand[i].getLetter() == ' ') {
+                    player1Hand[i] = pool[poolCounter];
+                    poolCounter++;
+                    //possibly put in a negative num placeholder
+
+                    if (count == lettersToExchange.length) {
+                        break;
+                    }
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < lettersToExchange.length; i++){
+                for(int j = 0; j < player2Hand.length; j++){
+                    if(lettersToExchange[i].equals(player2Hand[j])){
+                        player2Hand[j].setName(' ');
+                        break;
+                    }
+                }
+            }
+            for(int i = 0; i < player2Hand.length; i++){
+                if(player2Hand[i].equals(' ')){
+                    player2Hand[i].setName(pool[i].getLetter());
+                    List<ScrabbleLetter> poolArrayList = Arrays.asList(pool);
+                    poolArrayList.remove(i);
+                    ScrabbleLetter[] newPool = new ScrabbleLetter[poolArrayList.size()];
+                    newPool = poolArrayList.toArray(newPool);
+                    pool = newPool;
+                    count++;
+                }
+                if(count == lettersToExchange.length){
+                    break;
+                }
             }
         }
     }
