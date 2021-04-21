@@ -37,6 +37,10 @@ public class ScrabbleState  extends GameState {
     //game pause: 1 for pause 0 for playing
     private int gamePause;
 
+    //booleans to work with the onClick
+    public boolean isQuitPressed;
+    public boolean isPlayWordPressed;
+
     //add score
     private int player1Score;
     private int player2Score;
@@ -62,6 +66,8 @@ public class ScrabbleState  extends GameState {
     boolean isPossible;
     private ScrabbleMainActivity myActivity;
 
+    //variable for checking if the first word played is centered
+    private boolean isCentered;
     private int poolCounter;
 
     //constructor
@@ -246,6 +252,7 @@ public class ScrabbleState  extends GameState {
     public void setPlayer4Hand(ScrabbleLetter[] hand){
         player4Hand = hand;
     }
+    public void setIsCentered(boolean centered) {isCentered = centered;}
 
     public int getIdNum(){
         return id;
@@ -262,6 +269,7 @@ public class ScrabbleState  extends GameState {
     public int getPlayer4Score(){
         return player4Score;
     }
+    public boolean getIsCentered() {return isCentered; }
     public ScrabbleLetter[][] getBoard() {
         return board;
     }
@@ -293,15 +301,24 @@ public class ScrabbleState  extends GameState {
         return word;
     }
 
+    public void isCentered(int[] xPos, int[] yPos){
+
+        for(int i = 0; i < xPos.length; i++){
+            if(xPos[i] == 7 && yPos[i] == 7){
+                isCentered = true;
+            }
+        }
+    }
     public void playWord(ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xPositions, int[] yPositions, boolean isVertical){
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
-
+        isCentered(xPositions, yPositions);
         //if it's not continuous it's invalid so exit trying
-        if(!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+        if( !isCentered ||!isContinuous(xPositions, yPositions) ){//|| !dict.isLegal(arrToString(wordToPlay))){
+
             return;
         }
 
