@@ -284,7 +284,7 @@ public class ScrabbleState  extends GameState {
         return player4Hand;
     }
 
-    public void playWord(ScrabbleLetter[] wordToPlay, int[] xPositions, int[] yPositions, boolean isVertical){
+    public void playWord(ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xPositions, int[] yPositions, boolean isVertical){
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
         ScrabbleLetter missingLetter = null;
@@ -320,7 +320,7 @@ public class ScrabbleState  extends GameState {
         }
 
         //adds words to score and adds points as well
-        score(wordToPlay, myBoard, xPositions, yPositions, missingLetter);
+        score(wordToPlay, myBoard, xPositions, yPositions, missingLetter, specialTiles);
 
         //adds one to first turn
         this.firstTurn++;
@@ -398,15 +398,40 @@ public class ScrabbleState  extends GameState {
         }*/
     }
 
-    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter){
+    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter, int[] specialTiles){
+        int type = 0;
+        int score = 0;
         for(int i = 0; i < wordToPlay.length; i++){
             myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
-            if(id == 0){
-                this.player1Score += wordToPlay[i].getPoints();
+            if(specialTiles[i] == 0) {
+                score += wordToPlay[i].getPoints();
             }
-            else if(id == 1){
-                this.player2Score += wordToPlay[i].getPoints();
+            else if(specialTiles[i] == 1){
+                type = 3;
+                score += wordToPlay[i].getPoints();
             }
+            else if(specialTiles[i] == 2){
+                type = 2;
+                score += wordToPlay[i].getPoints();
+            }
+            else if(specialTiles[i] == 3){
+                score += 3*wordToPlay[i].getPoints();
+            }
+            else{
+                score += 2*wordToPlay[i].getPoints();
+            }
+        }
+        if(type == 3){
+            score *= type;
+        }
+        else if(type == 2){
+            score *= type;
+        }
+
+        if (id == 0) {
+            this.player1Score += score;
+        } else if (id == 1) {
+            this.player2Score += score;
         }
         //adds missing lettter to points
         if(firstTurn != 0) {
