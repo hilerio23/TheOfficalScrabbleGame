@@ -284,14 +284,24 @@ public class ScrabbleState  extends GameState {
         return player4Hand;
     }
 
+    //https://stackoverflow.com/questions/599161/best-way-to-convert-an-arraylist-to-a-string
+    public String arrToString(ScrabbleLetter[] arr){
+        String word = "";
+        for (int i = 0; i < arr.length; i++) {
+            word += arr[i].getLetter();
+        }
+        return word;
+    }
+
     public void playWord(ScrabbleLetter[] wordToPlay, int[] xPositions, int[] yPositions, boolean isVertical){
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
+
         //if it's not continuous it's invalid so exit trying
-        if(!isContinuous(xPositions, yPositions)){
+        if(!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
             return;
         }
 

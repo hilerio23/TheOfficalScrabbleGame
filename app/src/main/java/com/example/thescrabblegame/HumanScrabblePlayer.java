@@ -652,17 +652,29 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             ExitGame exitGame = new ExitGame(this);
             game.sendAction(exitGame);
         }
-        else if(button.getId() == R.id.aButton || button.getId() == R.id.bButton || button.getId() == R.id.cButton ||
-                button.getId() == R.id.dButton || button.getId() == R.id.eButton || button.getId() == R.id.fButton || button.getId() == R.id.gButton){
+        else if(button.getId() == R.id.aButton || button.getId() == R.id.bButton ||
+                button.getId() == R.id.cButton || button.getId() == R.id.dButton ||
+                button.getId() == R.id.eButton || button.getId() == R.id.fButton ||
+                button.getId() == R.id.gButton){
             char myChar = getCharacter(button);
             String myString = Character.toString(myChar);
             letters.add(myString);
         }
         else if(button instanceof ImageView){
             tempInts.add(getSquare(button));
+            //surfaceView.invalidate();
         }
     }
 
+    //updates the hand as it's played
+    public void tmpAdd(View handButton){
+        ScrabbleLetter[][] board = scrabbleCopy.getBoard();
+        ScrabbleLetter[] hand = scrabbleCopy.getPlayer1Hand();
+
+        scrabbleCopy.setPlayer1Hand(hand);
+        scrabbleCopy.setBoard(board);
+
+    }
     public int[] getXCoord(ArrayList<Integer> tempInts){
         int[] xArray;
         xArray = new int[tempInts.size()];

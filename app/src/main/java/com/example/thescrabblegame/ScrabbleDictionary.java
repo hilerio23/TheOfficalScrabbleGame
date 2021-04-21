@@ -27,21 +27,32 @@ public class ScrabbleDictionary {
         }
         return false;
     }
+
+    //https://codereview.stackexchange.com/questions/44021/fast-way-of-searching-for-a-string-in-a-text-file
     public boolean isLegal(String word) {
 
-        try {
-            BufferedReader wordIn = new BufferedReader(new FileReader(
-                    "words_alpha.txt"));
-            String s;
-            while ((s = wordIn.readLine()) != null) {
-                if (s.indexOf(word) != -1) {
-                    return true;
-                }
-            }
-            wordIn.close();
-        } catch (IOException e) {
-        }
+        String file = "app/src/main/txt/words_alpha.txt";
 
+        try{
+            BufferedReader wordIn = new BufferedReader(new FileReader(file));
+            String s;
+            try {
+                while ((s = wordIn.readLine()) != null) {
+                    String[] words = s.split(" ");
+                    for(String w : words){
+                        if (s.equalsIgnoreCase(word)) {
+                         return true;
+                        }
+                    }
+
+                }
+                wordIn.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
         return false;
     }
 }
