@@ -37,6 +37,10 @@ public class ScrabbleState  extends GameState {
     //game pause: 1 for pause 0 for playing
     private int gamePause;
 
+    //booleans to work with the onClick
+    public boolean isQuitPressed;
+    public boolean isPlayWordPressed;
+
     //add score
     private int player1Score;
     private int player2Score;
@@ -62,6 +66,8 @@ public class ScrabbleState  extends GameState {
     boolean isPossible;
     private ScrabbleMainActivity myActivity;
 
+    //variable for checking if the first word played is centered
+    private boolean isCentered;
     private int poolCounter;
 
     //constructor
@@ -246,6 +252,7 @@ public class ScrabbleState  extends GameState {
     public void setPlayer4Hand(ScrabbleLetter[] hand){
         player4Hand = hand;
     }
+    public void setIsCentered(boolean centered) {isCentered = centered;}
 
     public int getIdNum(){
         return id;
@@ -262,6 +269,7 @@ public class ScrabbleState  extends GameState {
     public int getPlayer4Score(){
         return player4Score;
     }
+    public boolean getIsCentered() {return isCentered; }
     public ScrabbleLetter[][] getBoard() {
         return board;
     }
@@ -284,12 +292,35 @@ public class ScrabbleState  extends GameState {
         return player4Hand;
     }
 
+    //https://stackoverflow.com/questions/599161/best-way-to-convert-an-arraylist-to-a-string
+    public String arrToString(ScrabbleLetter[] arr){
+        String word = "";
+        for (int i = 0; i < arr.length; i++) {
+            word += arr[i].getLetter();
+        }
+        return word;
+    }
+
+    public void isCentered(int[] xPos, int[] yPos){
+
+        for(int i = 0; i < xPos.length; i++){
+            if(xPos[i] == 7 && yPos[i] == 7){
+                isCentered = true;
+            }
+        }
+    }
     public void playWord(ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xPositions, int[] yPositions, boolean isVertical){
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
+        isCentered(xPositions, yPositions);
+        //if it's not continuous it's invalid so exit trying
+        if( !isCentered ||!isContinuous(xPositions, yPositions) ){//|| !dict.isLegal(arrToString(wordToPlay))){
+
+            return;
+        }
 
         //finds missing letter
         if(isVertical == true){
@@ -551,52 +582,63 @@ public class ScrabbleState  extends GameState {
     }
 
     /**
+     * Performs an insertion sort on an int array
+     * @param points
+     * @return
+     */
+    public int[] sort(int[] points) {
+
+        for (int i = 1; i < points.length; ++i) {
+            int key = points[i];
+            int j = i - 1;
+
+            while (j >= 0 && points[j] > key) {
+                points[j + 1] = points[j];
+                j = j - 1;
+            }
+            points[j + 1] = key;
+
+        }
+        return points;
+    }
+    /**
      *
      * @param xPoints
      * @param yPoints
      * @return
      */
     public boolean isContinuous(int[] xPoints, int[] yPoints){
-        int xPrev = -1;
+        xPoints = sort(xPoints);
+        yPoints = sort(yPoints);
+
         int xCurr = -1;
-        int yPrev = -1;
         int yCurr = -1;
         boolean xChange = true;
-        for(int i = 0; i < xPoints.length; i++){
-            //setting current and previous values
-            if(i == 0){
-                xCurr = xPoints[i];
-                yCurr = yPoints[i];
-                yPrev = -1;
-                xPrev = -1;
-            }
-            else if (i == 1){ //adjusting xChange
-                if (xPrev == xCurr){
+        for(int i = 1; i < xPoints.length; i++) {
+            xCurr = xPoints[i];
+            yCurr = yPoints[i];
+            if (i == 1) { //adjusting xChange
+                if (xPoints[0] == xCurr) {
                     xChange = false;
                 }
-                else if (yCurr == yPrev){
+                else if (yCurr == yPoints[0]) {
                     xChange = true;
                 }
-                xPrev = xCurr;
-                yPrev = yCurr;
-                yCurr = yPoints[i];
-                xCurr = xPoints[i];
             }
-            else{
-                xPrev = xCurr;
-                yPrev = yCurr;
-                yCurr = yPoints[i];
-                xCurr = xPoints[i];
-            }
-
-            //determining if the word is continuous
-            if (xChange && yCurr != yPrev){
-                return false;
-            }
-            else if ( !xChange && xCurr != xPrev){
-                return false;
+            else {
+                if(xChange){
+                    if(xCurr != 1 + xPoints[i - 1]){
+                        return false;
+                    }
+                }
+                else{
+                    if(yCurr != 1 + yPoints[i - 1]){
+                        return false;
+                    }
+                }
             }
         }
+
         return true;
     }
 

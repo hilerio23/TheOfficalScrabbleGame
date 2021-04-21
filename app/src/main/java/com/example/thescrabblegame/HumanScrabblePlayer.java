@@ -627,10 +627,10 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             Exchange exchange = new Exchange(this, letter);
             game.sendAction(exchange);
             //have to delete arrayLists otherwise they are stored and ruin future words
-            tempInts.removeAll(tempInts);
-            tempXCords.removeAll(tempXCords);
-            tempYCords.removeAll(tempYCords);
-            letters.removeAll(letters);
+            tempInts.clear();
+            tempXCords.clear();
+            tempYCords.clear();
+            letters.clear();
 
         }
         else if(button.getId() == R.id.pass){
@@ -647,26 +647,38 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             PlayWord playWord = new PlayWord(this, letter, specialTileArray,getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
             //have to delete arrayLists otherwise they are stored and ruin future words
-            tempInts.removeAll(tempInts);
-            tempXCords.removeAll(tempXCords);
-            tempYCords.removeAll(tempYCords);
-            letters.removeAll(letters);
+            tempInts.clear();
+            tempXCords.clear();
+            tempYCords.clear();
+            letters.clear();
         }
         else if(button.getId() == R.id.exitGame){
             ExitGame exitGame = new ExitGame(this);
             game.sendAction(exitGame);
         }
-        else if(button.getId() == R.id.aButton || button.getId() == R.id.bButton || button.getId() == R.id.cButton ||
-                button.getId() == R.id.dButton || button.getId() == R.id.eButton || button.getId() == R.id.fButton || button.getId() == R.id.gButton){
+        else if(button.getId() == R.id.aButton || button.getId() == R.id.bButton ||
+                button.getId() == R.id.cButton || button.getId() == R.id.dButton ||
+                button.getId() == R.id.eButton || button.getId() == R.id.fButton ||
+                button.getId() == R.id.gButton){
             char myChar = getCharacter(button);
             String myString = Character.toString(myChar);
             letters.add(myString);
         }
         else if(button instanceof ImageView){
             tempInts.add(getSquare(button));
+            //surfaceView.invalidate();
         }
     }
 
+    //updates the hand as it's played
+    public void tmpAdd(View handButton){
+        ScrabbleLetter[][] board = scrabbleCopy.getBoard();
+        ScrabbleLetter[] hand = scrabbleCopy.getPlayer1Hand();
+
+        scrabbleCopy.setPlayer1Hand(hand);
+        scrabbleCopy.setBoard(board);
+
+    }
     public int[] getXCoord(ArrayList<Integer> tempInts){
         int[] xArray;
         xArray = new int[tempInts.size()];
