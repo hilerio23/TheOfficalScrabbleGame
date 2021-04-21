@@ -71,11 +71,11 @@ public class ScrabbleLocalGame extends LocalGame {
             PlayWord theAction = (PlayWord)action;
             //if it is this players turn
             if(((ScrabbleState)state).getIdNum() == 0) {
-                ((ScrabbleState)state).playWord(theAction.getWordToPlay(), theAction.getXArray(), theAction.getYArray(), theAction.getIsVertical());
+                ((ScrabbleState)state).playWord(theAction.getWordToPlay(), theAction.getSpecialTiles(), theAction.getXArray(), theAction.getYArray(), theAction.getIsVertical());
                 ((ScrabbleState)state).setIdNum(1);
             }
             else{
-                ((ScrabbleState)state).playWord(theAction.getWordToPlay(), theAction.getXArray(), theAction.getYArray(), theAction.getIsVertical());
+                ((ScrabbleState)state).playWord(theAction.getWordToPlay(), theAction.getSpecialTiles(), theAction.getXArray(), theAction.getYArray(), theAction.getIsVertical());
                 ((ScrabbleState)state).setIdNum(0);
             }
             return true;

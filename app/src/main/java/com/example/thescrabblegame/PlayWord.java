@@ -5,6 +5,7 @@ import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
 public class PlayWord extends GameAction {
     private ScrabbleLetter[] wordPlayed;
+    private int[] sTiles;
     private int[] xArray;
     private int[] yArray;
     private boolean vertical;
@@ -14,10 +15,11 @@ public class PlayWord extends GameAction {
      *
      * @param player the player who created the action
      */
-    public PlayWord(GamePlayer player, ScrabbleLetter[] wordToPlay, int[] xArray, int[] yArray, boolean direction) {
+    public PlayWord(GamePlayer player, ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xArray, int[] yArray, boolean direction) {
         super(player);
         //set this.wordToPlay
         wordPlayed = wordToPlay;
+        sTiles = specialTiles;
         this.xArray = xArray;
         this.yArray = yArray;
         vertical = direction;
@@ -25,6 +27,9 @@ public class PlayWord extends GameAction {
     //add a getter for wordToPlay
     public ScrabbleLetter[] getWordToPlay(){
         return wordPlayed;
+    }
+    public int[] getSpecialTiles(){
+        return sTiles;
     }
     public int[] getXArray(){
         return xArray;

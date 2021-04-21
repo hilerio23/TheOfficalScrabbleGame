@@ -27,6 +27,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     public int layoutId;
     private ArrayList<String> letters = new ArrayList<>();
     private ScrabbleLetter[] letter;
+    private int[] specialTileArray;
     private ArrayList<Integer> tempInts = new ArrayList<>();
     private ArrayList<Integer> tempXCords = new ArrayList<>();
     private ArrayList<Integer> tempYCords = new ArrayList<>();
@@ -638,8 +639,12 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         else if(button.getId() == R.id.playword){
             toScrabbleLetter(letters);
+            getSpecialArray(tempInts);
 
             isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
+            int myTempXCoords[] = getXCoord(tempInts);
+            int myTempYCoords[] = getYCoord(tempInts);
+            PlayWord playWord = new PlayWord(this, letter, specialTileArray,getXCoord(tempInts), getYCoord(tempInts), isVertical);
             PlayWord playWord = new PlayWord(this, letter, getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
             //have to delete arrayLists otherwise they are stored and ruin future words
@@ -710,6 +715,79 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         return letter;
     }
 
+    public int[] getSpecialArray(ArrayList<Integer> tempInts){
+        specialTileArray = new int[tempInts.size()];
+
+        for(int i = 0; i < tempInts.size(); i++){
+            int type = getSpecialTile(tempInts.get(i));
+            specialTileArray[i] = type;
+        }
+        return specialTileArray;
+    }
+
+    public int getSpecialTile(int tile){
+        switch (tile){
+            case 1:
+            case 8:
+            case 15:
+            case 106:
+            case 120:
+            case 121:
+            case 128:
+            case 225:
+                return 1;
+            case 17:
+            case 29:
+            case 33:
+            case 43:
+            case 49:
+            case 57:
+            case 65:
+            case 71:
+            case 155:
+            case 161:
+            case 169:
+            case 177:
+            case 183:
+            case 193:
+            case 197:
+            case 209:
+                return 2;
+            case 21:
+            case 25:
+            case 77:
+            case 81:
+            case 85:
+            case 89:
+            case 137:
+            case 141:
+            case 145:
+            case 149:
+            case 201:
+            case 205:
+                return 3;
+            case 37:
+            case 39:
+            case 53:
+            case 93:
+            case 97:
+            case 99:
+            case 103:
+            case 109:
+            case 117:
+            case 123:
+            case 127:
+            case 129:
+            case 133:
+            case 173:
+            case 187:
+            case 189:
+                return 4;
+            default:
+                return 0;
+        }
+
+    }
 
 
     public char getCharacter(View view) {
