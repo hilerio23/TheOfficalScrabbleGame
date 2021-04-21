@@ -496,17 +496,66 @@ public class ScrabbleState  extends GameState {
         }
     }
 
-    public boolean isVertical(int[] xArray, int[] yArray){
-        boolean isVertical = false;
-        int firstXCoord = xArray[0];
+    /**
+     *
+     * @param xPoints
+     * @param yPoints
+     * @return
+     */
+    public boolean isContinuous(int[] xPoints, int[] yPoints){
+        int xPrev = -1;
+        int xCurr = -1;
+        int yPrev = -1;
+        int yCurr = -1;
+        boolean xChange = true;
+        for(int i = 0; i < xPoints.length; i++){
+            //setting current and previous values
+            if(i == 0){
+                xCurr = xPoints[i];
+                yCurr = yPoints[i];
+                yPrev = -1;
+                xPrev = -1;
+            }
+            else if (i == 1){ //adjusting xChange
+                if (xPrev == xCurr){
+                    xChange = false;
+                }
+                else if (yCurr == yPrev){
+                    xChange = true;
+                }
+                xPrev = xCurr;
+                yPrev = yCurr;
+                yCurr = yPoints[i];
+                xCurr = xPoints[i];
+            }
+            else{
+                xPrev = xCurr;
+                yPrev = yCurr;
+                yCurr = yPoints[i];
+                xCurr = xPoints[i];
+            }
 
-        //x's will be different if horizontal
-        if(firstXCoord == xArray[1]){
-            return true;
+            //determining if the word is continuous
+            if (xChange && yCurr != yPrev){
+                return false;
+            }
+            else if ( !xChange && xCurr != xPrev){
+                return false;
+            }
         }
-        else{
-            return false;
+        return true;
+    }
+
+    public boolean isVertical(int[] xArray, int[] yArray) {
+        boolean isVertical = false;
+
+        if (xArray[0] == xArray[1]) {
+            isVertical = false;
+        } else if (yArray[0] == yArray[1]) {
+            isVertical = true;
         }
+
+        return isVertical;
     }
 
     public void pass(){
