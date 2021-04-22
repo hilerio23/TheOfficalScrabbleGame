@@ -11,17 +11,24 @@ public class ScrabbleDictionary {
         }
         else {
             for (int i = 0; i < myLetter.length; i++) {
-                if(isVertical){
-                    if(myLetter[row-1][col] != null || myLetter[row+1][col] != null){
-                        return true;
+                if(isVertical) {
+                    if (row > 0 && row < 14) {
+                        if (myLetter[row - 1][col].getLetter() == ' ' || myLetter[row + 1][col].getLetter() == ' ') {
+                            return true;
+                        }
+                        isNeighbors(myLetter, i + row, col, isVertical);
                     }
-                    isNeighbors(myLetter, i+row, col, isVertical);
                 }
-                else{
-                    if(myLetter[row][col-1] != null || myLetter[row][col+1] != null){
-                        return true;
+                else {
+                    if (col > 0 && col < 14) {
+                        if (myLetter[row][col - 1] == null || myLetter[row][col + 1] == null) {
+                            return false;
+                        }
+                        if (myLetter[row][col - 1].getLetter() == ' ' || myLetter[row][col + 1].getLetter() == ' ') {
+                            return true;
+                        }
+                        isNeighbors(myLetter, row, i + col, isVertical);
                     }
-                    isNeighbors(myLetter, row, i+col, isVertical);
                 }
             }
         }
