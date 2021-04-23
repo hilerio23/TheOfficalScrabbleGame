@@ -21,9 +21,11 @@ public class EasyAI extends GameComputerPlayer {
         super(name);
     }
 
-    //https://stackoverflow.com/questions/6443176/how-can-i-generate-a-random-number-within-a-range-but-exclude-some/6443346
-    /*
-    *Method returns a random int and excludes ints that are specified
+    /** External Citation
+     Date: 18 April 2021
+     Problem: Needed to generate random numbers with exceptions.
+     Resource: https://stackoverflow.com/questions/6443176/how-can-i-generate-a-random-number-within-a-range-but-exclude-some/6443346
+     Solution: I used the example code from this post.
      */
     public int getRandomWithExclusion(Random rnd, int start, int end, int... exclude) {
         int random = start + rnd.nextInt(end - start + 1 - exclude.length);
@@ -35,7 +37,6 @@ public class EasyAI extends GameComputerPlayer {
         }
         return random;
     }
-
 
 
     @Override
@@ -122,7 +123,12 @@ public class EasyAI extends GameComputerPlayer {
                 int random6 = getRandomWithExclusion(rand, 0, 6, random1, random2, random3, random4, random5);
                 int random7 = getRandomWithExclusion(rand, 0, 6, random1, random2, random3, random4, random5, random6);
 
-                //https://stackoverflow.com/questions/28970799/how-to-create-a-array-with-n-random-integers/44487538
+                /** External Citation
+                 Date: 18 April 2021
+                 Problem: Needed to create a randomized array list
+                 Resource: https://stackoverflow.com/questions/28970799/how-to-create-a-array-with-n-random-integers/44487538
+                 Solution: I used the example code from this post.
+                 */
                 int n = rand.nextInt(7);
                 int x = n + 1;
                 ArrayList<ScrabbleLetter> list = new ArrayList<ScrabbleLetter>();
