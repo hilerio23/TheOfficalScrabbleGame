@@ -678,6 +678,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             tempYCords.add(getSquare(button) % 15);
             //surfaceView.invalidate();
         }
+
     }
 
     /**
