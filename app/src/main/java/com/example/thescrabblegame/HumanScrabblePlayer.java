@@ -680,9 +680,11 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             letters.add(myString);
         }
         else if(button instanceof ImageView){
+            drawBoard(scrabbleCopy);
             tempInts.add(getSquare(button));
             tempXCords.add(getSquare(button) / 15);
             tempYCords.add(getSquare(button) % 15);
+            drawBoard(scrabbleCopy);
             //surfaceView.invalidate();
         }
 
