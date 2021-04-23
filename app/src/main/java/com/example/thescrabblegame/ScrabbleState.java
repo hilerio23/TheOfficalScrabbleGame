@@ -648,9 +648,9 @@ public class ScrabbleState  extends GameState {
         boolean isVertical = false;
 
         if (xArray[0] == xArray[1]) {
-            isVertical = false;
-        } else if (yArray[0] == yArray[1]) {
             isVertical = true;
+        } else if (yArray[0] == yArray[1]) {
+            isVertical = false;
         }
 
         return isVertical;

@@ -2,6 +2,8 @@ package com.example.thescrabblegame;
 
 import junit.framework.TestCase;
 
+import java.security.spec.ECField;
+
 import static org.junit.Assert.assertNotEquals;
 
 public class ScrabbleStateNewTest extends TestCase {
@@ -117,19 +119,97 @@ public class ScrabbleStateNewTest extends TestCase {
     public void testGetNumPasses() {
     }
 
-    public void testGetPlayer1Hand() {
+    //by Samone
+    public void testGetPlayer1Hand() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+
+        state.setPlayer1Hand(letters);
+        assertEquals(letters, state.getPlayer1Hand());
     }
 
-    public void testGetPlayer2Hand() {
+    //by Samone
+    public void testGetPlayer2Hand() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+
+        state.setPlayer2Hand(letters);
+        assertEquals(letters, state.getPlayer2Hand());
     }
 
-    public void testGetPlayer3Hand() {
+    //by Samone
+    public void testGetPlayer3Hand() throws Exception {
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+
+        state.setPlayer3Hand(letters);
+        assertEquals(letters, state.getPlayer3Hand());
     }
 
-    public void testGetPlayer4Hand() {
+    //by Samone
+    public void testGetPlayer4Hand() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+
+        state.setPlayer4Hand(letters);
+        assertEquals(letters, state.getPlayer4Hand());
     }
 
-    public void testPlayWord() {
+    //by Samone
+    public void testPlayWord() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+        int[] xNums = {4, 5, 6, 7};
+        int[] yNums = {7, 7, 7, 7};
+        int[] special = {0,0,0,0};
+        state.playWord(letters, special, xNums, yNums, false );
+        ScrabbleLetter[][] board = state.getBoard();
+        ScrabbleLetter[] word = {board[4][7], board[5][7], board[6][7], board[7][7]};
+        assertEquals(letters, word);
     }
 
     public void testExchange() throws Exception{
@@ -146,7 +226,12 @@ public class ScrabbleStateNewTest extends TestCase {
         assertNotEquals(letters, newLetters);
     }
 
+    //by Samone
     public void testIsVertical() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        int[] x = {3, 4, 5, 6, 7};
+        int[] y = {7, 7, 7, 7, 7};
+        assertEquals(false, state.isVertical(x , y));
     }
 
     public void testPass() {
