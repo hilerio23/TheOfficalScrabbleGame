@@ -37,6 +37,10 @@ public class ScrabbleState  extends GameState {
     //game pause: 1 for pause 0 for playing
     private int gamePause;
 
+    //booleans to work with the onClick
+    public boolean isQuitPressed;
+    public boolean isPlayWordPressed;
+
     //add score
     private int player1Score;
     private int player2Score;
@@ -60,7 +64,10 @@ public class ScrabbleState  extends GameState {
 
     //extra variable for tracking if a move is possible
     boolean isPossible;
+    private ScrabbleMainActivity myActivity;
 
+    //variable for checking if the first word played is centered
+    private boolean isCentered;
     private int poolCounter;
 
     //constructor
@@ -245,6 +252,7 @@ public class ScrabbleState  extends GameState {
     public void setPlayer4Hand(ScrabbleLetter[] hand){
         player4Hand = hand;
     }
+    public void setIsCentered(boolean centered) {isCentered = centered;}
 
     public int getIdNum(){
         return id;
@@ -261,6 +269,7 @@ public class ScrabbleState  extends GameState {
     public int getPlayer4Score(){
         return player4Score;
     }
+    public boolean getIsCentered() {return isCentered; }
     public ScrabbleLetter[][] getBoard() {
         return board;
     }
@@ -283,14 +292,34 @@ public class ScrabbleState  extends GameState {
         return player4Hand;
     }
 
-    public void playWord(ScrabbleLetter[] wordToPlay, int[] xPositions, int[] yPositions, boolean isVertical){
+    //https://stackoverflow.com/questions/599161/best-way-to-convert-an-arraylist-to-a-string
+    public String arrToString(ScrabbleLetter[] arr){
+        String word = "";
+        for (int i = 0; i < arr.length; i++) {
+            word += arr[i].getLetter();
+        }
+        return word;
+    }
+
+    public void isCentered(int[] xPos, int[] yPos){
+
+        for(int i = 0; i < xPos.length; i++){
+            if(xPos[i] == 7 && yPos[i] == 7){
+                isCentered = true;
+            }
+        }
+    }
+    public void playWord(ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xPositions, int[] yPositions, boolean isVertical){
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
-        boolean hi = dict.isLegal("hello");
-        if(hi){
-            int i = 3;
+
+        isCentered(xPositions, yPositions);
+        //if it's not continuous it's invalid so exit trying
+        if( !isCentered ||!isContinuous(xPositions, yPositions) ){//|| !dict.isLegal(arrToString(wordToPlay))){
+
+            return;
         }
 
         //finds missing letter
@@ -322,26 +351,122 @@ public class ScrabbleState  extends GameState {
         }
 
         //adds words to score and adds points as well
-        score(wordToPlay, myBoard, xPositions, yPositions, missingLetter);
+        score(wordToPlay, myBoard, xPositions, yPositions, missingLetter, specialTiles);
+
+        replaceTiles(wordToPlay);
 
         //adds one to first turn
         this.firstTurn++;
         this.board = myBoard;
 
 
-    }
-
-    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter){
-        for(int i = 0; i < wordToPlay.length; i++){
-            myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
-            if(id == 0){
-                this.player1Score += wordToPlay[i].getPoints();
+        //this probably needs bounds checking
+        //change to a boolean return value
+       /* if(over == 0) {
+            if(dict.isLegal(word)) {
+                if (isVertical && xCoord + wordToPlay.length < 15) {
+                    //if vertical keep xCoord the same and get row - 1 to get the letter
+                    for (int row = (int)xCoord; row < xCoord + wordToPlay.length; row++) {
+                        board[row][(int)yCoord] = wordToPlay[row - (int)xCoord];
+                        if (id == 1) {
+                            player1Score += wordToPlay[row - (int)xCoord].getPoints();
+                        } else {
+                            player2Score += wordToPlay[row - (int)xCoord].getPoints();
+                        }
+                    }
+                }
+                else if(!isVertical && yCoord + wordToPlay.length < 15) {
+                    for (int col = (int)yCoord; col < yCoord + wordToPlay.length; col++) {
+                        board[(int)xCoord][col] = wordToPlay[col - (int)yCoord];
+                        if (id == 1) {
+                            player1Score += wordToPlay[col - (int)yCoord].getPoints();
+                        } else {
+                            player2Score += wordToPlay[col - (int)yCoord].getPoints();
+                        }
+                    }
+                }
+                else{
+                    pass();
+                    return;
+                }
+                mSurfaceView.drawBoard(this);
+                mSurfaceView.drawHand(this);
             }
-            else if(id == 1){
-                this.player2Score += wordToPlay[i].getPoints();
+            else{
+                pass();
+                return;
             }
         }
-        //adds missing lettter to points
+        if(pool == null){
+            over = 1;
+        }*/
+        //rewritten code
+        /*while(over == 0){
+            for(int i = 0; i < board.length; i++){
+                for(int j = 0; j < board[0].length; i++){
+
+                }
+            }
+            for(int i = 0; i < wordToPlay.length; i++){
+                //word += wordToPlay[i].getLetter();
+                if(1==1) {//if is Legal
+                    int x = wordToPlay[i].getxCoord();
+                    int y = wordToPlay[i].getyCoord();
+                    board[x][y] = wordToPlay[i];
+                    if (id == 1) {
+                        player1Score += wordToPlay[i].getPoints();
+                    } else {
+                        player2Score += wordToPlay[i].getPoints();
+                    }
+                }
+                else{
+                    pass();
+                    break;
+                }
+            }
+            //dict.isLegal(word);
+            if(pool == null){
+                over = 1;
+            }
+        }*/
+    }
+
+    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter, int[] specialTiles){
+        int type = 0;
+        int score = 0;
+        for(int i = 0; i < wordToPlay.length; i++){
+            myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
+            if(specialTiles[i] == 0) {
+                score += wordToPlay[i].getPoints();
+            }
+            else if(specialTiles[i] == 1){
+                type = 3;
+                score += wordToPlay[i].getPoints();
+            }
+            else if(specialTiles[i] == 2){
+                type = 2;
+                score += wordToPlay[i].getPoints();
+            }
+            else if(specialTiles[i] == 3){
+                score += 3*wordToPlay[i].getPoints();
+            }
+            else{
+                score += 2*wordToPlay[i].getPoints();
+            }
+        }
+        if(type == 3){
+            score *= type;
+        }
+        else if(type == 2){
+            score *= type;
+        }
+
+        if (id == 0) {
+            this.player1Score += score;
+        } else if (id == 1) {
+            this.player2Score += score;
+        }
+        //adds missing let  ter to points
         if(firstTurn != 0) {
             if (id == 0) {
                 this.player1Score += missingLetter.getPoints();
@@ -351,7 +476,57 @@ public class ScrabbleState  extends GameState {
         }
     }
 
+    public void replaceTiles(ScrabbleLetter[] lettersToExchange){
+        numPasses = 0;
+        int count = 0;
+        if(id == 0){
+            for(int i = 0; i < lettersToExchange.length; i++){
+                for(int j = 0; j < player1Hand.length; j++){
+                    char tempChar1 = lettersToExchange[i].getLetter();
+                    char tempChar2 = player1Hand[j].getLetter();
+                    if(tempChar1 == tempChar2){
+                        player1Hand[j].setName(' ');
+                        //  break;
+                    }
+                }
+            }
+            for(int i = 0; i < player1Hand.length; i++) {
+                if (player1Hand[i].getLetter() == ' ') {
+                    player1Hand[i] = pool[poolCounter];
+                    poolCounter++;
+                    //possibly put in a negative num placeholder
 
+                    if (count == lettersToExchange.length) {
+                        break;
+                    }
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < lettersToExchange.length; i++){
+                for(int j = 0; j < player2Hand.length; j++){
+                    if(lettersToExchange[i].equals(player2Hand[j])){
+                        player2Hand[j].setName(' ');
+                        break;
+                    }
+                }
+            }
+            for(int i = 0; i < player2Hand.length; i++){
+                if(player2Hand[i].equals(' ')){
+                    player2Hand[i].setName(pool[i].getLetter());
+                    List<ScrabbleLetter> poolArrayList = Arrays.asList(pool);
+                    poolArrayList.remove(i);
+                    ScrabbleLetter[] newPool = new ScrabbleLetter[poolArrayList.size()];
+                    newPool = poolArrayList.toArray(newPool);
+                    pool = newPool;
+                    count++;
+                }
+                if(count == lettersToExchange.length){
+                    break;
+                }
+            }
+        }
+    }
 
     public void exchange(ScrabbleLetter[] lettersToExchange){
         numPasses = 0;
@@ -407,52 +582,63 @@ public class ScrabbleState  extends GameState {
     }
 
     /**
+     * Performs an insertion sort on an int array
+     * @param points
+     * @return
+     */
+    public int[] sort(int[] points) {
+
+        for (int i = 1; i < points.length; ++i) {
+            int key = points[i];
+            int j = i - 1;
+
+            while (j >= 0 && points[j] > key) {
+                points[j + 1] = points[j];
+                j = j - 1;
+            }
+            points[j + 1] = key;
+
+        }
+        return points;
+    }
+    /**
      *
      * @param xPoints
      * @param yPoints
      * @return
      */
     public boolean isContinuous(int[] xPoints, int[] yPoints){
-        int xPrev = -1;
+        xPoints = sort(xPoints);
+        yPoints = sort(yPoints);
+
         int xCurr = -1;
-        int yPrev = -1;
         int yCurr = -1;
         boolean xChange = true;
-        for(int i = 0; i < xPoints.length; i++){
-            //setting current and previous values
-            if(i == 0){
-                xCurr = xPoints[i];
-                yCurr = yPoints[i];
-                yPrev = -1;
-                xPrev = -1;
-            }
-            else if (i == 1){ //adjusting xChange
-                if (xPrev == xCurr){
+        for(int i = 1; i < xPoints.length; i++) {
+            xCurr = xPoints[i];
+            yCurr = yPoints[i];
+            if (i == 1) { //adjusting xChange
+                if (xPoints[0] == xCurr) {
                     xChange = false;
                 }
-                else if (yCurr == yPrev){
+                else if (yCurr == yPoints[0]) {
                     xChange = true;
                 }
-                xPrev = xCurr;
-                yPrev = yCurr;
-                yCurr = yPoints[i];
-                xCurr = xPoints[i];
             }
-            else{
-                xPrev = xCurr;
-                yPrev = yCurr;
-                yCurr = yPoints[i];
-                xCurr = xPoints[i];
-            }
-
-            //determining if the word is continuous
-            if (xChange && yCurr != yPrev){
-                return false;
-            }
-            else if ( !xChange && xCurr != xPrev){
-                return false;
+            else {
+                if(xChange){
+                    if(xCurr != 1 + xPoints[i - 1]){
+                        return false;
+                    }
+                }
+                else{
+                    if(yCurr != 1 + yPoints[i - 1]){
+                        return false;
+                    }
+                }
             }
         }
+
         return true;
     }
 
@@ -490,73 +676,3 @@ public class ScrabbleState  extends GameState {
     }
 
 }
-
-//this probably needs bounds checking
-//change to a boolean return value
-       /* if(over == 0) {
-            if(dict.isLegal(word)) {
-                if (isVertical && xCoord + wordToPlay.length < 15) {
-                    //if vertical keep xCoord the same and get row - 1 to get the letter
-                    for (int row = (int)xCoord; row < xCoord + wordToPlay.length; row++) {
-                        board[row][(int)yCoord] = wordToPlay[row - (int)xCoord];
-                        if (id == 1) {
-                            player1Score += wordToPlay[row - (int)xCoord].getPoints();
-                        } else {
-                            player2Score += wordToPlay[row - (int)xCoord].getPoints();
-                        }
-                    }
-                }
-                else if(!isVertical && yCoord + wordToPlay.length < 15) {
-                    for (int col = (int)yCoord; col < yCoord + wordToPlay.length; col++) {
-                        board[(int)xCoord][col] = wordToPlay[col - (int)yCoord];
-                        if (id == 1) {
-                            player1Score += wordToPlay[col - (int)yCoord].getPoints();
-                        } else {
-                            player2Score += wordToPlay[col - (int)yCoord].getPoints();
-                        }
-                    }
-                }
-                else{
-                    pass();
-                    return;
-                }
-                mSurfaceView.drawBoard(this);
-                mSurfaceView.drawHand(this);
-            }
-            else{
-                pass();
-                return;
-            }
-        }
-        if(pool == null){
-            over = 1;
-        }*/
-//rewritten code
-        /*while(over == 0){
-            for(int i = 0; i < board.length; i++){
-                for(int j = 0; j < board[0].length; i++){
-
-                }
-            }
-            for(int i = 0; i < wordToPlay.length; i++){
-                //word += wordToPlay[i].getLetter();
-                if(1==1) {//if is Legal
-                    int x = wordToPlay[i].getxCoord();
-                    int y = wordToPlay[i].getyCoord();
-                    board[x][y] = wordToPlay[i];
-                    if (id == 1) {
-                        player1Score += wordToPlay[i].getPoints();
-                    } else {
-                        player2Score += wordToPlay[i].getPoints();
-                    }
-                }
-                else{
-                    pass();
-                    break;
-                }
-            }
-            //dict.isLegal(word);
-            if(pool == null){
-                over = 1;
-            }
-        }*/
