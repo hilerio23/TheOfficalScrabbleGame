@@ -73,17 +73,34 @@ public class ScrabbleStateNewTest extends TestCase {
 
     public void testGetPlayer1Score() throws Exception{
         ScrabbleState state = new ScrabbleState();
+        int newScore = 20;
+        state.setPlayer1Score(newScore);
         int score = state.getPlayer1Score();
-        assertEquals(score,0);
+        assertEquals(score,newScore);
     }
 
-    public void testGetPlayer2Score() {
+    public void testGetPlayer2Score() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        int newScore = 30;
+        state.setPlayer2Score(newScore);
+        int score = state.getPlayer2Score();
+        assertEquals(score,newScore);
     }
 
-    public void testGetPlayer3Score() {
+    public void testGetPlayer3Score() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        int newScore = 33;
+        state.setPlayer3Score(newScore);
+        int score = state.getPlayer3Score();
+        assertEquals(score,newScore);
     }
 
-    public void testGetPlayer4Score() {
+    public void testGetPlayer4Score() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        int newScore = 44;
+        state.setPlayer4Score(newScore);
+        int score = state.getPlayer4Score();
+        assertEquals(score,newScore);
     }
 
     public void testGetBoard() throws Exception {
