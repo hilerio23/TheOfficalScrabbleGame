@@ -1,5 +1,6 @@
 package com.example.thescrabblegame;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Display;
@@ -17,7 +18,12 @@ import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameInfo;
 import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Dictionary;
 
 public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClickListener {
 
@@ -94,11 +100,12 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     @Override
     public void setAsGui(GameMainActivity activity) {
         activity.setContentView(layoutId);
-
+        setList();
         //activity.setContentView(R.layout.activity_main);
        // surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
         myActivity = ((ScrabbleMainActivity) activity);
-
+        ArrayList<String> myList = new ArrayList<>();
+        myList = dictionary;
         Button exchange = (Button)activity.findViewById(R.id.exchange);
         Button pass = (Button)activity.findViewById(R.id.pass);
         Button playword = (Button)activity.findViewById(R.id.playword);
@@ -1845,6 +1852,20 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         else{
             return null;
+        }
+    }
+    public static ArrayList<String> dictionary = new ArrayList<>();
+    public void setList(){
+        InputStream is = myActivity.getResources().openRawResource(R.raw.words_alpha);
+        BufferedReader wordIn = new BufferedReader(new InputStreamReader(is));
+        String s;
+        try {
+            while ((s = wordIn.readLine()) != null) {
+                dictionary.add(s);
+            }
+            wordIn.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

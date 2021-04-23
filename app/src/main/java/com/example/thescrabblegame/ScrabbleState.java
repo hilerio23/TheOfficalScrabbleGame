@@ -60,7 +60,6 @@ public class ScrabbleState  extends GameState {
 
     //extra variable for tracking if a move is possible
     boolean isPossible;
-    private ScrabbleMainActivity myActivity;
 
     private int poolCounter;
 
@@ -289,7 +288,10 @@ public class ScrabbleState  extends GameState {
         numPasses = 0;
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
-
+        boolean hi = dict.isLegal("hello");
+        if(hi){
+            int i = 3;
+        }
 
         //finds missing letter
         if(isVertical == true){
@@ -327,75 +329,6 @@ public class ScrabbleState  extends GameState {
         this.board = myBoard;
 
 
-        //this probably needs bounds checking
-        //change to a boolean return value
-       /* if(over == 0) {
-            if(dict.isLegal(word)) {
-                if (isVertical && xCoord + wordToPlay.length < 15) {
-                    //if vertical keep xCoord the same and get row - 1 to get the letter
-                    for (int row = (int)xCoord; row < xCoord + wordToPlay.length; row++) {
-                        board[row][(int)yCoord] = wordToPlay[row - (int)xCoord];
-                        if (id == 1) {
-                            player1Score += wordToPlay[row - (int)xCoord].getPoints();
-                        } else {
-                            player2Score += wordToPlay[row - (int)xCoord].getPoints();
-                        }
-                    }
-                }
-                else if(!isVertical && yCoord + wordToPlay.length < 15) {
-                    for (int col = (int)yCoord; col < yCoord + wordToPlay.length; col++) {
-                        board[(int)xCoord][col] = wordToPlay[col - (int)yCoord];
-                        if (id == 1) {
-                            player1Score += wordToPlay[col - (int)yCoord].getPoints();
-                        } else {
-                            player2Score += wordToPlay[col - (int)yCoord].getPoints();
-                        }
-                    }
-                }
-                else{
-                    pass();
-                    return;
-                }
-                mSurfaceView.drawBoard(this);
-                mSurfaceView.drawHand(this);
-            }
-            else{
-                pass();
-                return;
-            }
-        }
-        if(pool == null){
-            over = 1;
-        }*/
-        //rewritten code
-        /*while(over == 0){
-            for(int i = 0; i < board.length; i++){
-                for(int j = 0; j < board[0].length; i++){
-
-                }
-            }
-            for(int i = 0; i < wordToPlay.length; i++){
-                //word += wordToPlay[i].getLetter();
-                if(1==1) {//if is Legal
-                    int x = wordToPlay[i].getxCoord();
-                    int y = wordToPlay[i].getyCoord();
-                    board[x][y] = wordToPlay[i];
-                    if (id == 1) {
-                        player1Score += wordToPlay[i].getPoints();
-                    } else {
-                        player2Score += wordToPlay[i].getPoints();
-                    }
-                }
-                else{
-                    pass();
-                    break;
-                }
-            }
-            //dict.isLegal(word);
-            if(pool == null){
-                over = 1;
-            }
-        }*/
     }
 
     public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter){
@@ -417,6 +350,8 @@ public class ScrabbleState  extends GameState {
             }
         }
     }
+
+
 
     public void exchange(ScrabbleLetter[] lettersToExchange){
         numPasses = 0;
@@ -555,3 +490,73 @@ public class ScrabbleState  extends GameState {
     }
 
 }
+
+//this probably needs bounds checking
+//change to a boolean return value
+       /* if(over == 0) {
+            if(dict.isLegal(word)) {
+                if (isVertical && xCoord + wordToPlay.length < 15) {
+                    //if vertical keep xCoord the same and get row - 1 to get the letter
+                    for (int row = (int)xCoord; row < xCoord + wordToPlay.length; row++) {
+                        board[row][(int)yCoord] = wordToPlay[row - (int)xCoord];
+                        if (id == 1) {
+                            player1Score += wordToPlay[row - (int)xCoord].getPoints();
+                        } else {
+                            player2Score += wordToPlay[row - (int)xCoord].getPoints();
+                        }
+                    }
+                }
+                else if(!isVertical && yCoord + wordToPlay.length < 15) {
+                    for (int col = (int)yCoord; col < yCoord + wordToPlay.length; col++) {
+                        board[(int)xCoord][col] = wordToPlay[col - (int)yCoord];
+                        if (id == 1) {
+                            player1Score += wordToPlay[col - (int)yCoord].getPoints();
+                        } else {
+                            player2Score += wordToPlay[col - (int)yCoord].getPoints();
+                        }
+                    }
+                }
+                else{
+                    pass();
+                    return;
+                }
+                mSurfaceView.drawBoard(this);
+                mSurfaceView.drawHand(this);
+            }
+            else{
+                pass();
+                return;
+            }
+        }
+        if(pool == null){
+            over = 1;
+        }*/
+//rewritten code
+        /*while(over == 0){
+            for(int i = 0; i < board.length; i++){
+                for(int j = 0; j < board[0].length; i++){
+
+                }
+            }
+            for(int i = 0; i < wordToPlay.length; i++){
+                //word += wordToPlay[i].getLetter();
+                if(1==1) {//if is Legal
+                    int x = wordToPlay[i].getxCoord();
+                    int y = wordToPlay[i].getyCoord();
+                    board[x][y] = wordToPlay[i];
+                    if (id == 1) {
+                        player1Score += wordToPlay[i].getPoints();
+                    } else {
+                        player2Score += wordToPlay[i].getPoints();
+                    }
+                }
+                else{
+                    pass();
+                    break;
+                }
+            }
+            //dict.isLegal(word);
+            if(pool == null){
+                over = 1;
+            }
+        }*/
