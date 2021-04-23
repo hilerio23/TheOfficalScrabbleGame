@@ -1,5 +1,7 @@
 package com.example.thescrabblegame;
 
+import android.content.res.Resources;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.*;
@@ -30,11 +32,10 @@ public class ScrabbleDictionary {
 
     //https://codereview.stackexchange.com/questions/44021/fast-way-of-searching-for-a-string-in-a-text-file
     public boolean isLegal(String word) {
+        ScrabbleMainActivity myActivity = new ScrabbleMainActivity();
 
-        String file = "app/src/main/txt/words_alpha.txt";
-
-        try{
-            BufferedReader wordIn = new BufferedReader(new FileReader(file));
+            InputStream is = myActivity.getResources().openRawResource(R.raw.words_alpha);
+            BufferedReader wordIn = new BufferedReader(new InputStreamReader(is));
             String s;
             try {
                 while ((s = wordIn.readLine()) != null) {
@@ -50,9 +51,7 @@ public class ScrabbleDictionary {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
+
         return false;
     }
 }

@@ -38,6 +38,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ImageView fifth;
     private ImageView sixth;
     private ImageView seventh;
+    private boolean isFirst;
 
     /**
      * constructor
@@ -49,6 +50,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         //this.surfaceView = surfaceView;
         this.layoutId = layoutId;
         scrabbleCopy = new ScrabbleState();
+        isFirst = false;
     }
 
     @Override
@@ -644,8 +646,14 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
             int myTempXCoords[] = getXCoord(tempInts);
             int myTempYCoords[] = getYCoord(tempInts);
+           // if(isFirst){
+               //fillWord();
+
+            //}
+
             PlayWord playWord = new PlayWord(this, letter, specialTileArray,getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
+            isFirst = true;
             //have to delete arrayLists otherwise they are stored and ruin future words
             tempInts.clear();
             tempXCords.clear();
@@ -666,10 +674,72 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         else if(button instanceof ImageView){
             tempInts.add(getSquare(button));
+            tempXCords.add(getSquare(button) / 15);
+            tempYCords.add(getSquare(button) % 15);
             //surfaceView.invalidate();
         }
     }
 
+    /**
+     * Is called when playword is called in order to comprehensively fill various arrays with the
+     * missing letters' information
+     *
+     *
+     */
+    public void fillWord(){
+        int index = -1;
+        int missingVal = -1;
+        boolean xchanging;
+        int prevX = tempXCords.get(0);
+        int prevY = tempYCords.get(0);
+
+        if(prevX == tempXCords.get(1) ){
+            xchanging = true;
+        }
+        else{
+            xchanging = false;
+        }
+        //finds the position in the array that needs to be found
+        for(int i = 1; i < tempInts.size(); i++){
+            if(xchanging){
+                if(prevX != (1 + tempXCords.get(i))){
+                    index = i;
+                    missingVal = 1  + prevX;
+                }
+                else{
+                    prevX = tempXCords.get(i);
+                }
+            }
+            else{
+                if(prevY != (1 + tempYCords.get(i))){
+                    index = 1;
+                    missingVal = 1  + prevY;
+                }
+                else{
+                    prevY = tempYCords.get(i);
+                }
+            }
+        }
+
+        //gets the missing x and y position of the word
+        if(xchanging){
+            tempXCords.add(index, missingVal);
+        }
+        else{
+            tempYCords.add(index, missingVal);
+        }
+
+        //gets the missing letter and adds it to the array
+        if(xchanging){
+            char c  = getCharacter( getImageView(missingVal, tempYCords.get(0)) );
+            letters.add(index, "" + c);
+        }
+        else{
+            char c  = getCharacter( getImageView(tempXCords.get(0), missingVal) );
+            letters.add(index, "" + c);
+        }
+
+    }
     //updates the hand as it's played
     public void tmpAdd(View handButton){
         ScrabbleLetter[][] board = scrabbleCopy.getBoard();

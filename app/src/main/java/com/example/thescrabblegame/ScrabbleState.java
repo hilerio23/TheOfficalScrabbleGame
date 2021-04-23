@@ -309,6 +309,8 @@ public class ScrabbleState  extends GameState {
             }
         }
     }
+
+
     public void playWord(ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xPositions, int[] yPositions, boolean isVertical){
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
@@ -317,7 +319,7 @@ public class ScrabbleState  extends GameState {
 
         isCentered(xPositions, yPositions);
         //if it's not continuous it's invalid so exit trying
-        if( !isCentered ||!isContinuous(xPositions, yPositions) ){//|| !dict.isLegal(arrToString(wordToPlay))){
+        if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
 
             return;
         }
