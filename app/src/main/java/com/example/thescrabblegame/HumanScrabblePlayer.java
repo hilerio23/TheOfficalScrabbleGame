@@ -791,6 +791,10 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
         return letter;
     }
+    /*
+    * Method gets changes the temp ints array to see
+    * if there are any special tiles being played
+     */
 
     public int[] getSpecialArray(ArrayList<Integer> tempInts){
         specialTileArray = new int[tempInts.size()];
@@ -801,6 +805,10 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         return specialTileArray;
     }
+
+    /*
+    *method gives us the special tiles
+     */
 
     public int getSpecialTile(int tile){
         switch (tile){
@@ -2015,7 +2023,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
     public static ArrayList<String> dictionary = new ArrayList<>();
     public void setList(){
-        InputStream is = myActivity.getResources().openRawResource(R.raw.words_alpha);
+        InputStream is = myActivity.getResources().openRawResource(R.raw.my_words);
         BufferedReader wordIn = new BufferedReader(new InputStreamReader(is));
         String s;
         try {

@@ -1,5 +1,7 @@
 package com.example.thescrabblegame;
 
+import android.util.Log;
+
 import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
 import com.example.thescrabblegame.game.GameFramework.LocalGame;
 import com.example.thescrabblegame.game.GameFramework.gameConfiguration.GameConfig;
@@ -7,13 +9,21 @@ import com.example.thescrabblegame.game.GameFramework.gameConfiguration.GamePlay
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ScrabbleMainActivity extends GameMainActivity {
     private static final int PORT_NUMBER = 2278;
 
     @Override
     public GameConfig createDefaultConfig() {
+
         // Define the allowed player types
         ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
 
@@ -36,10 +46,14 @@ public class ScrabbleMainActivity extends GameMainActivity {
         defaultConfig.setRemoteData("Remote Human Player", "", 1);
 
         return defaultConfig;
+
     }
 
     @Override
     public LocalGame createLocalGame(GameState gameState) {
         return new ScrabbleLocalGame();
+    }
+    public ScrabbleMainActivity getScrabbleMainActivity(){
+        return(this);
     }
 }

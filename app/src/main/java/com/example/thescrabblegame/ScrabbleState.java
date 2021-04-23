@@ -323,120 +323,50 @@ public class ScrabbleState  extends GameState {
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
-        isCentered(xPositions, yPositions);
-        //if it's not continuous it's invalid so exit trying
+        if(id == 0) {
+            //isCentered(xPositions, yPositions);
+            //if it's not continuous it's invalid so exit trying
+        /*
         if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
-
             return;
-        }
+        }*/
 
-        //finds missing letter
-        if(isVertical == true){
-            for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][(yPositions[i])+1] == null || myBoard[xPositions[i]][(yPositions[i])-1] == null){
-                    return;
+            //finds missing letter
+            if (isVertical == true) {
+                for (int i = 0; i < wordToPlay.length; i++) {
+                    if (myBoard[xPositions[i]][(yPositions[i]) + 1] == null || myBoard[xPositions[i]][(yPositions[i]) - 1] == null) {
+                        return;
+                    }
+                    if (myBoard[xPositions[i]][yPositions[i] + 1].getLetter() != ' ') {
+                        missingLetter = myBoard[xPositions[i]][yPositions[i] + 1];
+                    } else if (myBoard[xPositions[i]][yPositions[i] - 1].getLetter() != ' ') {
+                        missingLetter = myBoard[xPositions[i]][yPositions[i] - 1];
+                    }
                 }
-                if(myBoard[xPositions[i]][yPositions[i]+1].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]][yPositions[i]+1];
-                }
-                else if(myBoard[xPositions[i]][yPositions[i]-1].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]][yPositions[i]-1];
-                }
-            }
-        }
-        else{
-            for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][yPositions[i]+1] == null || myBoard[xPositions[i]][yPositions[i]-1] == null){
-                    return;
-                }
-                if(myBoard[xPositions[i]+1][yPositions[i]].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]+1][yPositions[i]];
-                }
-                else if(myBoard[xPositions[i]-1][yPositions[i]].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]-1][yPositions[i]];
+            } else {
+                for (int i = 0; i < wordToPlay.length; i++) {
+                    if (myBoard[xPositions[i]][yPositions[i] + 1] == null || myBoard[xPositions[i]][yPositions[i] - 1] == null) {
+                        return;
+                    }
+                    if (myBoard[xPositions[i] + 1][yPositions[i]].getLetter() != ' ') {
+                        missingLetter = myBoard[xPositions[i] + 1][yPositions[i]];
+                    } else if (myBoard[xPositions[i] - 1][yPositions[i]].getLetter() != ' ') {
+                        missingLetter = myBoard[xPositions[i] - 1][yPositions[i]];
+                    }
                 }
             }
+
+
         }
 
         //adds words to score and adds points as well
         score(wordToPlay, myBoard, xPositions, yPositions, missingLetter, specialTiles);
-
         replaceTiles(wordToPlay);
 
         //adds one to first turn
         this.firstTurn++;
         this.board = myBoard;
 
-
-        //this probably needs bounds checking
-        //change to a boolean return value
-       /* if(over == 0) {
-            if(dict.isLegal(word)) {
-                if (isVertical && xCoord + wordToPlay.length < 15) {
-                    //if vertical keep xCoord the same and get row - 1 to get the letter
-                    for (int row = (int)xCoord; row < xCoord + wordToPlay.length; row++) {
-                        board[row][(int)yCoord] = wordToPlay[row - (int)xCoord];
-                        if (id == 1) {
-                            player1Score += wordToPlay[row - (int)xCoord].getPoints();
-                        } else {
-                            player2Score += wordToPlay[row - (int)xCoord].getPoints();
-                        }
-                    }
-                }
-                else if(!isVertical && yCoord + wordToPlay.length < 15) {
-                    for (int col = (int)yCoord; col < yCoord + wordToPlay.length; col++) {
-                        board[(int)xCoord][col] = wordToPlay[col - (int)yCoord];
-                        if (id == 1) {
-                            player1Score += wordToPlay[col - (int)yCoord].getPoints();
-                        } else {
-                            player2Score += wordToPlay[col - (int)yCoord].getPoints();
-                        }
-                    }
-                }
-                else{
-                    pass();
-                    return;
-                }
-                mSurfaceView.drawBoard(this);
-                mSurfaceView.drawHand(this);
-            }
-            else{
-                pass();
-                return;
-            }
-        }
-        if(pool == null){
-            over = 1;
-        }*/
-        //rewritten code
-        /*while(over == 0){
-            for(int i = 0; i < board.length; i++){
-                for(int j = 0; j < board[0].length; i++){
-
-                }
-            }
-            for(int i = 0; i < wordToPlay.length; i++){
-                //word += wordToPlay[i].getLetter();
-                if(1==1) {//if is Legal
-                    int x = wordToPlay[i].getxCoord();
-                    int y = wordToPlay[i].getyCoord();
-                    board[x][y] = wordToPlay[i];
-                    if (id == 1) {
-                        player1Score += wordToPlay[i].getPoints();
-                    } else {
-                        player2Score += wordToPlay[i].getPoints();
-                    }
-                }
-                else{
-                    pass();
-                    break;
-                }
-            }
-            //dict.isLegal(word);
-            if(pool == null){
-                over = 1;
-            }
-        }*/
     }
 
     public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter, int[] specialTiles){
@@ -479,8 +409,6 @@ public class ScrabbleState  extends GameState {
         if(firstTurn != 0) {
             if (id == 0) {
                 this.player1Score += missingLetter.getPoints();
-            } else if (id == 1) {
-                this.player2Score += missingLetter.getPoints();
             }
         }
     }
@@ -688,3 +616,73 @@ public class ScrabbleState  extends GameState {
     }
 
 }
+
+//this probably needs bounds checking
+//change to a boolean return value
+       /* if(over == 0) {
+            if(dict.isLegal(word)) {
+                if (isVertical && xCoord + wordToPlay.length < 15) {
+                    //if vertical keep xCoord the same and get row - 1 to get the letter
+                    for (int row = (int)xCoord; row < xCoord + wordToPlay.length; row++) {
+                        board[row][(int)yCoord] = wordToPlay[row - (int)xCoord];
+                        if (id == 1) {
+                            player1Score += wordToPlay[row - (int)xCoord].getPoints();
+                        } else {
+                            player2Score += wordToPlay[row - (int)xCoord].getPoints();
+                        }
+                    }
+                }
+                else if(!isVertical && yCoord + wordToPlay.length < 15) {
+                    for (int col = (int)yCoord; col < yCoord + wordToPlay.length; col++) {
+                        board[(int)xCoord][col] = wordToPlay[col - (int)yCoord];
+                        if (id == 1) {
+                            player1Score += wordToPlay[col - (int)yCoord].getPoints();
+                        } else {
+                            player2Score += wordToPlay[col - (int)yCoord].getPoints();
+                        }
+                    }
+                }
+                else{
+                    pass();
+                    return;
+                }
+                mSurfaceView.drawBoard(this);
+                mSurfaceView.drawHand(this);
+            }
+            else{
+                pass();
+                return;
+            }
+        }
+        if(pool == null){
+            over = 1;
+        }*/
+//rewritten code
+        /*while(over == 0){
+            for(int i = 0; i < board.length; i++){
+                for(int j = 0; j < board[0].length; i++){
+
+                }
+            }
+            for(int i = 0; i < wordToPlay.length; i++){
+                //word += wordToPlay[i].getLetter();
+                if(1==1) {//if is Legal
+                    int x = wordToPlay[i].getxCoord();
+                    int y = wordToPlay[i].getyCoord();
+                    board[x][y] = wordToPlay[i];
+                    if (id == 1) {
+                        player1Score += wordToPlay[i].getPoints();
+                    } else {
+                        player2Score += wordToPlay[i].getPoints();
+                    }
+                }
+                else{
+                    pass();
+                    break;
+                }
+            }
+            //dict.isLegal(word);
+            if(pool == null){
+                over = 1;
+            }
+        }*/

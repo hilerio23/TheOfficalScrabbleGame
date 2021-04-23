@@ -19,6 +19,8 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
+
 public class EasyAI extends GameComputerPlayer {
 
     private ArrayList<String> sowpodsList; //for dictionary;
@@ -32,11 +34,12 @@ public class EasyAI extends GameComputerPlayer {
         super(name);
     }
 
-    /** External Citation
-     Date: 18 April 2021
-     Problem: Needed to generate random numbers with exceptions.
-     Resource: https://stackoverflow.com/questions/6443176/how-can-i-generate-a-random-number-within-a-range-but-exclude-some/6443346
-     Solution: I used the example code from this post.
+    /**
+     * External Citation
+     * Date: 18 April 2021
+     * Problem: Needed to generate random numbers with exceptions.
+     * Resource: https://stackoverflow.com/questions/6443176/how-can-i-generate-a-random-number-within-a-range-but-exclude-some/6443346
+     * Solution: I used the example code from this post.
      */
     public int getRandomWithExclusion(Random rnd, int start, int end, int... exclude) {
         int random = start + rnd.nextInt(end - start + 1 - exclude.length);
@@ -55,6 +58,7 @@ public class EasyAI extends GameComputerPlayer {
     private int[] playX;
     private int[] playY;
     private ScrabbleLetter[] wordToPlay;
+    private int[] specialTileArray;
 
     /*
      * Method sets variables to then play a word in RecieveInfo
@@ -65,9 +69,13 @@ public class EasyAI extends GameComputerPlayer {
         //adds x's and y's that are occupied to an arraylist
         for (int row = 0; row < 15; row++) {
             for (int col = 0; col < 15; col++) {
-                if (board[row][col].getLetter() != ' ') ;
-                compareX.add(row);
-                compareY.add(col);
+                if (board[row][col].getLetter() != ' ') {
+                    if (row != x || col != y) {
+
+                        compareX.add(row);
+                        compareY.add(col);
+                    }
+                }
             }
         }
         //initalizing variables for the for loop
@@ -81,19 +89,23 @@ public class EasyAI extends GameComputerPlayer {
             String word = myWords.get(j);
             //finds where the letter where the word needs to be played off of
             int index = word.indexOf(letter.getLetter());
-            //before and after letter helps find if the word can be played
-            //by checking if there is an overlap
-            int beforeLetter = index - 1;
-            int afterLetter = word.length() - index;
+
+            ArrayList<Integer> compareXCopy = new ArrayList<>();
+            ArrayList<Integer> compareYCopy = new ArrayList<>();
+            compareXCopy = compareX;
+            compareYCopy = compareY;
             boolean isOverlap = false;
             //horizontal check to see if there is an overlap
-            for (int a = 0; a < beforeLetter; a++) {
-                if (x - beforeLetter + a == compareX.get(a) && y == compareY.get(a)) {
-                    for (int i = 0; i < afterLetter; i++) {
-                        if (x + afterLetter - i == compareX.get(i) && y == compareY.get(i)) {
-                            isOverlap = true;
-                        }
-                    }
+            for (int i = 0; i < index; i++) {
+                //before index
+                if (board[x - index + i][y].getLetter() != ' ') {
+                    isOverlap = true;
+                }
+            }
+            for(int i = 0; i < word.length() - index; i++) {
+                //after index
+                if (board[x+1+i][y].getLetter() != ' '){
+                    isOverlap = true;
                 }
             }
             if (!isOverlap) {
@@ -116,14 +128,17 @@ public class EasyAI extends GameComputerPlayer {
                     this.playY = yArrayToPlay;
                 }
             }
-            //vertical check to see if there is an overlap
-            for (int a = 0; a < beforeLetter; a++) {
-                if (a == compareX.get(a) && y - beforeLetter + a == compareY.get(a)) {
-                    for (int i = 0; i < afterLetter; i++) {
-                        if (x == compareX.get(i) && y + afterLetter - i == compareY.get(i)) {
-                            isOverlap = true;
-                        }
-                    }
+            isOverlap = false;
+            for (int i = 0; i < index; i++) {
+                //before index
+                if (board[x][y - index + i].getLetter() != ' ') {
+                    isOverlap = true;
+                }
+            }
+            for(int i = 0; i < word.length() - index; i++) {
+                //after index
+                if (board[x][y+1+i].getLetter() != ' '){
+                    isOverlap = true;
                 }
             }
             if (!isOverlap) {
@@ -185,15 +200,18 @@ public class EasyAI extends GameComputerPlayer {
      * returns an ArrayList of all the words that contain that
      * char and are in the dictionary
      */
-    /** External Citation
-     Date: 22 April 2021
-     Problem: Couldn't search through a list of English words
-     Resource: https://stackoverflow.com/questions/31623184/find-all-words-in-dictionary-given-a-string-of-words
-     Solution: I used the example code from this post.
+
+    /**
+     * External Citation
+     * Date: 22 April 2021
+     * Problem: Couldn't search through a list of English words
+     * Resource: https://stackoverflow.com/questions/31623184/find-all-words-in-dictionary-given-a-string-of-words
+     * Solution: I used the example code from this post.
      */
 
     public ArrayList<String> getAllWordsInDic(String input, char letter) {
         ArrayList<String> matches = new ArrayList<String>();
+        sowpodsList = dictionary;
         // for each word in dict
         for (String word : sowpodsList) {
 
@@ -230,28 +248,28 @@ public class EasyAI extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
         ScrabbleState scrabbleCopy = new ScrabbleState((ScrabbleState) info);
-        ScrabbleDictionary scrabbleDic = new ScrabbleDictionary();
-
-        //creates copy of board
-        ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
-        board = scrabbleCopy.getBoard();
-
-        //creates copy of hand
-        ScrabbleLetter[] hand = scrabbleCopy.getPlayer2Hand();
-
-        //initializing variables
-        ScrabbleLetter testLetter = null;
-        String playString = null;
-        double myRow;
-        double myCol;
-        boolean foundWord = false;
-        boolean foundSpace = false;
-        boolean vertical = false;
-        int tempX = -1;
-        int tempY = -1;
 
         //if our turn
         if (scrabbleCopy.getIdNum() == 1) {
+            ScrabbleDictionary scrabbleDic = new ScrabbleDictionary();
+
+            //creates copy of board
+            ScrabbleLetter[][] board;
+            board = scrabbleCopy.getBoard();
+
+            //creates copy of hand
+            ScrabbleLetter[] hand = scrabbleCopy.getPlayer2Hand();
+
+            //initializing variables
+            ScrabbleLetter testLetter = null;
+            String playString = null;
+            double myRow;
+            double myCol;
+            boolean foundWord = false;
+            boolean foundSpace = false;
+            boolean vertical = false;
+            int tempX = -1;
+            int tempY = -1;
 
             //nested for loop goes through board and sets testLetter to a non null Letter
             for (int row = 0; row < 15; row++) {
@@ -274,13 +292,20 @@ public class EasyAI extends GameComputerPlayer {
                 for (int i = 0; i < hand.length; i++) {
                     handString += Character.toString(hand[i].getLetter());
                 }
+                this.wordToPlay = null;
                 ArrayList<String> dicWords = new ArrayList<>();
                 //finds all words in dictionary given hand and test letter
                 dicWords = getAllWordsInDic(handString, testLetter.getLetter());
                 findPlayWord(board, tempX, tempY, testLetter, dicWords);
-                foundWord = true;
-                PlayWord playWord = new PlayWord(this, this.wordToPlay, this.playX, this.playY, this.playWordVertical);
-                game.sendAction(playWord);
+                if(this.wordToPlay != null) {
+                int[] specialPlay = new int[this.wordToPlay.length];
+                for (int i = 0; i < this.wordToPlay.length; i++) {
+                    specialPlay[i] = 0;
+                }
+                    PlayWord playWord = new PlayWord(this, this.wordToPlay, specialPlay, this.playX, this.playY, this.playWordVertical);
+                    game.sendAction(playWord);
+                    foundWord = true;
+                }
             }
 
             //exchange if we couldn't find word
@@ -349,5 +374,88 @@ public class EasyAI extends GameComputerPlayer {
                 game.sendAction(exchange);
             }
         }
+    }
+
+    /*
+     * Method gets changes the temp ints array to see
+     * if there are any special tiles being played
+     */
+
+    public int[] getSpecialArray(ArrayList<Integer> tempInts) {
+        specialTileArray = new int[tempInts.size()];
+
+        for (int i = 0; i < tempInts.size(); i++) {
+            int type = getSpecialTile(tempInts.get(i));
+            specialTileArray[i] = type;
+        }
+        return specialTileArray;
+    }
+
+    /*
+     *method gives us the special tiles
+     */
+
+    public int getSpecialTile(int tile) {
+        switch (tile) {
+            case 1:
+            case 8:
+            case 15:
+            case 106:
+            case 120:
+            case 121:
+            case 128:
+            case 225:
+                return 1;
+            case 17:
+            case 29:
+            case 33:
+            case 43:
+            case 49:
+            case 57:
+            case 65:
+            case 71:
+            case 155:
+            case 161:
+            case 169:
+            case 177:
+            case 183:
+            case 193:
+            case 197:
+            case 209:
+                return 2;
+            case 21:
+            case 25:
+            case 77:
+            case 81:
+            case 85:
+            case 89:
+            case 137:
+            case 141:
+            case 145:
+            case 149:
+            case 201:
+            case 205:
+                return 3;
+            case 37:
+            case 39:
+            case 53:
+            case 93:
+            case 97:
+            case 99:
+            case 103:
+            case 109:
+            case 117:
+            case 123:
+            case 127:
+            case 129:
+            case 133:
+            case 173:
+            case 187:
+            case 189:
+                return 4;
+            default:
+                return 0;
+        }
+
     }
 }
