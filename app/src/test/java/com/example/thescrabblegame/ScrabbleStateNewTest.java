@@ -58,19 +58,85 @@ public class ScrabbleStateNewTest extends TestCase {
     public void testSetOver() {
     }
 
+    //by Samone
     public void testSetNumPasses() {
+        ScrabbleState state = new ScrabbleState();
+        state.setNumPasses(2);
+
+        assertEquals(2, state.getNumPasses());
+
     }
 
+    //by Samone
     public void testSetPlayer1Hand() {
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+
+        state.setPlayer1Hand(letters);
+        assertEquals(letters, state.getPlayer1Hand());
     }
 
+    //by Samone
     public void testSetPlayer2Hand() {
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+
+        state.setPlayer2Hand(letters);
+        assertEquals(letters, state.getPlayer2Hand());
     }
 
+    //by Samone
     public void testSetPlayer3Hand() {
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+
+        state.setPlayer3Hand(letters);
+        assertEquals(letters, state.getPlayer3Hand());
     }
 
+    //by Samone
     public void testSetPlayer4Hand() {
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter[] letters= new ScrabbleLetter[4];
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        letters[0] = b;
+        letters[1] = a;
+        letters[2] = n;
+        letters[3] = d;
+
+        state.setPlayer4Hand(letters);
+        assertEquals(letters, state.getPlayer4Hand());
     }
 
     //by Anabel

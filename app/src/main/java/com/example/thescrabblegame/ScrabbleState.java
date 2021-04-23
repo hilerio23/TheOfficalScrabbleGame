@@ -15,18 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-/**
- * class ScrabbleState keeps track of the state of the game
- *
- * @author Alec Uyematsu, Anabel Hilerio, and Samone Watkins
- * @version April 2021
- */
 public class ScrabbleState  extends GameState {
 
     //15 x 15 board
     private ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
 
-    //tells who's move it is 0 for human 1 for AI
+    //an in to tell whos move it is 0 for human 1 for AI
     private int playerToMove;
 
     //array of ScrabbleLetters for hand
@@ -36,16 +30,23 @@ public class ScrabbleState  extends GameState {
     private ScrabbleLetter[] player4Hand = new ScrabbleLetter[7];
 
     //array of ScrabbleLetters for Pool (100) total letters
-    private ScrabbleLetter[] pool = new ScrabbleLetter[100];
+    private ScrabbleLetter[] pool = new ScrabbleLetter[100]; //arraylist
 
     //game pause: 1 for pause 0 for playing
     private int gamePause;
+
+    //booleans to work with the onClick
+    public boolean isQuitPressed;
+    public boolean isPlayWordPressed;
 
     //add score
     private int player1Score;
     private int player2Score;
     private int player3Score;
     private int player4Score;
+
+    //track how empty the percent is
+    double percentOfPool = 0.0;
 
     //id of players and num of players
     private int id;
@@ -59,13 +60,15 @@ public class ScrabbleState  extends GameState {
 
     private int firstTurn; //0 for first turn
 
+    //extra variable for tracking if a move is possible
+    boolean isPossible;
+    private ScrabbleMainActivity myActivity;
+
     //variable for checking if the first word played is centered
     private boolean isCentered;
     private int poolCounter;
 
-    /**
-     * The ScrabbleState constructor
-     */
+    //constructor
     public ScrabbleState(){
         //sets board to blanks
         for(int i = 0; i < 15; i++) {
@@ -103,8 +106,6 @@ public class ScrabbleState  extends GameState {
 
         //sets the id
         id = 0;
-
-        //sets the players scores
         player1Score = 0;
         player2Score = 0;
         player3Score = 0;
@@ -126,6 +127,10 @@ public class ScrabbleState  extends GameState {
         poolCounter = 0;
 
     }
+    /*public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
+        mSurfaceView = scrabbleSurfaceView;
+        mSurfaceView.drawHand(this);
+    }*/
 
 
     /**
@@ -285,38 +290,40 @@ public class ScrabbleState  extends GameState {
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
-        isCentered(xPositions, yPositions);
-        //if it's not continuous it's invalid so exit trying
+        if(id == 0) {
+            //isCentered(xPositions, yPositions);
+            //if it's not continuous it's invalid so exit trying
+        /*
         if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
             return;
-        }
+        }*/
 
-        //finds missing letter
-        if(isVertical == true){
-            for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][(yPositions[i])+1] == null || myBoard[xPositions[i]][(yPositions[i])-1] == null){
-                    return;
+            //finds missing letter
+            if (isVertical == true) {
+                for (int i = 0; i < wordToPlay.length; i++) {
+                    if (myBoard[xPositions[i]][(yPositions[i]) + 1] == null || myBoard[xPositions[i]][(yPositions[i]) - 1] == null) {
+                        return;
+                    }
+                    if (myBoard[xPositions[i]][yPositions[i] + 1].getLetter() != ' ') {
+                        missingLetter = myBoard[xPositions[i]][yPositions[i] + 1];
+                    } else if (myBoard[xPositions[i]][yPositions[i] - 1].getLetter() != ' ') {
+                        missingLetter = myBoard[xPositions[i]][yPositions[i] - 1];
+                    }
                 }
-                if(myBoard[xPositions[i]][yPositions[i]+1].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]][yPositions[i]+1];
-                }
-                else if(myBoard[xPositions[i]][yPositions[i]-1].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]][yPositions[i]-1];
-                }
-            }
-        }
-        else{
-            for(int i = 0; i < wordToPlay.length; i ++){
-                if(myBoard[xPositions[i]][yPositions[i]+1] == null || myBoard[xPositions[i]][yPositions[i]-1] == null){
-                    return;
-                }
-                if(myBoard[xPositions[i]+1][yPositions[i]].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]+1][yPositions[i]];
-                }
-                else if(myBoard[xPositions[i]-1][yPositions[i]].getLetter() != ' '){
-                    missingLetter = myBoard[xPositions[i]-1][yPositions[i]];
+            } else {
+                for (int i = 0; i < wordToPlay.length; i++) {
+                    if (myBoard[xPositions[i]][yPositions[i] + 1] == null || myBoard[xPositions[i]][yPositions[i] - 1] == null) {
+                        return;
+                    }
+                    if (myBoard[xPositions[i] + 1][yPositions[i]].getLetter() != ' ') {
+                        missingLetter = myBoard[xPositions[i] + 1][yPositions[i]];
+                    } else if (myBoard[xPositions[i] - 1][yPositions[i]].getLetter() != ' ') {
+                        missingLetter = myBoard[xPositions[i] - 1][yPositions[i]];
+                    }
                 }
             }
+
+
         }
 
         //adds words to score and adds points as well
@@ -327,6 +334,7 @@ public class ScrabbleState  extends GameState {
         //adds one to first turn
         this.firstTurn++;
         this.board = myBoard;
+
     }
 
     /**
@@ -522,10 +530,10 @@ public class ScrabbleState  extends GameState {
     }
 
     /**
-     * Checks to see if the word is continuous or not
+     *
      * @param xPoints
      * @param yPoints
-     * @return boolean
+     * @return
      */
     public boolean isContinuous(int[] xPoints, int[] yPoints){
         //checks if word placed builds off of another word

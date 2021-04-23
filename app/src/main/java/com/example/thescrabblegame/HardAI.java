@@ -21,7 +21,7 @@ import java.util.Set;
 
 import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
 
-public class EasyAI extends GameComputerPlayer {
+public class HardAI extends GameComputerPlayer {
 
     private ArrayList<String> sowpodsList; //for dictionary;
 
@@ -30,7 +30,7 @@ public class EasyAI extends GameComputerPlayer {
      *
      * @param name the player's name (e.g., "John")
      */
-    public EasyAI(String name) {
+    public HardAI(String name) {
         super(name);
     }
 
@@ -59,7 +59,7 @@ public class EasyAI extends GameComputerPlayer {
     private int[] playY;
     private ScrabbleLetter[] wordToPlay;
     private int[] specialTileArray;
-
+    private int points;
     /*
      * Method sets variables to then play a word in RecieveInfo
      */
@@ -126,6 +126,7 @@ public class EasyAI extends GameComputerPlayer {
                     }
                     this.playX = xArrayToPlay;
                     this.playY = yArrayToPlay;
+                    this.points = pointsToPlay;
                 }
             }
             isOverlap = false;
@@ -160,6 +161,7 @@ public class EasyAI extends GameComputerPlayer {
                     }
                     this.playX = xArrayToPlay;
                     this.playY = yArrayToPlay;
+                    this.points = pointsToPlay;
                 }
             }
         }
@@ -256,7 +258,8 @@ public class EasyAI extends GameComputerPlayer {
             //creates copy of board
             ScrabbleLetter[][] board;
             board = scrabbleCopy.getBoard();
-
+            ScrabbleLetter[][] playBoard;
+            playBoard = scrabbleCopy.getBoard();
             //creates copy of hand
             ScrabbleLetter[] hand = scrabbleCopy.getPlayer2Hand();
 
@@ -270,6 +273,11 @@ public class EasyAI extends GameComputerPlayer {
             boolean vertical = false;
             int tempX = -1;
             int tempY = -1;
+            int tempPoints = 0;
+            ScrabbleLetter[] myWordToPlay = null;
+            int[] myPlayX = null;
+            int[] myPlayY = null;
+            boolean myPlayVertical = false;
 
             //nested for loop goes through board and sets testLetter to a non null Letter
             for (int row = 0; row < 15; row++) {
@@ -282,31 +290,41 @@ public class EasyAI extends GameComputerPlayer {
                             foundSpace = true;
                             tempX = row;
                             tempY = col;
+                            board[row][col].setName(' '); //sets it to empty to find all possible words
+                            //adds all possible letters to a string to find all possible words
+                            String handString = Character.toString(testLetter.getLetter());
+                            for (int i = 0; i < hand.length; i++) {
+                                handString += Character.toString(hand[i].getLetter());
+                            }
+                            this.wordToPlay = null;
+                            ArrayList<String> dicWords = new ArrayList<>();
+                            //finds all words in dictionary given hand and test letter
+                            dicWords = getAllWordsInDic(handString, testLetter.getLetter());
+                            findPlayWord(playBoard, tempX, tempY, testLetter, dicWords);
+                            //finds highest value word
+                            if(this.points > tempPoints){
+                                myWordToPlay = this.wordToPlay;
+                                myPlayX = this.playX;
+                                myPlayY = this.playY;
+                                myPlayVertical = this.playWordVertical;
+                                tempPoints = this.points;
+                            }
                         }
                     }
                 }
-            }
-            if (foundSpace) {
-                //adds all possible letters to a string to find all possible words
-                String handString = Character.toString(testLetter.getLetter());
-                for (int i = 0; i < hand.length; i++) {
-                    handString += Character.toString(hand[i].getLetter());
-                }
-                this.wordToPlay = null;
-                ArrayList<String> dicWords = new ArrayList<>();
-                //finds all words in dictionary given hand and test letter
-                dicWords = getAllWordsInDic(handString, testLetter.getLetter());
-                findPlayWord(board, tempX, tempY, testLetter, dicWords);
-                if(this.wordToPlay != null) {
+            }//is there a better way to do this? probably...
+
+            if(this.wordToPlay != null) {
                 int[] specialPlay = new int[this.wordToPlay.length];
                 for (int i = 0; i < this.wordToPlay.length; i++) {
                     specialPlay[i] = 0;
                 }
-                    PlayWord playWord = new PlayWord(this, this.wordToPlay, specialPlay, this.playX, this.playY, this.playWordVertical);
-                    game.sendAction(playWord);
-                    foundWord = true;
-                }
+                PlayWord playWord = new PlayWord(this,myWordToPlay, specialPlay, myPlayX, myPlayY, myPlayVertical);
+                game.sendAction(playWord);
+                foundWord = true;
             }
+
+
 
             //exchange if we couldn't find word
             if (!foundWord) {
