@@ -1079,6 +1079,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
         }
+
     }
 
     public ImageView getHandImageView(int num){
