@@ -48,13 +48,13 @@ public class ScrabbleStateTest extends TestCase {
         assertEquals(board, myBoard);
     }
 
-    public void testGetIdNum() {
+    public void testGetIdNum() throws Exception{
         ScrabbleState state = new ScrabbleState();
         int id = state.getIdNum();
         assertEquals(id, 0);
     }
 
-    public void testGetPlayer1Score() {
+    public void testGetPlayer1Score() throws Exception{
         ScrabbleState state = new ScrabbleState();
         int score = state.getPlayer1Score();
         assertEquals(score,0);

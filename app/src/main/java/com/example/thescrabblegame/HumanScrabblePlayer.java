@@ -668,6 +668,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             tempInts.add(getSquare(button));
             //surfaceView.invalidate();
         }
+
     }
 
     //updates the hand as it's played

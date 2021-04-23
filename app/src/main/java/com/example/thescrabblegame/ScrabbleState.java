@@ -466,7 +466,7 @@ public class ScrabbleState  extends GameState {
         } else if (id == 1) {
             this.player2Score += score;
         }
-        //adds missing lettter to points
+        //adds missing let  ter to points
         if(firstTurn != 0) {
             if (id == 0) {
                 this.player1Score += missingLetter.getPoints();
