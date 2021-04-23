@@ -64,6 +64,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         return myActivity.findViewById(R.id.top_gui_layout);
     }
 
+    //updates game
     @Override
     public void receiveInfo(GameInfo info) {
         first.invalidate();
@@ -780,7 +781,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         return tempArray;
     }
-
+//convert array of tiles to letters
     public ScrabbleLetter[] toScrabbleLetter(ArrayList<String> arrs){
         this.letter = new ScrabbleLetter[arrs.size()];
 
@@ -791,7 +792,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
         return letter;
     }
-
+//convert array of special tiles to letters
     public int[] getSpecialArray(ArrayList<Integer> tempInts){
         specialTileArray = new int[tempInts.size()];
 
@@ -801,7 +802,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         return specialTileArray;
     }
-
+//gets id's of the special tiles on the board
     public int getSpecialTile(int tile){
         switch (tile){
             case 1:
@@ -866,7 +867,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
     }
 
-
+//get letter tile of the deck
     public char getCharacter(View view) {
 
         ScrabbleLetter[] myHand = scrabbleCopy.getPlayer1Hand();
@@ -890,6 +891,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return ' ';
         }
     }
+    //get id of each board tile
     public int getSquare(View view){
         switch(view.getId()){
             case R.id.imageView:
@@ -1137,6 +1139,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return -1;
         }
     }
+    //displays the player's deck of tiles
     public void drawHand(ScrabbleState state){
         ScrabbleLetter[] hand = state.getPlayer1Hand();
         ImageView img;
@@ -1232,6 +1235,12 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
 
     }
+    /** External Citation
+     Date: 15 April 2021
+     Problem: Needed to set height and width for the board
+     Resource: https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
+     Solution: I used the example code from this post.
+     */
     public void drawBoard(ScrabbleState state){
         ScrabbleLetter[][] board = state.getBoard();
         ImageView img;
@@ -1239,7 +1248,6 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         for(int r = 0; r < board.length; r++){
             for(int c = 0; c < board[r].length; c++){
                 img = getImageView(r,c);
-                //https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
                 int width = 60;
                 int height = 60;
                 LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
@@ -1255,7 +1263,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
         }
     }
-
+//get ImageView for each tile on the board
     public ImageView getImageView(int row, int col){
         //this is going to be massive and messy. Sorry.
         if(row == 0){

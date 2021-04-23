@@ -18,12 +18,13 @@ public class ScrabbleLocalGame extends LocalGame {
         super();
         state = new ScrabbleState(scrabbleState);
     }
+    //update game
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
         ScrabbleState myScrabbleState = new ScrabbleState((ScrabbleState)state);
         p.sendInfo(myScrabbleState);
     }
-
+//check if it's the player's turn
     @Override
     protected boolean canMove(int playerIdx) {
         if(playerIdx == ((ScrabbleState)state).getIdNum()){
@@ -34,7 +35,7 @@ public class ScrabbleLocalGame extends LocalGame {
             return false;
         }
     }
-
+//returns the end game message
     @Override
     protected String checkIfGameOver() {
         String winningStatement = null;

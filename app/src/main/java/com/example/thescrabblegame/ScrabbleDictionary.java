@@ -13,7 +13,7 @@ import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
 
 public class ScrabbleDictionary {
 
-
+//check if tile spaces are next to each other
     public boolean isNeighbors(ScrabbleLetter[][] myLetter, int row, int col, boolean isVertical){
         if(row == myLetter.length && col == myLetter[row].length){
             return false;
