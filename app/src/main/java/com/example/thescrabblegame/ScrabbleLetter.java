@@ -41,7 +41,7 @@ public class ScrabbleLetter {
         return yCoord;
     }
 
-
+//assigns point values to the letter tiles
     public int getPoints(){
         if(this.letter == 'a' || this.letter == 'e' || this.letter == 'i' || this.letter == 'l' || this.letter == 'n' || this.letter == 'o'
                 || this.letter == 'r' || this.letter == 's' || this.letter == 't' ||

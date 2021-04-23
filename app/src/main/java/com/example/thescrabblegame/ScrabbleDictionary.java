@@ -43,7 +43,7 @@ public class ScrabbleDictionary {
         }
         return false;
     }
-
+//check if word is in dictionary
     public boolean isLegal(String word) {
         if(dictionary.contains(word)){
             return true;
