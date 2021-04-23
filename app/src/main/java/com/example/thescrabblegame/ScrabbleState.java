@@ -292,7 +292,13 @@ public class ScrabbleState  extends GameState {
         return player4Hand;
     }
 
-    //https://stackoverflow.com/questions/599161/best-way-to-convert-an-arraylist-to-a-string
+    /** External Citation
+     Date: 18 April 2021
+     Problem: Needed to convert array list to string
+     Resource: https://stackoverflow.com/questions/599161/best-way-to-convert-an-arraylist-to-a-string
+     Solution: I used the example code from this post.
+     */
+    //convert tiles placed on the board to a word
     public String arrToString(ScrabbleLetter[] arr){
         String word = "";
         for (int i = 0; i < arr.length; i++) {
@@ -300,7 +306,7 @@ public class ScrabbleState  extends GameState {
         }
         return word;
     }
-
+//check if word starts at the center for the first move
     public void isCentered(int[] xPos, int[] yPos){
 
         for(int i = 0; i < xPos.length; i++){
@@ -438,6 +444,7 @@ public class ScrabbleState  extends GameState {
         int score = 0;
         for(int i = 0; i < wordToPlay.length; i++){
             myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
+            //calculates scores for the special tiles
             if(specialTiles[i] == 0) {
                 score += wordToPlay[i].getPoints();
             }
@@ -479,6 +486,7 @@ public class ScrabbleState  extends GameState {
     }
 
     public void replaceTiles(ScrabbleLetter[] lettersToExchange){
+        //replaces the player's deck of tiles with new random letters
         numPasses = 0;
         int count = 0;
         if(id == 0){
@@ -531,6 +539,7 @@ public class ScrabbleState  extends GameState {
     }
 
     public void exchange(ScrabbleLetter[] lettersToExchange){
+        //give new letter tiles to player who wants to exchange
         numPasses = 0;
         int count = 0;
         if(id == 0){
@@ -610,6 +619,7 @@ public class ScrabbleState  extends GameState {
      * @return
      */
     public boolean isContinuous(int[] xPoints, int[] yPoints){
+        //checks if word placed builds off of another word
         xPoints = sort(xPoints);
         yPoints = sort(yPoints);
 
@@ -643,7 +653,7 @@ public class ScrabbleState  extends GameState {
 
         return true;
     }
-
+//if word placed is vertical
     public boolean isVertical(int[] xArray, int[] yArray) {
         boolean isVertical = false;
 
@@ -655,7 +665,7 @@ public class ScrabbleState  extends GameState {
 
         return isVertical;
     }
-
+//turn goes to the next player when clicked
     public void pass(){
         if(numPasses >= 3){
             over = 1;
@@ -669,7 +679,7 @@ public class ScrabbleState  extends GameState {
         }
         numPasses++;
     }
-
+//exits game
     public void exitGame(){
         over = 1;
         if(over == 1){
