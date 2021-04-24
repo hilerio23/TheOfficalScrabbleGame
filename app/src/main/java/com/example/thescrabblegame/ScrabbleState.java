@@ -41,18 +41,11 @@ public class ScrabbleState  extends GameState {
     //game pause: 1 for pause 0 for playing
     private int gamePause;
 
-    //booleans to work with the onClick
-    public boolean isQuitPressed;
-    public boolean isPlayWordPressed;
-
     //add score
     private int player1Score;
     private int player2Score;
     private int player3Score;
     private int player4Score;
-
-    //track how empty the percent is
-    double percentOfPool = 0.0;
 
     //id of players and num of players
     private int id;
@@ -65,10 +58,6 @@ public class ScrabbleState  extends GameState {
     private int numPasses;
 
     private int firstTurn; //0 for first turn
-
-    //extra variable for tracking if a move is possible
-    boolean isPossible;
-    private ScrabbleMainActivity myActivity;
 
     //variable for checking if the first word played is centered
     private boolean isCentered;
@@ -133,10 +122,6 @@ public class ScrabbleState  extends GameState {
         poolCounter = 0;
 
     }
-    /*public ScrabbleState(ScrabbleSurfaceView scrabbleSurfaceView){
-        mSurfaceView = scrabbleSurfaceView;
-        mSurfaceView.drawHand(this);
-    }*/
 
 
     /**
@@ -299,10 +284,10 @@ public class ScrabbleState  extends GameState {
         if(id == 0) {
             //isCentered(xPositions, yPositions);
             //if it's not continuous it's invalid so exit trying
-        /*
-        if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
-            return;
-        }*/
+            /*
+            if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+                return;
+            }*/
 
             //finds missing letter
             if (isVertical == true) {
@@ -388,7 +373,7 @@ public class ScrabbleState  extends GameState {
         } else if (id == 1) {
             this.player2Score += score;
         }
-        //adds missing let  ter to points
+        //adds missing letter to points
         if(firstTurn != 0) {
             if (id == 0) {
                 this.player1Score += missingLetter.getPoints();

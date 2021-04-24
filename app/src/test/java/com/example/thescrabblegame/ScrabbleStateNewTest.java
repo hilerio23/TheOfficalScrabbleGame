@@ -56,7 +56,11 @@ public class ScrabbleStateNewTest extends TestCase {
     }
 
     //by Anabel
-    public void testSetOver() {
+    public void testSetOver() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        state.setOver(1);
+        int checkOver = state.getOver();
+        assertEquals(1, checkOver);
     }
 
     //by Samone
@@ -194,10 +198,17 @@ public class ScrabbleStateNewTest extends TestCase {
 
     //by Anabel
     public void testGetOver() {
+        ScrabbleState state = new ScrabbleState();
+        int checkOver = state.getOver();
+        assertEquals(0, checkOver);
     }
 
     //by Anabel
     public void testGetNumPasses() {
+        ScrabbleState state = new ScrabbleState();
+        state.setNumPasses(2);
+        int numPasses = state.getNumPasses();
+        assertEquals(2,numPasses);
     }
 
     //by Samone
@@ -319,7 +330,7 @@ public class ScrabbleStateNewTest extends TestCase {
     //by Anabel
     public void testPass() {
         ScrabbleState state = new ScrabbleState();
-        int id = state.getIdNum();
+        state.getIdNum();
         state.pass();;
         int newId = state.getIdNum();
         assertEquals(0, newId);
