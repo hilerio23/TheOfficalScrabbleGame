@@ -15,6 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * class ScrabbleState controls the state of the game
+ *
+ * @author Anabel Hilerio, Alec Uyematsu, Samone Watkins
+ * @version April 2021
+ */
 public class ScrabbleState  extends GameState {
 
     //15 x 15 board

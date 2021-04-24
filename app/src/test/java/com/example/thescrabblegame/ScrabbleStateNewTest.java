@@ -55,6 +55,7 @@ public class ScrabbleStateNewTest extends TestCase {
         assertEquals(board, myBoard);
     }
 
+    //by Anabel
     public void testSetOver() {
     }
 
@@ -191,9 +192,11 @@ public class ScrabbleStateNewTest extends TestCase {
         assertEquals(null, scrabbleState.getBoard());
     }
 
+    //by Anabel
     public void testGetOver() {
     }
 
+    //by Anabel
     public void testGetNumPasses() {
     }
 
