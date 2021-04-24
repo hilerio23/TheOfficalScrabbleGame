@@ -1,13 +1,4 @@
-/**
- * @author Tamsen Dean
- * @author Anabel Hilerio
- * @author Alec Uyematsu
- * @author Samone Watkins
- */
 package com.example.thescrabblegame;
-
-import android.util.Log;
-import android.widget.ImageView;
 
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 
@@ -521,6 +512,7 @@ public class ScrabbleState  extends GameState {
     }
 
     /**
+     *Checks to see if the word played is continuous
      *
      * @param xPoints
      * @param yPoints

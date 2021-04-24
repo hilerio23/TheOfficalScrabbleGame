@@ -21,6 +21,12 @@ import java.util.Set;
 
 import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
 
+/**
+ * class EasyAI controls the Easy Computer Player
+ *
+ * @author Alec Uyematsu
+ * @version April 2021
+ */
 public class EasyAI extends GameComputerPlayer {
 
     private ArrayList<String> sowpodsList; //for dictionary;

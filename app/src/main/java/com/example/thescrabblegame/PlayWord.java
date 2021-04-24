@@ -3,6 +3,12 @@ package com.example.thescrabblegame;
 import com.example.thescrabblegame.game.GameFramework.actionMessage.GameAction;
 import com.example.thescrabblegame.game.GameFramework.players.GamePlayer;
 
+/**
+ * class PlayWord acts as place holder for the action of playing a word
+ *
+ * @author Anabel Hilerio, Samone Watkins
+ * @version April 2021
+ */
 public class PlayWord extends GameAction {
     private ScrabbleLetter[] wordPlayed;
     private int[] sTiles;
@@ -17,14 +23,13 @@ public class PlayWord extends GameAction {
      */
     public PlayWord(GamePlayer player, ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xArray, int[] yArray, boolean direction) {
         super(player);
-        //set this.wordToPlay
         wordPlayed = wordToPlay;
         sTiles = specialTiles;
         this.xArray = xArray;
         this.yArray = yArray;
         vertical = direction;
     }
-    //add a getter for wordToPlay
+
     public ScrabbleLetter[] getWordToPlay(){
         return wordPlayed;
     }
@@ -40,5 +45,4 @@ public class PlayWord extends GameAction {
     public boolean getIsVertical(){
         return vertical;
     }
-    //add an instance variable this.wordToPlay
 }
