@@ -625,10 +625,10 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
        // surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
 
     }
+    //instance variable to play letter after click
+    ScrabbleLetter lastLetter = null;
     public void onClick(View button) {
-
         boolean isVertical;
-
         if (button.getId() == R.id.exchange) {
             toScrabbleLetter(letters);
             if(letter == null){
@@ -641,7 +641,6 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             tempXCords.clear();
             tempYCords.clear();
             letters.clear();
-
         }
         else if(button.getId() == R.id.pass){
             Pass pass = new Pass(this);
@@ -654,10 +653,6 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
             int myTempXCoords[] = getXCoord(tempInts);
             int myTempYCoords[] = getYCoord(tempInts);
-           // if(isFirst){
-               //fillWord();
-
-            //}
 
             PlayWord playWord = new PlayWord(this, letter, specialTileArray,getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
@@ -679,16 +674,17 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             char myChar = getCharacter(button);
             String myString = Character.toString(myChar);
             letters.add(myString);
+            lastLetter = new ScrabbleLetter(myChar);
         }
         else if(button instanceof ImageView){
-            drawBoard(scrabbleCopy);
             tempInts.add(getSquare(button));
             tempXCords.add(getSquare(button) / 15);
             tempYCords.add(getSquare(button) % 15);
+            ScrabbleLetter[][] tempBoard = scrabbleCopy.getBoard();
+            tempBoard[getSquare(button) /15][(getSquare(button) % 15) - 1] = lastLetter;
+            scrabbleCopy.setBoard(tempBoard);
             drawBoard(scrabbleCopy);
-            //surfaceView.invalidate();
         }
-
     }
 
     /**
