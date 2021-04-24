@@ -21,6 +21,12 @@ import java.util.Set;
 
 import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
 
+/**
+ * class HardAI controls the difficult computer player 
+ *
+ * @author Alec Uyematsu
+ * @version April 2021
+ */
 public class HardAI extends GameComputerPlayer {
 
     private ArrayList<String> sowpodsList; //for dictionary;

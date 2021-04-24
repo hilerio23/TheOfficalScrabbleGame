@@ -27,6 +27,8 @@ public class ScrabbleLocalGame extends LocalGame {
 
     /**
      * send the updated state to a given player
+     *
+     * @param p
      */
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
@@ -36,6 +38,9 @@ public class ScrabbleLocalGame extends LocalGame {
 
     /**
      * can the player with the given id take an action right now?
+     *
+     * @param playerIdx
+     * @return boolean
      */
     @Override
     protected boolean canMove(int playerIdx) {

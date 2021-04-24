@@ -24,22 +24,25 @@ import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+ /**
+  * class ScrabbleSurfaceView controls the Surface View
+  *
+  * @author Samone Watkins
+  * @version April 2021
+  */
 public class ScrabbleSurfaceView extends SurfaceView implements
          TextView.OnEditorActionListener, View.OnTouchListener{
 
     public ScrabbleState state;
-    private ArrayList<ImageView> letters = new ArrayList<>();
     private ArrayList<Double> xcoords = new ArrayList<>();
     private ArrayList<Double> ycoords = new ArrayList<>();
 
-    private double[][] xy;
-    private double xCoord;
-    private double yCoord;
-    private ScrabbleLetter[] letter;
-    private ScrabbleMainActivity myActivity;
-
-
-
+     /**
+      * The class's constructor
+      *
+      * @param context
+      * @param attrs
+      */
     public ScrabbleSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
@@ -47,11 +50,26 @@ public class ScrabbleSurfaceView extends SurfaceView implements
         state = new ScrabbleState();
     }
 
+     /**
+      * sets the onEditorAction to false
+      *
+      * @param textView
+      * @param i
+      * @param keyEvent
+      * @return
+      */
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         return false;
     }
 
+     /**
+      * It gets the coordinates of where the player touches the surface view
+      *
+      * @param view
+      * @param motionEvent
+      * @return boolean
+      */
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(view instanceof ImageView) {

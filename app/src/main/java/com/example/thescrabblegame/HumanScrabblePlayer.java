@@ -1,14 +1,8 @@
 package com.example.thescrabblegame;
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.view.Display;
-import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,12 +17,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Dictionary;
 
+/**
+ * class HumanScrabblePlayer controls the GUI and the human player and
+ * their actions
+ *
+ * @author Anabel Hilerio, Samone Watkin, Alec Uyematsu
+ * @version April 2021
+ */
 public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClickListener {
 
     private TextView score = null;
-    private ScrabbleSurfaceView surfaceView;
     public ScrabbleState scrabbleCopy;
     public int layoutId;
     private ArrayList<String> letters = new ArrayList<>();
@@ -50,21 +49,28 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
      * constructor
      *
      * @param name the name of the player
+     * @param layoutId
      */
     public HumanScrabblePlayer(String name, int layoutId) {
         super(name);
-        //this.surfaceView = surfaceView;
         this.layoutId = layoutId;
         scrabbleCopy = new ScrabbleState();
         isFirst = false;
     }
 
+    /**
+     * gets the GUI that shows the actual game
+     * @return View
+     */
     @Override
     public View getTopView() {
         return myActivity.findViewById(R.id.top_gui_layout);
     }
 
-    //updates game
+    /**
+     * updates the game information
+     * @param info
+     */
     @Override
     public void receiveInfo(GameInfo info) {
         first.invalidate();
@@ -100,13 +106,15 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
     }
 
-
+    /**
+     * set up the GUI
+     *
+     * @param activity
+     */
     @Override
     public void setAsGui(GameMainActivity activity) {
         activity.setContentView(layoutId);
         setList();
-        //activity.setContentView(R.layout.activity_main);
-       // surfaceView = activity.findViewById(R.id.scrabbleSurfaceView);
         myActivity = ((ScrabbleMainActivity) activity);
         ArrayList<String> myList = new ArrayList<>();
         myList = dictionary;
@@ -119,11 +127,8 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         playword.setOnClickListener(this);
         exit.setOnClickListener(this);
 
-        //drawHand(scrabbleCopy);
         //setting the score board's on click listener
-        TextView scoreboard = (TextView)activity.findViewById(R.id.scoreNumber);
-        this.score = scoreboard;
-        //scoreboard.setOnEditorActionListener(this);
+        this.score = (TextView)activity.findViewById(R.id.scoreNumber);
 
         //setting the hand's on click listener
         first = (ImageView)activity.findViewById(R.id.aButton);
@@ -621,11 +626,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         c14r13.setOnClickListener(this);
         ImageView c14r14 = (ImageView)activity.findViewById(R.id.imageView225);
         c14r14.setOnClickListener(this);
-
-       // surfaceView = (ScrabbleSurfaceView)activity.findViewById(R.id.scrabbleSurfaceView);
-
     }
-    //instance variable to play letter after click
+
+    /**
+     * creates the buttons' onClicks
+     *
+     * @param button
+     */
     ScrabbleLetter lastLetter = null;
     public void onClick(View button) {
         boolean isVertical;
@@ -657,6 +664,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             PlayWord playWord = new PlayWord(this, letter, specialTileArray,getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
             isFirst = true;
+
             //have to delete arrayLists otherwise they are stored and ruin future words
             tempInts.clear();
             tempXCords.clear();
@@ -747,7 +755,12 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
 
     }
-    //updates the hand as it's played
+
+    /**
+     * updates the hand as it's played
+     *
+     * @param handButton
+     */
     public void tmpAdd(View handButton){
         ScrabbleLetter[][] board = scrabbleCopy.getBoard();
         ScrabbleLetter[] hand = scrabbleCopy.getPlayer1Hand();
@@ -756,6 +769,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         scrabbleCopy.setBoard(board);
 
     }
+
+    /**
+     * gets the x-Coordinate of the tile hit on the board
+     *
+     * @param tempInts
+     * @return int[]
+     */
     public int[] getXCoord(ArrayList<Integer> tempInts){
         int[] xArray;
         xArray = new int[tempInts.size()];
@@ -764,6 +784,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         return xArray;
     }
+
+    /**
+     * gets the y-Coordinate of the tile hit on the board
+     *
+     * @param tempInts
+     * @return int[]
+     */
     public int[] getYCoord(ArrayList<Integer> tempInts){
         int[] yArray;
         yArray = new int[tempInts.size()];
@@ -772,6 +799,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         return yArray;
     }
+
+    /**
+     * gets the integer values of the tile hit on the board
+     *
+     * @param tempInts
+     * @return int[]
+     */
     public int[] getIntVal(ArrayList<Integer> tempInts){
         int[] tempArray = new int[tempInts.size()];
         for(int i = 0; i < tempInts.size(); i++){
@@ -779,7 +813,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         return tempArray;
     }
-//convert array of tiles to letters
+
+    /**
+     * convert array of tiles to letters
+     *
+     * @param arrs
+     * @return ScrabbleLetter[]
+     */
     public ScrabbleLetter[] toScrabbleLetter(ArrayList<String> arrs){
         this.letter = new ScrabbleLetter[arrs.size()];
 
@@ -790,7 +830,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
         return letter;
     }
-//convert array of special tiles to letters
+
+    /**
+     * convert array of special tiles to letters
+     *
+     * @param tempInts
+     * @return int[]
+     */
     public int[] getSpecialArray(ArrayList<Integer> tempInts){
         specialTileArray = new int[tempInts.size()];
 
@@ -800,7 +846,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
         return specialTileArray;
     }
-//gets id's of the special tiles on the board
+
+    /**
+     * gets id's of the special tiles on the board
+     *
+     * @param tile
+     * @return int
+     */
     public int getSpecialTile(int tile){
         switch (tile){
             case 1:
@@ -865,7 +917,12 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
     }
 
-//get letter tile of the deck
+    /**
+     * gets letter tile of the deck
+     *
+     * @param view
+     * @return char
+     */
     public char getCharacter(View view) {
 
         ScrabbleLetter[] myHand = scrabbleCopy.getPlayer1Hand();
@@ -889,7 +946,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return ' ';
         }
     }
-    //get id of each board tile
+
+    /**
+     * gets id of each board tile
+     *
+     * @param view
+     * @return int
+     */
     public int getSquare(View view){
         switch(view.getId()){
             case R.id.imageView:
@@ -1137,7 +1200,12 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return -1;
         }
     }
-    //displays the player's deck of tiles
+
+    /**
+     * displays the player's deck of tiles
+     *
+     * @param state
+     */
     public void drawHand(ScrabbleState state){
         ScrabbleLetter[] hand = state.getPlayer1Hand();
         ImageView img;
@@ -1153,6 +1221,12 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
     }
 
+    /**
+     * Gets the image views of the players hand went clicked
+     *
+     * @param num
+     * @return ImageView
+     */
     public ImageView getHandImageView(int num){
         switch(num){
             case 0:
@@ -1173,6 +1247,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return null;
         }
     }
+
+    /**
+     * gets the drable of the necessary letters
+     *
+     * @param letter
+     * @return Drawable
+     */
     public Drawable getDrawableLetter(char letter){
 
         switch(letter){
@@ -1233,11 +1314,17 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
 
     }
+
     /** External Citation
      Date: 15 April 2021
      Problem: Needed to set height and width for the board
      Resource: https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
      Solution: I used the example code from this post.
+     */
+    /**
+     * it draws the board
+     *
+     * @param state
      */
     public void drawBoard(ScrabbleState state){
         ScrabbleLetter[][] board = state.getBoard();
@@ -1261,9 +1348,15 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
         }
     }
-//get ImageView for each tile on the board
+
+    /**
+     * gets ImageView for each tile on the board
+     *
+     * @param row
+     * @param col
+     * @return ImageView
+     */
     public ImageView getImageView(int row, int col){
-        //this is going to be massive and messy. Sorry.
         if(row == 0){
             if(col == 0){
                 return myActivity.findViewById(R.id.imageView);
@@ -1313,7 +1406,6 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             else{
                 return null;
             }
-
         }
         else if (row == 1 ){
             if(col == 0){
@@ -2020,6 +2112,10 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         }
     }
     public static ArrayList<String> dictionary = new ArrayList<>();
+
+    /**
+     * it sets the list for the dictionary
+     */
     public void setList(){
         InputStream is = myActivity.getResources().openRawResource(R.raw.words_alpha);
         BufferedReader wordIn = new BufferedReader(new InputStreamReader(is));

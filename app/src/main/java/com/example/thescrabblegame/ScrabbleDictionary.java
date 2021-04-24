@@ -11,9 +11,23 @@ import java.io.*;
 
 import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
 
+/**
+ * class ScrabbleState controls the state of the game
+ *
+ * @author Samone Watkins, Alec Uyematsu, and Tamsen Dean
+ * @version April 2021
+ */
 public class ScrabbleDictionary {
 
-//check if tile spaces are next to each other
+    /**
+     * Checks to see if tile spaces are next to each other
+     *
+     * @param myLetter
+     * @param row
+     * @param col
+     * @param isVertical
+     * @return boolean
+     */
     public boolean isNeighbors(ScrabbleLetter[][] myLetter, int row, int col, boolean isVertical){
         if(row == myLetter.length && col == myLetter[row].length){
             return false;
@@ -43,7 +57,13 @@ public class ScrabbleDictionary {
         }
         return false;
     }
-//check if word is in dictionary
+
+    /**
+     * checks to see if word played is in the dictionary
+     *
+     * @param word
+     * @return boolean
+     */
     public boolean isLegal(String word) {
         if(dictionary.contains(word)){
             return true;

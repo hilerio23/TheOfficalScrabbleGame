@@ -18,6 +18,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class ScrabbleMainActivity is the primary activity for Scrabble
+ *
+ * @author Andrew M. Nuxoll, modified by Anabel Hilerio and Alec Uyematsu
+ * @version April 2021
+ */
 public class ScrabbleMainActivity extends GameMainActivity {
     private static final int PORT_NUMBER = 2278;
 
