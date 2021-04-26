@@ -368,8 +368,6 @@ public class ScrabbleState  extends GameState {
         if(firstTurn != 0) {
             if (id == 0) {
                 this.player1Score += missingLetter.getPoints();
-            } else if (id == 1) {
-                this.player2Score += missingLetter.getPoints();
             }
         }
     }
