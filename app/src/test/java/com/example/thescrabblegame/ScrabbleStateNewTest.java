@@ -342,9 +342,12 @@ public class ScrabbleStateNewTest extends TestCase {
         assertEquals(0, newId);
     }
 
+    //by Anabel
     public void testExitGame() {
         ScrabbleState state = new ScrabbleState();
-        System.exit(1);
-        assertEquals(1, 0);
+        //System.exit(1);
+        state.exitGame();
+        int checkOver = state.getOver();
+        assertEquals(1, checkOver);
     }
 }

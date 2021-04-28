@@ -441,6 +441,7 @@ public class ScrabbleState  extends GameState {
         numPasses = 0;
         int count = 0;
         if(id == 0){
+
             for(int i = 0; i < lettersToExchange.length; i++){
                 for(int j = 0; j < player1Hand.length; j++){
                     char tempChar1 = lettersToExchange[i].getLetter();
@@ -589,9 +590,9 @@ public class ScrabbleState  extends GameState {
      */
     public void exitGame(){
         over = 1;
-        if(over == 1){
-            System.exit(0);
-        }
+        //if(over == 1){
+        //    System.exit(0);
+        //}
     }
 
 }
