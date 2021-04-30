@@ -55,33 +55,39 @@ public class ScrabbleState  extends GameState {
     private boolean isCentered;
     private int poolCounter;
 
-    //constructor
+    /**
+     * This is the constructor for the ScrabbleState which (in order):
+     *  -sets board to blanks
+     *  -sets the players' hand by pulling from the pool
+     *  -initializes the tile pool
+     *  -sets the number of players
+     *  -sets game to not over
+     *  -sets number of passes
+     *  -sets it to first turn
+     *  -sets the poolCounter to 0
+     *
+     */
     public ScrabbleState(){
-        //sets board to blanks
+
         for(int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 board[i][j] = new ScrabbleLetter(' ');
             }
         }
 
-        //initialize the tile pool
         initPool();
 
-        //pull 7 tiles from the list for each player
-        for(int i = 0; i < 7; i++){
-            //generating random chars for each player
-            Random rnd = new Random();
-            char randomChar1 = (char) ('a' + rnd.nextInt(26));
-            char randomChar2 = (char) ('a' + rnd.nextInt(26));
-            char randomChar3 = (char) ('a' + rnd.nextInt(26));
-            char randomChar4 = (char) ('a' + rnd.nextInt(26));
-
-            //creating ScrabbleLetters
-            player1Hand[i] = new ScrabbleLetter(randomChar1);
-            player2Hand[i] = new ScrabbleLetter(randomChar2);
-            player3Hand[i] = new ScrabbleLetter(randomChar3);
-            player4Hand[i] = new ScrabbleLetter(randomChar4);
+        ArrayList<ScrabbleLetter> hand = new ArrayList<>();
+        while(hand.size() != 7){
+            Random r = new Random();
+            int high = 100;
+            int num = r.nextInt(high);
+            if(pool[num] != null){
+                hand.add(pool[num]);
+                pool[num] = null;
+            }
         }
+        player1Hand = hand.toArray(player1Hand);
 
         //player 0 is human player
         playerToMove = 0;
@@ -95,21 +101,11 @@ public class ScrabbleState  extends GameState {
         player3Score = 0;
         player4Score = 0;
 
-        //sets number of players
         numPlayers = 2;
-
-        //sets game to not over
         over = 0;
-
-        //sets number of passes
         numPasses = 0;
-
-        //sets it to first turn
         firstTurn = 0;
-
-        //sets the poolCounter to 0
         poolCounter = 0;
-
     }
 
 
@@ -392,6 +388,14 @@ public class ScrabbleState  extends GameState {
 
     }
 
+    /**
+     * PlaceWord is a helper method that places the word on the board
+     *
+     * @param word
+     * @param board
+     * @param x
+     * @param y
+     */
     public void placeWord(ScrabbleLetter[] word, ScrabbleLetter[][] board, int[] x, int[] y){
         for(int i = 0; i < x.length; i++){
             int xPos = x[i];
@@ -399,6 +403,8 @@ public class ScrabbleState  extends GameState {
             board[xPos][yPos] = word[i];
         }
     }
+
+
     /**
      * This calculates the score of the word that was played
      * @param wordToPlay
@@ -453,7 +459,7 @@ public class ScrabbleState  extends GameState {
         } else if (id == 1) {
             this.player2Score += score;
         }
-    }
+    } //score
 
     public void scoreOver(){
         ScrabbleLetter[] hand = getPlayer1Hand();
@@ -517,7 +523,7 @@ public class ScrabbleState  extends GameState {
                 }
             }
         }
-    }
+    } //replaceTiles
 
     /**
      * This exchanges the letters in your hand
@@ -576,7 +582,7 @@ public class ScrabbleState  extends GameState {
                 }
             }
         }
-    }
+    } //exchange
 
     /**
      * Performs an insertion sort on an int array
@@ -640,7 +646,7 @@ public class ScrabbleState  extends GameState {
         }
 
         return true;
-    }
+    } //isContinuous
 
     /**
      * Checks to see if the word is vertical
@@ -680,9 +686,6 @@ public class ScrabbleState  extends GameState {
     public void exitGame(){
         scoreOver();
         over = 1;
-        //if(over == 1){
-        //    System.exit(0);
-        //}
     }
 
 }

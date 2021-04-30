@@ -44,6 +44,8 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ImageView sixth;
     private ImageView seventh;
     private boolean isFirst;
+    public static ArrayList<String> dictionary = new ArrayList<>();
+    private ScrabbleLetter lastLetter = null;
 
     /**
      * constructor
@@ -107,7 +109,10 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
-     * set up the GUI
+     * set up the GUI including:
+     *     -all of the buttons' onClickListener
+     *     -setting all of the board ImageViews' onClickListener
+     *     -initializing the dictionary
      *
      * @param activity
      */
@@ -626,14 +631,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         c14r13.setOnClickListener(this);
         ImageView c14r14 = (ImageView)activity.findViewById(R.id.imageView225);
         c14r14.setOnClickListener(this);
-    }
+    } // setAsGui
 
     /**
      * creates the buttons' onClicks
      *
      * @param button
      */
-    ScrabbleLetter lastLetter = null;
     public void onClick(View button) {
         boolean isVertical;
         if (button.getId() == R.id.exchange) {
@@ -848,6 +852,136 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
+     * gets letter tile of the deck
+     *
+     * @param view
+     * @return char
+     */
+    public char getCharacter(View view) {
+
+        ScrabbleLetter[] myHand = scrabbleCopy.getPlayer1Hand();
+        switch (view.getId()) {
+
+            case R.id.aButton:
+                return myHand[0].getLetter();
+            case R.id.bButton:
+                return myHand[1].getLetter();
+            case R.id.cButton:
+                return myHand[2].getLetter();
+            case R.id.dButton:
+                return myHand[3].getLetter();
+            case R.id.gButton:
+                return myHand[4].getLetter();
+            case R.id.eButton:
+                return myHand[5].getLetter();
+            case R.id.fButton:
+                return myHand[6].getLetter();
+                default:
+                return ' ';
+        }
+    }
+
+    /**
+     * displays the player's deck of tiles
+     *
+     * @param state
+     */
+    public void drawHand(ScrabbleState state){
+        ScrabbleLetter[] hand = state.getPlayer1Hand();
+        ImageView img;
+
+
+        for(int i = 0; i < 7; i++){
+            img = getHandImageView(i);
+            if(img == null){
+                int x = 2;
+            }
+            img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
+        }
+
+    }
+
+    /**
+     * Gets the image views of the players hand went clicked
+     *
+     * @param num
+     * @return ImageView
+     */
+    public ImageView getHandImageView(int num){
+        switch(num){
+            case 0:
+                return (ImageView)myActivity.findViewById(R.id.aButton);
+            case 1:
+                return (ImageView) myActivity.findViewById(R.id.bButton);
+            case 2:
+                return (ImageView)myActivity.findViewById(R.id.cButton);
+            case 3:
+                return (ImageView)myActivity.findViewById(R.id.dButton);
+            case 4:
+                return (ImageView)myActivity.findViewById(R.id.gButton);
+            case 5:
+                return (ImageView)myActivity.findViewById(R.id.eButton);
+            case 6:
+                return (ImageView)myActivity.findViewById(R.id.fButton);
+            default:
+                return null;
+        }
+    }
+
+    /** External Citation
+     Date: 15 April 2021
+     Problem: Needed to set height and width for the board
+     Resource: https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
+     Solution: I used the example code from this post.
+     */
+    /**
+     * it draws the board
+     *
+     * @param state
+     */
+    public void drawBoard(ScrabbleState state){
+        ScrabbleLetter[][] board = state.getBoard();
+        ImageView img;
+
+        for(int r = 0; r < board.length; r++){
+            for(int c = 0; c < board[r].length; c++){
+                img = getImageView(r,c);
+                int width = 60;
+                int height = 60;
+                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
+                img.setLayoutParams(parms);
+
+                if(board[r][c].getLetter() == ' '){
+                    img.setImageDrawable(img.getDrawable());
+                }
+                else{
+                    img.setImageDrawable(getDrawableLetter(board[r][c].getLetter()));
+                }
+
+            }
+        }
+    }
+
+    /**
+     * it sets the list for the dictionary
+     */
+    public void setList(){
+        InputStream is = myActivity.getResources().openRawResource(R.raw.words_alpha);
+        BufferedReader wordIn = new BufferedReader(new InputStreamReader(is));
+        String s;
+        try {
+            while ((s = wordIn.readLine()) != null) {
+                dictionary.add(s);
+            }
+            wordIn.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    /**
      * gets id's of the special tiles on the board
      *
      * @param tile
@@ -915,37 +1049,8 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return 0;
         }
 
-    }
+    } //getSpecialTile
 
-    /**
-     * gets letter tile of the deck
-     *
-     * @param view
-     * @return char
-     */
-    public char getCharacter(View view) {
-
-        ScrabbleLetter[] myHand = scrabbleCopy.getPlayer1Hand();
-        switch (view.getId()) {
-
-            case R.id.aButton:
-                return myHand[0].getLetter();
-            case R.id.bButton:
-                return myHand[1].getLetter();
-            case R.id.cButton:
-                return myHand[2].getLetter();
-            case R.id.dButton:
-                return myHand[3].getLetter();
-            case R.id.gButton:
-                return myHand[4].getLetter();
-            case R.id.eButton:
-                return myHand[5].getLetter();
-            case R.id.fButton:
-                return myHand[6].getLetter();
-                default:
-                return ' ';
-        }
-    }
 
     /**
      * gets id of each board tile
@@ -1199,54 +1304,8 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             default:
                 return -1;
         }
-    }
+    } //getSquare
 
-    /**
-     * displays the player's deck of tiles
-     *
-     * @param state
-     */
-    public void drawHand(ScrabbleState state){
-        ScrabbleLetter[] hand = state.getPlayer1Hand();
-        ImageView img;
-
-
-        for(int i = 0; i < 7; i++){
-            img = getHandImageView(i);
-            if(img == null){
-                int x = 2;
-            }
-            img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
-        }
-
-    }
-
-    /**
-     * Gets the image views of the players hand went clicked
-     *
-     * @param num
-     * @return ImageView
-     */
-    public ImageView getHandImageView(int num){
-        switch(num){
-            case 0:
-                return (ImageView)myActivity.findViewById(R.id.aButton);
-            case 1:
-                return (ImageView) myActivity.findViewById(R.id.bButton);
-            case 2:
-                return (ImageView)myActivity.findViewById(R.id.cButton);
-            case 3:
-                return (ImageView)myActivity.findViewById(R.id.dButton);
-            case 4:
-                return (ImageView)myActivity.findViewById(R.id.gButton);
-            case 5:
-                return (ImageView)myActivity.findViewById(R.id.eButton);
-            case 6:
-                return (ImageView)myActivity.findViewById(R.id.fButton);
-            default:
-                return null;
-        }
-    }
 
     /**
      * gets the drable of the necessary letters
@@ -1313,41 +1372,8 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
                 return myActivity.getResources().getDrawable(R.drawable.backgroundsquare);
         }
 
-    }
+    } //getDrawableLetter
 
-    /** External Citation
-     Date: 15 April 2021
-     Problem: Needed to set height and width for the board
-     Resource: https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
-     Solution: I used the example code from this post.
-     */
-    /**
-     * it draws the board
-     *
-     * @param state
-     */
-    public void drawBoard(ScrabbleState state){
-        ScrabbleLetter[][] board = state.getBoard();
-        ImageView img;
-
-        for(int r = 0; r < board.length; r++){
-            for(int c = 0; c < board[r].length; c++){
-                img = getImageView(r,c);
-                int width = 60;
-                int height = 60;
-                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
-                img.setLayoutParams(parms);
-
-                if(board[r][c].getLetter() == ' '){
-                    img.setImageDrawable(img.getDrawable());
-                }
-                else{
-                    img.setImageDrawable(getDrawableLetter(board[r][c].getLetter()));
-                }
-
-            }
-        }
-    }
 
     /**
      * gets ImageView for each tile on the board
@@ -2110,24 +2136,6 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         else{
             return null;
         }
-    }
-    public static ArrayList<String> dictionary = new ArrayList<>();
-
-    /**
-     * it sets the list for the dictionary
-     */
-    public void setList(){
-        InputStream is = myActivity.getResources().openRawResource(R.raw.words_alpha);
-        BufferedReader wordIn = new BufferedReader(new InputStreamReader(is));
-        String s;
-        try {
-            while ((s = wordIn.readLine()) != null) {
-                dictionary.add(s);
-            }
-            wordIn.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    } // get ImageView
 
 }
