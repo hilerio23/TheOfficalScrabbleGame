@@ -2,6 +2,7 @@ package com.example.thescrabblegame;
 
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -27,7 +28,7 @@ public class ScrabbleState  extends GameState {
     private ScrabbleLetter[] player4Hand = new ScrabbleLetter[7];
 
     //array of ScrabbleLetters for Pool (100) total letters
-    private ScrabbleLetter[] pool = new ScrabbleLetter[100]; //arraylist
+    private ScrabbleLetter[] pool = new ScrabbleLetter[100];
 
     //game pause: 1 for pause 0 for playing
     private int gamePause;
@@ -63,6 +64,10 @@ public class ScrabbleState  extends GameState {
             }
         }
 
+        //initialize the tile pool
+        initPool();
+
+        //pull 7 tiles from the list for each player
         for(int i = 0; i < 7; i++){
             //generating random chars for each player
             Random rnd = new Random();
@@ -76,13 +81,6 @@ public class ScrabbleState  extends GameState {
             player2Hand[i] = new ScrabbleLetter(randomChar2);
             player3Hand[i] = new ScrabbleLetter(randomChar3);
             player4Hand[i] = new ScrabbleLetter(randomChar4);
-        }
-
-        //creating a random pool of all of the letter tiles
-        for(int i = 0; i < 100; i++){
-            Random rnd = new Random();
-            char randomChar = (char) ('a' + rnd.nextInt(26));
-            pool[i] = new ScrabbleLetter(randomChar);
         }
 
         //player 0 is human player
@@ -226,6 +224,80 @@ public class ScrabbleState  extends GameState {
         return player4Hand;
     }
 
+    public void initPool(){
+        ArrayList<ScrabbleLetter> letterPool = new ArrayList<>();
+
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter c = new ScrabbleLetter('c');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        ScrabbleLetter e = new ScrabbleLetter('e');
+        ScrabbleLetter f = new ScrabbleLetter('f');
+        ScrabbleLetter g = new ScrabbleLetter('g');
+        ScrabbleLetter h = new ScrabbleLetter('h');
+        ScrabbleLetter i = new ScrabbleLetter('i');
+        ScrabbleLetter j = new ScrabbleLetter('j');
+        ScrabbleLetter k = new ScrabbleLetter('k');
+        ScrabbleLetter l = new ScrabbleLetter('l');
+        ScrabbleLetter m = new ScrabbleLetter('m');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter o = new ScrabbleLetter('o');
+        ScrabbleLetter p = new ScrabbleLetter('p');
+        ScrabbleLetter q = new ScrabbleLetter('q');
+        ScrabbleLetter r = new ScrabbleLetter('r');
+        ScrabbleLetter s = new ScrabbleLetter('s');
+        ScrabbleLetter t = new ScrabbleLetter('t');
+        ScrabbleLetter u = new ScrabbleLetter('u');
+        ScrabbleLetter v = new ScrabbleLetter('v');
+        ScrabbleLetter w = new ScrabbleLetter('w');
+        ScrabbleLetter x = new ScrabbleLetter('x');
+        ScrabbleLetter y = new ScrabbleLetter('y');
+        ScrabbleLetter z = new ScrabbleLetter('z');
+
+        for(int num = 0; num < 12; num++){
+            letterPool.add(e);
+        }
+        for(int num = 0; num < 9; num++){
+            letterPool.add(a);
+            letterPool.add(i);
+        }
+        for(int num = 0;  num < 8; num++){
+            letterPool.add(o);
+        }
+        for(int num = 0; num < 6; num++){
+            letterPool.add(n);
+            letterPool.add(r);
+            letterPool.add(t);
+        }
+        for(int num = 0; num < 4; num++){
+            letterPool.add(l);
+            letterPool.add(s);
+            letterPool.add(u);
+            letterPool.add(d);
+        }
+        for(int num = 0; num < 3; num++){
+            letterPool.add(g);
+            letterPool.add(m);
+            letterPool.add(y);
+        }
+        for(int num = 0; num < 2; num++){
+            letterPool.add(c);
+            letterPool.add(p);
+            letterPool.add(f);
+            letterPool.add(h);
+            letterPool.add(v);
+            letterPool.add(w);
+            letterPool.add(b);
+        }
+        letterPool.add(k);
+        letterPool.add(x);
+        letterPool.add(j);
+        letterPool.add(q);
+        letterPool.add(z);
+
+        this.pool = letterPool.toArray(this.pool);
+    }
+
     /** External Citation
      Date: 18 April 2021
      Problem: Needed to convert array list to string
@@ -277,9 +349,9 @@ public class ScrabbleState  extends GameState {
             //isCentered(xPositions, yPositions);
             //if it's not continuous it's invalid so exit trying
 
-            if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+            /*if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
                 return;
-            }
+            }*/
 
             //finds missing letter
             if (isVertical == true) {
