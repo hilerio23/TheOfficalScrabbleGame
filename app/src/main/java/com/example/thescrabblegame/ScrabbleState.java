@@ -345,13 +345,18 @@ public class ScrabbleState  extends GameState {
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
-        if(id == 0) {
+        //makes sure first word is centered
+        if(this.firstTurn == 0){
             isCentered(xPositions, yPositions);
-            //if it's not continuous it's invalid so exit trying
+        }
 
-            /*if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+        if(id == 0) {
+
+            //if it's not continuous it's invalid so exit trying
+            if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+                pass();
                 return;
-            }*/
+            }
 
             //finds missing letter
             if (isVertical == true) {
