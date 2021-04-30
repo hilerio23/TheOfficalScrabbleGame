@@ -46,6 +46,11 @@ public class HardAI extends GameComputerPlayer {
      * Problem: Needed to generate random numbers with exceptions.
      * Resource: https://stackoverflow.com/questions/6443176/how-can-i-generate-a-random-number-within-a-range-but-exclude-some/6443346
      * Solution: I used the example code from this post.
+     * @param rnd
+     * @param start
+     * @param end
+     * @param exclude
+     * @return int
      */
     public int getRandomWithExclusion(Random rnd, int start, int end, int... exclude) {
         int random = start + rnd.nextInt(end - start + 1 - exclude.length);
@@ -66,9 +71,16 @@ public class HardAI extends GameComputerPlayer {
     private ScrabbleLetter[] wordToPlay;
     private int[] specialTileArray;
     private int points;
-    /*
+
+
+    /**
      * Method sets variables to then play a word in RecieveInfo
-     */
+     * @param board
+     * @param x
+     * @param y
+     * @param letter
+     * @param myWords
+     **/
     public void findPlayWord(ScrabbleLetter[][] board, int x, int y, ScrabbleLetter letter, ArrayList<String> myWords) {
         ArrayList<Integer> compareX = new ArrayList<Integer>();
         ArrayList<Integer> compareY = new ArrayList<Integer>();
@@ -104,13 +116,39 @@ public class HardAI extends GameComputerPlayer {
             //horizontal check to see if there is an overlap
             for (int i = 0; i < index; i++) {
                 //before index
-                if (board[x - index + i][y].getLetter() != ' ') {
+                //deals with edge
+                if (x - index > 0) {
+                    if (board[x - index + i][y].getLetter() != ' ') {
+                        //deals with edges
+                        if (i > 1) {
+                            //makes sure letters can not be played next to each other
+                            if (board[x - index + i][y].getLetter() != ' ' && board[x - index + i - 1][y].getLetter() != ' ') {
+                                isOverlap = true;
+                            }
+                        }
+                    }
+                }
+                //so we don't play out of bounds word
+                else if(x - index < 0){
                     isOverlap = true;
                 }
             }
             for(int i = 0; i < word.length() - index; i++) {
                 //after index
-                if (board[x+1+i][y].getLetter() != ' '){
+                //deals with edge
+                if (x + 1 < 14) {
+                    if (board[x + 1 + i][y].getLetter() != ' ') {
+                        //deals with edges
+                        if (i < 14) {
+                            //makes sure letters can not be played next to each other
+                            if (board[x + 1 + i + 1][y].getLetter() != ' ') {
+                                isOverlap = true;
+                            }
+                        }
+                    }
+                }
+                //so we don't play out of bounds word
+                else if(x + 1 > 14){
                     isOverlap = true;
                 }
             }
@@ -138,13 +176,40 @@ public class HardAI extends GameComputerPlayer {
             isOverlap = false;
             for (int i = 0; i < index; i++) {
                 //before index
-                if (board[x][y - index + i].getLetter() != ' ') {
+                //deals with edge
+                if(y - index > 0) {
+                    if (board[x][y - index + i].getLetter() != ' ') {
+                        //deals with edges
+                        if (i > 1) {
+                            //makes sure letters can not be played next to each other
+                            if (board[x][y - index + i - 1].getLetter() != ' ') {
+                                isOverlap = true;
+                            }
+                        }
+                    }
+                }
+                //so we don't play out of bounds word
+                else if(y - index < 0){
                     isOverlap = true;
                 }
+
             }
             for(int i = 0; i < word.length() - index; i++) {
                 //after index
-                if (board[x][y+1+i].getLetter() != ' '){
+                //deals with edge
+                if(y+1 < 14) {
+                    if (board[x][y + 1 + i].getLetter() != ' ') {
+                        //deals with edges
+                        if (i < 14) {
+                            //makes sure letters can not be played next to each other
+                            if (board[x][y + 1 + i + 1].getLetter() != ' ') {
+                                isOverlap = true;
+                            }
+                        }
+                    }
+                }
+                //so we don't play out of bounds word
+                else if(y + 1 > 14){
                     isOverlap = true;
                 }
             }
@@ -178,9 +243,11 @@ public class HardAI extends GameComputerPlayer {
 
     }
 
-    /*
+    /**
      * Method takes in a string and turns it to an array of ScrabbleLetters
-     */
+     * @param myString
+     * @return ScrabbleLetter[]
+     **/
     public ScrabbleLetter[] toScrabbleLetter(String myString) {
         ScrabbleLetter[] returnLetter = new ScrabbleLetter[myString.length()];
         for (int i = 0; i < myString.length(); i++) {
@@ -189,10 +256,12 @@ public class HardAI extends GameComputerPlayer {
         return returnLetter;
     }
 
-    /*
+    /**
      *Method that given a string returns the amount of points it is given
      * does not take into consideration special letters/words
-     */
+     * @param myString
+     * @return int
+     **/
     public int toPoints(String myString) {
         ScrabbleLetter[] returnLetter = new ScrabbleLetter[myString.length()];
         int points = 0;
@@ -203,11 +272,14 @@ public class HardAI extends GameComputerPlayer {
         return points;
     }
 
-    /*
+    /**
      *Method takes in a String of chars and a letter and
      * returns an ArrayList of all the words that contain that
      * char and are in the dictionary
-     */
+     * @param input
+     * @param letter
+     * @return ArrayList<String>
+     **/
 
     /**
      * External Citation
@@ -250,9 +322,10 @@ public class HardAI extends GameComputerPlayer {
         return matches;
     }
 
-    /*
+    /**
      *Method recieves info and then either plays word or exchanges
-     */
+     * @param info
+     **/
     @Override
     protected void receiveInfo(GameInfo info) {
         ScrabbleState scrabbleCopy = new ScrabbleState((ScrabbleState) info);
@@ -398,88 +471,5 @@ public class HardAI extends GameComputerPlayer {
                 game.sendAction(exchange);
             }
         }
-    }
-
-    /*
-     * Method gets changes the temp ints array to see
-     * if there are any special tiles being played
-     */
-
-    public int[] getSpecialArray(ArrayList<Integer> tempInts) {
-        specialTileArray = new int[tempInts.size()];
-
-        for (int i = 0; i < tempInts.size(); i++) {
-            int type = getSpecialTile(tempInts.get(i));
-            specialTileArray[i] = type;
-        }
-        return specialTileArray;
-    }
-
-    /*
-     *method gives us the special tiles
-     */
-
-    public int getSpecialTile(int tile) {
-        switch (tile) {
-            case 1:
-            case 8:
-            case 15:
-            case 106:
-            case 120:
-            case 121:
-            case 128:
-            case 225:
-                return 1;
-            case 17:
-            case 29:
-            case 33:
-            case 43:
-            case 49:
-            case 57:
-            case 65:
-            case 71:
-            case 155:
-            case 161:
-            case 169:
-            case 177:
-            case 183:
-            case 193:
-            case 197:
-            case 209:
-                return 2;
-            case 21:
-            case 25:
-            case 77:
-            case 81:
-            case 85:
-            case 89:
-            case 137:
-            case 141:
-            case 145:
-            case 149:
-            case 201:
-            case 205:
-                return 3;
-            case 37:
-            case 39:
-            case 53:
-            case 93:
-            case 97:
-            case 99:
-            case 103:
-            case 109:
-            case 117:
-            case 123:
-            case 127:
-            case 129:
-            case 133:
-            case 173:
-            case 187:
-            case 189:
-                return 4;
-            default:
-                return 0;
-        }
-
     }
 }
