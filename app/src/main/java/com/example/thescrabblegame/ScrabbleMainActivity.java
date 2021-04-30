@@ -43,6 +43,11 @@ public class ScrabbleMainActivity extends GameMainActivity {
                 return new EasyAI(name);
             }});
 
+        playerTypes.add(new GamePlayerType("Smart Computer Player") {
+            public GamePlayer createPlayer(String name) {
+                return new HardAI(name);
+            }});
+
         // Create a game configuration class for Pig:
         GameConfig defaultConfig = new GameConfig(playerTypes, 1, 2, "Scrabble", PORT_NUMBER);
         defaultConfig.addPlayer("Human", 0); // player 1: a human player
