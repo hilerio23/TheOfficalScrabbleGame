@@ -116,13 +116,39 @@ public class HardAI extends GameComputerPlayer {
             //horizontal check to see if there is an overlap
             for (int i = 0; i < index; i++) {
                 //before index
-                if (board[x - index + i][y].getLetter() != ' ') {
+                //deals with edge
+                if (x - index > 0) {
+                    if (board[x - index + i][y].getLetter() != ' ') {
+                        //deals with edges
+                        if (i > 1) {
+                            //makes sure letters can not be played next to each other
+                            if (board[x - index + i][y].getLetter() != ' ' && board[x - index + i - 1][y].getLetter() != ' ') {
+                                isOverlap = true;
+                            }
+                        }
+                    }
+                }
+                //so we don't play out of bounds word
+                else if(x - index < 0){
                     isOverlap = true;
                 }
             }
             for(int i = 0; i < word.length() - index; i++) {
                 //after index
-                if (board[x+1+i][y].getLetter() != ' '){
+                //deals with edge
+                if (x + 1 < 14) {
+                    if (board[x + 1 + i][y].getLetter() != ' ') {
+                        //deals with edges
+                        if (i < 14) {
+                            //makes sure letters can not be played next to each other
+                            if (board[x + 1 + i + 1][y].getLetter() != ' ') {
+                                isOverlap = true;
+                            }
+                        }
+                    }
+                }
+                //so we don't play out of bounds word
+                else if(x + 1 > 14){
                     isOverlap = true;
                 }
             }
@@ -150,13 +176,40 @@ public class HardAI extends GameComputerPlayer {
             isOverlap = false;
             for (int i = 0; i < index; i++) {
                 //before index
-                if (board[x][y - index + i].getLetter() != ' ') {
+                //deals with edge
+                if(y - index > 0) {
+                    if (board[x][y - index + i].getLetter() != ' ') {
+                        //deals with edges
+                        if (i > 1) {
+                            //makes sure letters can not be played next to each other
+                            if (board[x][y - index + i - 1].getLetter() != ' ') {
+                                isOverlap = true;
+                            }
+                        }
+                    }
+                }
+                //so we don't play out of bounds word
+                else if(y - index < 0){
                     isOverlap = true;
                 }
+
             }
             for(int i = 0; i < word.length() - index; i++) {
                 //after index
-                if (board[x][y+1+i].getLetter() != ' '){
+                //deals with edge
+                if(y+1 < 14) {
+                    if (board[x][y + 1 + i].getLetter() != ' ') {
+                        //deals with edges
+                        if (i < 14) {
+                            //makes sure letters can not be played next to each other
+                            if (board[x][y + 1 + i + 1].getLetter() != ' ') {
+                                isOverlap = true;
+                            }
+                        }
+                    }
+                }
+                //so we don't play out of bounds word
+                else if(y + 1 > 14){
                     isOverlap = true;
                 }
             }
