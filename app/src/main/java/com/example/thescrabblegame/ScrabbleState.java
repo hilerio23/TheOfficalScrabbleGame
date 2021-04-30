@@ -346,7 +346,7 @@ public class ScrabbleState  extends GameState {
         ScrabbleLetter[][] myBoard = this.board;
 
         if(id == 0) {
-            //isCentered(xPositions, yPositions);
+            isCentered(xPositions, yPositions);
             //if it's not continuous it's invalid so exit trying
 
             /*if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
@@ -618,10 +618,10 @@ public class ScrabbleState  extends GameState {
             xCurr = xPoints[i];
             yCurr = yPoints[i];
             if (i == 0) { //adjusting xChange
-                if (xPoints[0] == xCurr) {
+                if (xPoints[1] == xCurr) {
                     xChange = false;
                 }
-                else if (yCurr == yPoints[0]) {
+                else if (yCurr == yPoints[1]) {
                     xChange = true;
                 }
             }
