@@ -250,12 +250,11 @@ public class ScrabbleState  extends GameState {
      * @param yPos
      */
     public void isCentered(int[] xPos, int[] yPos){
-
-        for(int i = 0; i < xPos.length; i++){
-            if(xPos[i] == 7 && yPos[i] == 7){
-                isCentered = true;
+            for (int i = 0; i < xPos.length; i++) {
+                if (xPos[i] == 7 && yPos[i] == 7) {
+                    isCentered = true;
+                }
             }
-        }
     }
 
     /**
@@ -272,13 +271,24 @@ public class ScrabbleState  extends GameState {
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
-        if(id == 0) {
-            //isCentered(xPositions, yPositions);
-            //if it's not continuous it's invalid so exit trying
-            /*
-            if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+        //first turn must be centered
+        if(this.firstTurn == 0){
+            isCentered(xPositions,yPositions);
+            if(!isCentered){
+                pass();
+                this.firstTurn++;
                 return;
-            }*/
+            }
+        }
+        //human player
+        if(id == 0) {
+
+            //if it's not continuous it's invalid so exit trying
+            if(!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+                boolean mybool = isContinuous(xPositions, yPositions);
+                pass();
+                return;
+            }
 
             //finds missing letter
             if (isVertical == true) {
