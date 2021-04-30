@@ -397,11 +397,18 @@ public class ScrabbleStateNewTest extends TestCase {
     public void testReplaceTiles() throws Exception{
         ScrabbleState state = new ScrabbleState();
         ScrabbleLetter t = new ScrabbleLetter('t');
+        int isDifferent = 0;
         ScrabbleLetter[] before = {t,t,t,t,t,t,t};
         state.setPlayer1Hand(before);
         state.replaceTiles(state.getPlayer1Hand());
         ScrabbleLetter[] after = state.getPlayer1Hand();
-        assertNotEquals(before, after);
+        for(int i = 0; i < after.length; i++){
+            if(!(t.equals(after[i]))){
+                isDifferent = 1;
+                break;
+            }
+        }
+        assertNotEquals(0, isDifferent);
     }
 
     //by Samone

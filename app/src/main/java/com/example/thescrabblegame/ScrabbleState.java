@@ -503,7 +503,27 @@ public class ScrabbleState  extends GameState {
         }
     }
 
-    //https://www.geeksforgeeks.org/arrays-sort-in-java-with-examples/
+    /**
+     * Performs an insertion sort on an int array
+     * @param points
+     * @return int[]
+     */
+    public int[] sort(int[] points) {
+
+        for (int i = 1; i < points.length; ++i) {
+            int key = points[i];
+            int j = i - 1;
+
+            while (j >= 0 && points[j] > key) {
+                points[j + 1] = points[j];
+                j = j - 1;
+            }
+            points[j + 1] = key;
+
+        }
+        return points;
+    }
+
     /**
      *Checks to see if the word played is continuous
      *
@@ -513,16 +533,16 @@ public class ScrabbleState  extends GameState {
      */
     public boolean isContinuous(int[] xPoints, int[] yPoints){
         //checks if word placed builds off of another word
-        Arrays.sort(xPoints);
-        Arrays.sort(yPoints);
+        xPoints = sort(xPoints);
+        yPoints = sort(yPoints);
 
         int xCurr = -1;
         int yCurr = -1;
         boolean xChange = true;
-        for(int i = 1; i < xPoints.length; i++) {
+        for(int i = 0; i < xPoints.length; i++) {
             xCurr = xPoints[i];
             yCurr = yPoints[i];
-            if (i == 1) { //adjusting xChange
+            if (i == 0) { //adjusting xChange
                 if (xPoints[0] == xCurr) {
                     xChange = false;
                 }
