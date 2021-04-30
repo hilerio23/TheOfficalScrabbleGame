@@ -275,10 +275,10 @@ public class ScrabbleState  extends GameState {
         if(id == 0) {
             //isCentered(xPositions, yPositions);
             //if it's not continuous it's invalid so exit trying
-            /*
+
             if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
                 return;
-            }*/
+            }
 
             //finds missing letter
             if (isVertical == true) {
@@ -503,27 +503,7 @@ public class ScrabbleState  extends GameState {
         }
     }
 
-    /**
-     * Performs an insertion sort on an int array
-     * @param points
-     * @return int[]
-     */
-    public int[] sort(int[] points) {
-
-        for (int i = 1; i < points.length; ++i) {
-            int key = points[i];
-            int j = i - 1;
-
-            while (j >= 0 && points[j] > key) {
-                points[j + 1] = points[j];
-                j = j - 1;
-            }
-            points[j + 1] = key;
-
-        }
-        return points;
-    }
-
+    //https://www.geeksforgeeks.org/arrays-sort-in-java-with-examples/
     /**
      *Checks to see if the word played is continuous
      *
@@ -533,8 +513,8 @@ public class ScrabbleState  extends GameState {
      */
     public boolean isContinuous(int[] xPoints, int[] yPoints){
         //checks if word placed builds off of another word
-        xPoints = sort(xPoints);
-        yPoints = sort(yPoints);
+        Arrays.sort(xPoints);
+        Arrays.sort(yPoints);
 
         int xCurr = -1;
         int yCurr = -1;
