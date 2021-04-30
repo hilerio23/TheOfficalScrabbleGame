@@ -379,6 +379,7 @@ public class ScrabbleStateNewTest extends TestCase {
     //by Samone
     public void testScore() throws Exception{
         ScrabbleState state = new ScrabbleState();
+        state.setFirstTurn(1);
         int score = 7;
         ScrabbleLetter b = new ScrabbleLetter('b');
         ScrabbleLetter a = new ScrabbleLetter('a');

@@ -183,6 +183,7 @@ public class ScrabbleState  extends GameState {
         player4Hand = hand;
     }
     public void setIsCentered(boolean centered) {isCentered = centered;}
+    public void setFirstTurn(int turn){firstTurn = turn;}
 
     /**
      * Getter methods
@@ -310,7 +311,7 @@ public class ScrabbleState  extends GameState {
 
         //adds words to score and adds points as well
         score(wordToPlay, myBoard, xPositions, yPositions, missingLetter, specialTiles);
-
+        placeWord(wordToPlay, myBoard, xPositions, yPositions);
         replaceTiles(wordToPlay);
 
         //adds one to first turn
@@ -319,6 +320,13 @@ public class ScrabbleState  extends GameState {
 
     }
 
+    public void placeWord(ScrabbleLetter[] word, ScrabbleLetter[][] board, int[] x, int[] y){
+        for(int i = 0; i < x.length; i++){
+            int xPos = x[i];
+            int yPos = y[i];
+            board[xPos][yPos] = word[i];
+        }
+    }
     /**
      * This calculates the score of the word that was played
      * @param wordToPlay
@@ -328,21 +336,18 @@ public class ScrabbleState  extends GameState {
      * @param missingLetter
      * @param specialTiles
      */
-    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter, int[] specialTiles){
+    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions,
+                      int[] yPositions, ScrabbleLetter missingLetter, int[] specialTiles){
+
         int type = 0;
         int score = 0;
         for(int i = 0; i < wordToPlay.length; i++){
-            myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
             //calculates scores for the special tiles
             if(specialTiles[i] == 0) {
                 score += wordToPlay[i].getPoints();
             }
-            else if(specialTiles[i] == 1){
-                type = 3;
-                score += wordToPlay[i].getPoints();
-            }
-            else if(specialTiles[i] == 2){
-                type = 2;
+            else if(specialTiles[i] == 1 || specialTiles[i] == 2){
+                type = 1;
                 score += wordToPlay[i].getPoints();
             }
             else if(specialTiles[i] == 3){
@@ -352,11 +357,23 @@ public class ScrabbleState  extends GameState {
                 score += 2*wordToPlay[i].getPoints();
             }
         }
-        if(type == 3){
+        if(type == 1 || type == 2){
             score *= type;
         }
-        else if(type == 2){
-            score *= type;
+
+
+        //adds missing letter to points
+        if(firstTurn != 0) {
+            if (id == 0) {
+                score += missingLetter.getPoints();
+            }
+        }
+
+        //if the word is longer than 7 add 50 to the score
+        if(wordToPlay.length > 7) {
+            if (id == 0) {
+                score += 50;
+            }
         }
 
         if (id == 0) {
@@ -364,20 +381,6 @@ public class ScrabbleState  extends GameState {
         } else if (id == 1) {
             this.player2Score += score;
         }
-        //adds missing letter to points
-        if(firstTurn != 0) {
-            if (id == 0) {
-                this.player1Score += missingLetter.getPoints();
-            }
-        }
-
-        //if the word is longer than 7 add 50 to the score
-        if(wordToPlay.length > 7) {
-            if (id == 0) {
-                this.player1Score += 50;
-            }
-        }
-
     }
 
     public void scoreOver(){
