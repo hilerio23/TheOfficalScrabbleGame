@@ -80,10 +80,10 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         fifth.invalidate();
         sixth.invalidate();
         seventh.invalidate();
-        ScrabbleState infoScrabbleState = (ScrabbleState) info;
-        this.scrabbleCopy = infoScrabbleState;
-        drawHand(infoScrabbleState);
-        drawBoard(infoScrabbleState);
+        //ScrabbleState infoScrabbleState = (ScrabbleState) info;
+        this.scrabbleCopy = (ScrabbleState) info;
+        drawHand(this.scrabbleCopy);
+        drawBoard(this.scrabbleCopy);
 
         if (info instanceof ScrabbleState) {
             if((ScrabbleState) info == null){

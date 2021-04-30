@@ -217,6 +217,27 @@ public class ScrabbleStateNewTest extends TestCase {
     }
 
     //by Samone
+    public void testScoreOver() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        ScrabbleLetter[] letters = {b,a,n,d,a,n,b};
+
+        int oldScore = 88;
+        int handScore = 12;
+        int diff = (oldScore - handScore);
+
+        state.setPlayer1Score(oldScore);
+        state.setPlayer1Hand(letters);
+        state.scoreOver();
+        assertEquals(diff, state.getPlayer1Score() );
+
+
+    }
+    //by Samone
     public void testGetPlayer1Hand() throws Exception {
         ScrabbleState state = new ScrabbleState();
         ScrabbleLetter[] letters = new ScrabbleLetter[4];
@@ -330,6 +351,75 @@ public class ScrabbleStateNewTest extends TestCase {
         int[] x = {3, 4, 5, 6, 7};
         int[] y = {7, 7, 7, 7, 7};
         assertEquals(false, state.isVertical(x, y));
+    }
+
+    //by Samone
+    public void testArrToString() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter[] word = {b,b,b,b,b,b};
+        String wordString = "bbbbbb";
+        String arrString = state.arrToString(word);
+
+        assertEquals(wordString, arrString);
+    }
+
+    //by Samone
+    public void testIsCentered() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        int[] xPos = {7,7,7,7};
+        int[] yPos = {4,5,6,7};
+        state.isCentered(xPos, yPos);
+        boolean centered = state.getIsCentered();
+        assertEquals(true, centered);
+
+    }
+
+    //by Samone
+    public void testScore() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        state.setFirstTurn(1);
+        int score = 7;
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        ScrabbleLetter[] band = {a,n,d};
+        int[] special = {0,0,0,0};
+        int[] x = {4,6,7};
+        int[] y = {7,7,7};
+        state.score(band, state.getBoard(), x, y, b, special);
+        int playerScore = state.getPlayer1Score();
+        assertEquals(score, playerScore);
+    }
+
+    //by Samone
+    public void testReplaceTiles() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        ScrabbleLetter t = new ScrabbleLetter('t');
+        int isDifferent = 0;
+        ScrabbleLetter[] before = {t,t,t,t,t,t,t};
+        state.setPlayer1Hand(before);
+        state.replaceTiles(state.getPlayer1Hand());
+        ScrabbleLetter[] after = state.getPlayer1Hand();
+        for(int i = 0; i < after.length; i++){
+            if(!(t.equals(after[i]))){
+                isDifferent = 1;
+                break;
+            }
+        }
+        assertNotEquals(0, isDifferent);
+    }
+
+    //by Samone
+    public void testIsContinuous() throws Exception{
+        ScrabbleState state = new ScrabbleState();
+        int[] x = {1,3,4,5};
+        int[] y = {7,7,7,7};
+        boolean cont = state.isContinuous(x,y);
+        assertEquals(false, cont);
+
     }
 
     //by Anabel

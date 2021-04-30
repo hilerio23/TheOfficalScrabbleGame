@@ -2,6 +2,7 @@ package com.example.thescrabblegame;
 
 import com.example.thescrabblegame.game.GameFramework.infoMessage.GameState;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -27,7 +28,7 @@ public class ScrabbleState  extends GameState {
     private ScrabbleLetter[] player4Hand = new ScrabbleLetter[7];
 
     //array of ScrabbleLetters for Pool (100) total letters
-    private ScrabbleLetter[] pool = new ScrabbleLetter[100]; //arraylist
+    private ScrabbleLetter[] pool = new ScrabbleLetter[100];
 
     //game pause: 1 for pause 0 for playing
     private int gamePause;
@@ -63,6 +64,10 @@ public class ScrabbleState  extends GameState {
             }
         }
 
+        //initialize the tile pool
+        initPool();
+
+        //pull 7 tiles from the list for each player
         for(int i = 0; i < 7; i++){
             //generating random chars for each player
             Random rnd = new Random();
@@ -76,13 +81,6 @@ public class ScrabbleState  extends GameState {
             player2Hand[i] = new ScrabbleLetter(randomChar2);
             player3Hand[i] = new ScrabbleLetter(randomChar3);
             player4Hand[i] = new ScrabbleLetter(randomChar4);
-        }
-
-        //creating a random pool of all of the letter tiles
-        for(int i = 0; i < 100; i++){
-            Random rnd = new Random();
-            char randomChar = (char) ('a' + rnd.nextInt(26));
-            pool[i] = new ScrabbleLetter(randomChar);
         }
 
         //player 0 is human player
@@ -183,6 +181,7 @@ public class ScrabbleState  extends GameState {
         player4Hand = hand;
     }
     public void setIsCentered(boolean centered) {isCentered = centered;}
+    public void setFirstTurn(int turn){firstTurn = turn;}
 
     /**
      * Getter methods
@@ -225,6 +224,80 @@ public class ScrabbleState  extends GameState {
         return player4Hand;
     }
 
+    public void initPool(){
+        ArrayList<ScrabbleLetter> letterPool = new ArrayList<>();
+
+        ScrabbleLetter a = new ScrabbleLetter('a');
+        ScrabbleLetter b = new ScrabbleLetter('b');
+        ScrabbleLetter c = new ScrabbleLetter('c');
+        ScrabbleLetter d = new ScrabbleLetter('d');
+        ScrabbleLetter e = new ScrabbleLetter('e');
+        ScrabbleLetter f = new ScrabbleLetter('f');
+        ScrabbleLetter g = new ScrabbleLetter('g');
+        ScrabbleLetter h = new ScrabbleLetter('h');
+        ScrabbleLetter i = new ScrabbleLetter('i');
+        ScrabbleLetter j = new ScrabbleLetter('j');
+        ScrabbleLetter k = new ScrabbleLetter('k');
+        ScrabbleLetter l = new ScrabbleLetter('l');
+        ScrabbleLetter m = new ScrabbleLetter('m');
+        ScrabbleLetter n = new ScrabbleLetter('n');
+        ScrabbleLetter o = new ScrabbleLetter('o');
+        ScrabbleLetter p = new ScrabbleLetter('p');
+        ScrabbleLetter q = new ScrabbleLetter('q');
+        ScrabbleLetter r = new ScrabbleLetter('r');
+        ScrabbleLetter s = new ScrabbleLetter('s');
+        ScrabbleLetter t = new ScrabbleLetter('t');
+        ScrabbleLetter u = new ScrabbleLetter('u');
+        ScrabbleLetter v = new ScrabbleLetter('v');
+        ScrabbleLetter w = new ScrabbleLetter('w');
+        ScrabbleLetter x = new ScrabbleLetter('x');
+        ScrabbleLetter y = new ScrabbleLetter('y');
+        ScrabbleLetter z = new ScrabbleLetter('z');
+
+        for(int num = 0; num < 12; num++){
+            letterPool.add(e);
+        }
+        for(int num = 0; num < 9; num++){
+            letterPool.add(a);
+            letterPool.add(i);
+        }
+        for(int num = 0;  num < 8; num++){
+            letterPool.add(o);
+        }
+        for(int num = 0; num < 6; num++){
+            letterPool.add(n);
+            letterPool.add(r);
+            letterPool.add(t);
+        }
+        for(int num = 0; num < 4; num++){
+            letterPool.add(l);
+            letterPool.add(s);
+            letterPool.add(u);
+            letterPool.add(d);
+        }
+        for(int num = 0; num < 3; num++){
+            letterPool.add(g);
+            letterPool.add(m);
+            letterPool.add(y);
+        }
+        for(int num = 0; num < 2; num++){
+            letterPool.add(c);
+            letterPool.add(p);
+            letterPool.add(f);
+            letterPool.add(h);
+            letterPool.add(v);
+            letterPool.add(w);
+            letterPool.add(b);
+        }
+        letterPool.add(k);
+        letterPool.add(x);
+        letterPool.add(j);
+        letterPool.add(q);
+        letterPool.add(z);
+
+        this.pool = letterPool.toArray(this.pool);
+    }
+
     /** External Citation
      Date: 18 April 2021
      Problem: Needed to convert array list to string
@@ -250,11 +323,12 @@ public class ScrabbleState  extends GameState {
      * @param yPos
      */
     public void isCentered(int[] xPos, int[] yPos){
-            for (int i = 0; i < xPos.length; i++) {
-                if (xPos[i] == 7 && yPos[i] == 7) {
-                    isCentered = true;
-                }
+
+        for(int i = 0; i < xPos.length; i++){
+            if(xPos[i] == 7 && yPos[i] == 7){
+                isCentered = true;
             }
+        }
     }
 
     /**
@@ -271,24 +345,13 @@ public class ScrabbleState  extends GameState {
         ScrabbleLetter missingLetter = null;
         ScrabbleLetter[][] myBoard = this.board;
 
-        //first turn must be centered
-        if(this.firstTurn == 0){
-            isCentered(xPositions,yPositions);
-            if(!isCentered){
-                pass();
-                this.firstTurn++;
-                return;
-            }
-        }
-        //human player
         if(id == 0) {
-
+            //isCentered(xPositions, yPositions);
             //if it's not continuous it's invalid so exit trying
-            if(!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
-                boolean mybool = isContinuous(xPositions, yPositions);
-                pass();
+
+            /*if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
                 return;
-            }
+            }*/
 
             //finds missing letter
             if (isVertical == true) {
@@ -320,7 +383,7 @@ public class ScrabbleState  extends GameState {
 
         //adds words to score and adds points as well
         score(wordToPlay, myBoard, xPositions, yPositions, missingLetter, specialTiles);
-
+        placeWord(wordToPlay, myBoard, xPositions, yPositions);
         replaceTiles(wordToPlay);
 
         //adds one to first turn
@@ -329,6 +392,13 @@ public class ScrabbleState  extends GameState {
 
     }
 
+    public void placeWord(ScrabbleLetter[] word, ScrabbleLetter[][] board, int[] x, int[] y){
+        for(int i = 0; i < x.length; i++){
+            int xPos = x[i];
+            int yPos = y[i];
+            board[xPos][yPos] = word[i];
+        }
+    }
     /**
      * This calculates the score of the word that was played
      * @param wordToPlay
@@ -338,21 +408,18 @@ public class ScrabbleState  extends GameState {
      * @param missingLetter
      * @param specialTiles
      */
-    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions, int[] yPositions, ScrabbleLetter missingLetter, int[] specialTiles){
+    public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions,
+                      int[] yPositions, ScrabbleLetter missingLetter, int[] specialTiles){
+
         int type = 0;
         int score = 0;
         for(int i = 0; i < wordToPlay.length; i++){
-            myBoard[xPositions[i]][yPositions[i]] = wordToPlay[i];
             //calculates scores for the special tiles
             if(specialTiles[i] == 0) {
                 score += wordToPlay[i].getPoints();
             }
-            else if(specialTiles[i] == 1){
-                type = 3;
-                score += wordToPlay[i].getPoints();
-            }
-            else if(specialTiles[i] == 2){
-                type = 2;
+            else if(specialTiles[i] == 1 || specialTiles[i] == 2){
+                type = 1;
                 score += wordToPlay[i].getPoints();
             }
             else if(specialTiles[i] == 3){
@@ -362,11 +429,23 @@ public class ScrabbleState  extends GameState {
                 score += 2*wordToPlay[i].getPoints();
             }
         }
-        if(type == 3){
+        if(type == 1 || type == 2){
             score *= type;
         }
-        else if(type == 2){
-            score *= type;
+
+
+        //adds missing letter to points
+        if(firstTurn != 0) {
+            if (id == 0) {
+                score += missingLetter.getPoints();
+            }
+        }
+
+        //if the word is longer than 7 add 50 to the score
+        if(wordToPlay.length > 7) {
+            if (id == 0) {
+                score += 50;
+            }
         }
 
         if (id == 0) {
@@ -374,20 +453,6 @@ public class ScrabbleState  extends GameState {
         } else if (id == 1) {
             this.player2Score += score;
         }
-        //adds missing letter to points
-        if(firstTurn != 0) {
-            if (id == 0) {
-                this.player1Score += missingLetter.getPoints();
-            }
-        }
-
-        //if the word is longer than 7 add 50 to the score
-        if(wordToPlay.length > 7) {
-            if (id == 0) {
-                this.player1Score += 50;
-            }
-        }
-
     }
 
     public void scoreOver(){
@@ -549,10 +614,10 @@ public class ScrabbleState  extends GameState {
         int xCurr = -1;
         int yCurr = -1;
         boolean xChange = true;
-        for(int i = 1; i < xPoints.length; i++) {
+        for(int i = 0; i < xPoints.length; i++) {
             xCurr = xPoints[i];
             yCurr = yPoints[i];
-            if (i == 1) { //adjusting xChange
+            if (i == 0) { //adjusting xChange
                 if (xPoints[0] == xCurr) {
                     xChange = false;
                 }
