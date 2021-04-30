@@ -370,8 +370,22 @@ public class ScrabbleState  extends GameState {
                 this.player1Score += missingLetter.getPoints();
             }
         }
+
+        //if the word is longer than 7 add 50 to the score
+        if(wordToPlay.length > 7) {
+            if (id == 0) {
+                this.player1Score += 50;
+            }
+        }
+
     }
 
+    public void scoreOver(){
+        ScrabbleLetter[] hand = getPlayer1Hand();
+        for(int i = 0; i < hand.length; i++){
+            player1Score -= hand[i].getPoints();
+        }
+    }
     /**
      * This allows you to replace the tiles in the hand once you have
      * played a word
@@ -589,6 +603,7 @@ public class ScrabbleState  extends GameState {
      * Allows player to exit the game
      */
     public void exitGame(){
+        scoreOver();
         over = 1;
         //if(over == 1){
         //    System.exit(0);
