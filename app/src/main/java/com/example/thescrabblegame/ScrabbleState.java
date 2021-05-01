@@ -305,7 +305,6 @@ public class ScrabbleState  extends GameState {
                 pass();
                 return;
             }
-
             //finds missing letter
             if (isVertical == true) {
                 for (int i = 0; i < wordToPlay.length; i++) {
@@ -430,6 +429,9 @@ public class ScrabbleState  extends GameState {
      * @param lettersToExchange
      */
     public void replaceTiles(ScrabbleLetter[] lettersToExchange){
+        Random num = new Random();
+        boolean isNull = true;
+        int randoNum = num.nextInt(100);
         //replaces the player's deck of tiles with new random letters
         numPasses = 0;
         int count = 0;
@@ -440,14 +442,20 @@ public class ScrabbleState  extends GameState {
                     char tempChar2 = player1Hand[j].getLetter();
                     if(tempChar1 == tempChar2){
                         player1Hand[j].setName(' ');
-                        //  break;
+                        break;
                     }
                 }
             }
             for(int i = 0; i < player1Hand.length; i++) {
                 if (player1Hand[i].getLetter() == ' ') {
-                    player1Hand[i] = pool[poolCounter];
-                    poolCounter++;
+                    while(pool[randoNum] == null) {
+                        randoNum = num.nextInt(100);
+                    }
+                    player1Hand[i] = pool[randoNum];
+                    pool[randoNum] = null;
+
+                    randoNum = num.nextInt(100);
+                    //poolCounter++;
                     //possibly put in a negative num placeholder
 
                     if (count == lettersToExchange.length) {
@@ -489,6 +497,8 @@ public class ScrabbleState  extends GameState {
      * @param lettersToExchange
      */
     public void exchange(ScrabbleLetter[] lettersToExchange){
+        Random num = new Random();
+        int randoNum = num.nextInt(100);
         //give new letter tiles to player who wants to exchange
         numPasses = 0;
         int count = 0;
@@ -500,13 +510,19 @@ public class ScrabbleState  extends GameState {
                     char tempChar2 = player1Hand[j].getLetter();
                     if(tempChar1 == tempChar2){
                         player1Hand[j].setName(' ');
+                        break;
                     }
                 }
             }
             for(int i = 0; i < player1Hand.length; i++) {
                 if (player1Hand[i].getLetter() == ' ') {
-                    player1Hand[i] = pool[poolCounter];
-                    poolCounter++;
+                    while(pool[randoNum] == null) {
+                        randoNum = num.nextInt(100);
+                    }
+                    player1Hand[i] = pool[randoNum];
+                    pool[randoNum] = null;
+                    randoNum = num.nextInt(100);
+                    //poolCounter++;
 
                     if (count == lettersToExchange.length) {
                         break;
