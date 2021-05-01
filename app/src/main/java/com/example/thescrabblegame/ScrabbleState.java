@@ -56,6 +56,41 @@ public class ScrabbleState  extends GameState {
     private int poolCounter;
 
     /**
+     * Setter methods
+     */
+    public void setIdNum(int num){ id = num; }
+    public void setPlayer1Score(int score){ player1Score = score; }
+    public void setPlayer2Score(int score){ player2Score = score; }
+    public void setPlayer3Score(int score){ player3Score = score; }
+    public void setPlayer4Score(int score){ player4Score = score; }
+    public void setBoard(ScrabbleLetter[][] newBoard){ board = newBoard; }
+    public void setOver(int isOver){ over = isOver; }
+    public void setNumPasses(int passes){ numPasses = passes; }
+    public void setPlayer1Hand(ScrabbleLetter[] hand){ player1Hand = hand; }
+    public void setPlayer2Hand(ScrabbleLetter[] hand){ player2Hand = hand; }
+    public void setPlayer3Hand(ScrabbleLetter[] hand){ player3Hand = hand; }
+    public void setPlayer4Hand(ScrabbleLetter[] hand){ player4Hand = hand; }
+    public void setIsCentered(boolean centered) {isCentered = centered;}
+    public void setFirstTurn(int turn){firstTurn = turn;}
+
+    /**
+     * Getter methods
+     */
+    public int getIdNum(){ return id; }
+    public int getPlayer1Score(){ return player1Score; }
+    public int getPlayer2Score(){ return player2Score; }
+    public int getPlayer3Score(){ return player3Score; }
+    public int getPlayer4Score(){ return player4Score; }
+    public boolean getIsCentered() {return isCentered; }
+    public ScrabbleLetter[][] getBoard() { return board; }
+    public int getOver(){ return over; }
+    public int getNumPasses(){ return numPasses; }
+    public ScrabbleLetter[] getPlayer1Hand(){ return player1Hand; }
+    public ScrabbleLetter[] getPlayer2Hand(){ return player2Hand; }
+    public ScrabbleLetter[] getPlayer3Hand(){ return player3Hand; }
+    public ScrabbleLetter[] getPlayer4Hand(){ return player4Hand; }
+
+    /**
      * This is the constructor for the ScrabbleState which (in order):
      *  -sets board to blanks
      *  -sets the players' hand by pulling from the pool
@@ -135,89 +170,6 @@ public class ScrabbleState  extends GameState {
         this.numPasses = scrabbleStateCopy.numPasses;
         this.firstTurn = scrabbleStateCopy.firstTurn;
         this.poolCounter = scrabbleStateCopy.poolCounter;
-    }
-
-    /**
-     * Setter methods
-     */
-    public void setIdNum(int num){
-        id = num;
-    }
-    public void setPlayer1Score(int score){
-        player1Score = score;
-    }
-    public void setPlayer2Score(int score){
-        player2Score = score;
-    }
-    public void setPlayer3Score(int score){
-        player3Score = score;
-    }
-    public void setPlayer4Score(int score){
-        player4Score = score;
-    }
-    public void setBoard(ScrabbleLetter[][] newBoard){
-        board = newBoard;
-    }
-    public void setOver(int isOver){
-        over = isOver;
-    }
-    public void setNumPasses(int passes){
-        numPasses = passes;
-    }
-    public void setPlayer1Hand(ScrabbleLetter[] hand){
-        player1Hand = hand;
-    }
-    public void setPlayer2Hand(ScrabbleLetter[] hand){
-        player2Hand = hand;
-    }
-    public void setPlayer3Hand(ScrabbleLetter[] hand){
-        player3Hand = hand;
-    }
-    public void setPlayer4Hand(ScrabbleLetter[] hand){
-        player4Hand = hand;
-    }
-    public void setIsCentered(boolean centered) {isCentered = centered;}
-    public void setFirstTurn(int turn){firstTurn = turn;}
-
-    /**
-     * Getter methods
-     */
-    public int getIdNum(){
-        return id;
-    }
-    public int getPlayer1Score(){
-        return player1Score;
-    }
-    public int getPlayer2Score(){
-        return player2Score;
-    }
-    public int getPlayer3Score(){
-        return player3Score;
-    }
-    public int getPlayer4Score(){
-        return player4Score;
-    }
-    public boolean getIsCentered() {return isCentered; }
-    public ScrabbleLetter[][] getBoard() {
-        return board;
-    }
-    public int getOver(){
-        return over;
-    }
-    public int getNumPasses(){
-        return numPasses;
-    }
-    public ScrabbleLetter[] getPlayer1Hand(){
-        return player1Hand;
-    }
-    public ScrabbleLetter[] getPlayer2Hand(){
-        return player2Hand;
-    }
-    public ScrabbleLetter[] getPlayer3Hand(){
-        return player3Hand;
-    }
-    public ScrabbleLetter[] getPlayer4Hand(){
-        return player4Hand;
     }
 
     public void initPool(){
