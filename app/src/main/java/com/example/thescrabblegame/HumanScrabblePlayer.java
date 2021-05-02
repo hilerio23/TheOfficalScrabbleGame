@@ -695,6 +695,9 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             ScrabbleLetter[][] tempBoard = scrabbleCopy.getBoard();
             tempBoard[getSquare(button) /15][(getSquare(button) % 15) - 1] = lastLetter;
             scrabbleCopy.setBoard(tempBoard);
+//            ScrabbleLetter[] hand = scrabbleCopy.getPlayer1Hand();
+//            hand[tempInts.get(tempInts.size() - 1)] =  new ScrabbleLetter(' ');
+//            drawHand(scrabbleCopy);
             drawBoard(scrabbleCopy);
         }
     }
@@ -719,7 +722,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             xchanging = false;
         }
         //finds the position in the array that needs to be found
-        for(int i = 1; i < tempInts.size(); i++){
+        for(int i = 0; i < tempInts.size(); i++){
             if(xchanging){
                 if(prevX != (1 + tempXCords.get(i))){
                     index = i;

@@ -313,6 +313,11 @@ public class ScrabbleState  extends GameState {
 
             //if it's not continuous it's invalid so exit trying
             if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+                //return tiles
+
+//                for(int i = 0; i < wordToPlay.length; i++){
+//                    myBoard[xPositions[i]][yPositions[i]] = new ScrabbleLetter(' ');
+//                }
                 pass();
                 return;
             }
@@ -485,7 +490,7 @@ public class ScrabbleState  extends GameState {
                     randoNum = num.nextInt(pool.length);
 
                     player1Hand[i] = pool[randoNum];
-                    ArrayList<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));  // Arrays.asList(pool);
+                    ArrayList<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
                     poolArrayList.remove(randoNum);
                     pool = poolArrayList.toArray(pool);
 
