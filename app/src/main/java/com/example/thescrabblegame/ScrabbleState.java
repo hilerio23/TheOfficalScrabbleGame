@@ -413,7 +413,7 @@ public class ScrabbleState  extends GameState {
 
 
         //adds missing letter to points
-        if(firstTurn != 0) {
+        if(firstTurn != 0 && missingLetter != null) {
             if (id == 0) {
                 score += missingLetter.getPoints();
             }
