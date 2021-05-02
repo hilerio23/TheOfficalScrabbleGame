@@ -124,6 +124,17 @@ public class ScrabbleState  extends GameState {
         }
         player1Hand = hand.toArray(player1Hand);
 
+        hand.clear();
+        while(hand.size() != 7){
+            Random r = new Random();
+            int high = 100;
+            int num = r.nextInt(high);
+            if(pool[num] != null){
+                hand.add(pool[num]);
+                pool[num] = null;
+            }
+        }
+        player2Hand = hand.toArray(player2Hand);
         //player 0 is human player
         playerToMove = 0;
         //0 = playing, 1 = pause

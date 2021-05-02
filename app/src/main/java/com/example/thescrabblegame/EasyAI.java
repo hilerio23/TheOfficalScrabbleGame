@@ -360,6 +360,7 @@ public class EasyAI extends GameComputerPlayer {
                 //adds all possible letters to a string to find all possible words
                 String handString = Character.toString(testLetter.getLetter());
                 for (int i = 0; i < hand.length; i++) {
+
                     handString += Character.toString(hand[i].getLetter());
                 }
                 this.wordToPlay = null;
