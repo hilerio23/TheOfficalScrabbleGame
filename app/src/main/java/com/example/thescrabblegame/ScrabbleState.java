@@ -430,8 +430,7 @@ public class ScrabbleState  extends GameState {
      */
     public void replaceTiles(ScrabbleLetter[] lettersToExchange){
         Random num = new Random();
-        boolean isNull = true;
-        int randoNum = num.nextInt(100);
+        int randoNum;
         //replaces the player's deck of tiles with new random letters
         numPasses = 0;
         int count = 0;
@@ -448,15 +447,12 @@ public class ScrabbleState  extends GameState {
             }
             for(int i = 0; i < player1Hand.length; i++) {
                 if (player1Hand[i].getLetter() == ' ') {
-                    while(pool[randoNum] == null) {
-                        randoNum = num.nextInt(100);
-                    }
-                    player1Hand[i] = pool[randoNum];
-                    pool[randoNum] = null;
+                    randoNum = num.nextInt(pool.length);
 
-                    randoNum = num.nextInt(100);
-                    //poolCounter++;
-                    //possibly put in a negative num placeholder
+                    player1Hand[i] = pool[randoNum];
+                    ArrayList<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));  // Arrays.asList(pool);
+                    poolArrayList.remove(randoNum);
+                    pool = poolArrayList.toArray(pool);
 
                     if (count == lettersToExchange.length) {
                         break;
@@ -475,16 +471,16 @@ public class ScrabbleState  extends GameState {
             }
             for(int i = 0; i < player2Hand.length; i++){
                 if(player2Hand[i].equals(' ')){
-                    player2Hand[i].setName(pool[i].getLetter());
-                    List<ScrabbleLetter> poolArrayList = Arrays.asList(pool);
-                    poolArrayList.remove(i);
-                    ScrabbleLetter[] newPool = new ScrabbleLetter[poolArrayList.size()];
-                    newPool = poolArrayList.toArray(newPool);
-                    pool = newPool;
-                    count++;
-                }
-                if(count == lettersToExchange.length){
-                    break;
+                    randoNum = num.nextInt(pool.length);
+
+                    player1Hand[i] = pool[randoNum];
+                    ArrayList<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));  // Arrays.asList(pool);
+                    poolArrayList.remove(randoNum);
+                    pool = poolArrayList.toArray(pool);
+
+                    if (count == lettersToExchange.length) {
+                        break;
+                    }
                 }
             }
         }
@@ -498,7 +494,7 @@ public class ScrabbleState  extends GameState {
      */
     public void exchange(ScrabbleLetter[] lettersToExchange){
         Random num = new Random();
-        int randoNum = num.nextInt(100);
+        int randoNum;
         //give new letter tiles to player who wants to exchange
         numPasses = 0;
         int count = 0;
@@ -516,13 +512,14 @@ public class ScrabbleState  extends GameState {
             }
             for(int i = 0; i < player1Hand.length; i++) {
                 if (player1Hand[i].getLetter() == ' ') {
-                    while(pool[randoNum] == null) {
-                        randoNum = num.nextInt(100);
-                    }
+                    randoNum = num.nextInt(pool.length);
+
                     player1Hand[i] = pool[randoNum];
-                    pool[randoNum] = null;
-                    randoNum = num.nextInt(100);
-                    //poolCounter++;
+                    List<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));  // Arrays.asList(pool);
+                    poolArrayList.remove(randoNum);
+                    poolArrayList.add(lettersToExchange[count]);
+                    pool = poolArrayList.toArray(pool);
+                    count++;
 
                     if (count == lettersToExchange.length) {
                         break;
@@ -541,17 +538,18 @@ public class ScrabbleState  extends GameState {
             }
             for(int i = 0; i < player2Hand.length; i++){
                 if(player2Hand[i].equals(' ')){
-                    player2Hand[i].setName(pool[i].getLetter());
-                    List<ScrabbleLetter> poolArrayList = Arrays.asList(pool);
-                    poolArrayList.remove(i);
+                    randoNum = num.nextInt(pool.length);
+
+                    player2Hand[i] = pool[randoNum];
+                    List<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));  // Arrays.asList(pool);
+                    poolArrayList.remove(randoNum);
                     poolArrayList.add(lettersToExchange[count]);
-                    ScrabbleLetter[] newPool = new ScrabbleLetter[poolArrayList.size()];
-                    newPool = poolArrayList.toArray(newPool);
-                    pool = newPool;
+                    pool = poolArrayList.toArray(pool);
                     count++;
-                }
-                if(count == lettersToExchange.length){
-                    break;
+
+                    if (count == lettersToExchange.length) {
+                        break;
+                    }
                 }
             }
         }
