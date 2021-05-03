@@ -478,9 +478,13 @@ public class ScrabbleState  extends GameState {
         }
 
         if (id == 0) {
-            this.player1Score += score;
+            int tempScore = getPlayer1Score();
+            tempScore += score;
+            setPlayer1Score(tempScore);
         } else if (id == 1) {
-            this.player2Score += score;
+            int tempScore = getPlayer2Score();
+            tempScore += score;
+            setPlayer2Score(tempScore);
         }
     } //score
 

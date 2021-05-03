@@ -93,11 +93,11 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             }
             score.setText(Integer.toString(((ScrabbleState) info).getPlayer1Score()));
             this.scrabbleCopy = new ScrabbleState((ScrabbleState) info);
-            if (playerNum == ((ScrabbleState) info).getIdNum()) {
+            if (0 == ((ScrabbleState) info).getIdNum()) {
                 score.setTextColor(Color.BLUE);
             } else {
 
-                if (allPlayerNames.length == 2) {
+                if (1 == ((ScrabbleState) info).getIdNum()) {
                     score.setTextColor(Color.GREEN);
                 }
             }
