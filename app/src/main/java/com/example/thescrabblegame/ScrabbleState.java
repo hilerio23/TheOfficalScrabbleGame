@@ -15,44 +15,35 @@ import java.util.Random;
  */
 public class ScrabbleState  extends GameState {
 
-    //15 x 15 board
-    private ScrabbleLetter[][] board = new ScrabbleLetter[15][15];
+    //static variables for
+    final static int AI = 1;
+    final static int HUMAN = 0;
+    final static int POOL_MAX = 100;
+    final static int BOARD_MAX = 15;
+    final static int HAND_MAX = 7;
+    final static int PLAYING = 0;
+    final static int PAUSE = 1;
 
-    //an in to tell whos move it is 0 for human 1 for AI
-    private int playerToMove;
-
-    //array of ScrabbleLetters for hand
-    private ScrabbleLetter[] player1Hand = new ScrabbleLetter[7];
-    private ScrabbleLetter[] player2Hand = new ScrabbleLetter[7];
-    private ScrabbleLetter[] player3Hand = new ScrabbleLetter[7];
-    private ScrabbleLetter[] player4Hand = new ScrabbleLetter[7];
-
+    private ScrabbleLetter[][] board = new ScrabbleLetter[BOARD_MAX][BOARD_MAX]; //15 x 15 board
+    private int playerToMove; //an int to tell whos move it is 0 for human 1 for AI
+    //array of ScrabbleLetters for  each hand
+    private ScrabbleLetter[] player1Hand = new ScrabbleLetter[HAND_MAX];
+    private ScrabbleLetter[] player2Hand = new ScrabbleLetter[HAND_MAX];
+    private ScrabbleLetter[] player3Hand = new ScrabbleLetter[HAND_MAX];
+    private ScrabbleLetter[] player4Hand = new ScrabbleLetter[HAND_MAX];
     //array of ScrabbleLetters for Pool (100) total letters
-    private ScrabbleLetter[] pool = new ScrabbleLetter[100];
-
-    //game pause: 1 for pause 0 for playing
-    private int gamePause;
-
-    //add score
+    private ScrabbleLetter[] pool = new ScrabbleLetter[POOL_MAX];
+    private int gamePause; //game pause: 1 for pause 0 for playing
     private int player1Score;
     private int player2Score;
     private int player3Score;
     private int player4Score;
-
-    //id of players and num of players
-    private int id;
-    private int numPlayers;
-
-    //tracks if game is over
-    private int over;
-
-    //count passes
-    private int numPasses;
-
+    private int id; //id of players
+    private int numPlayers; //num of players
+    private int over; //tracks if game is over
+    private int numPasses; //count passes
     private int firstTurn; //0 for first turn
-
-    //variable for checking if the first word played is centered
-    private boolean isCentered;
+    private boolean isCentered; //variable for checking if the first word played is centered
     private int poolCounter;
 
     /**
@@ -105,19 +96,21 @@ public class ScrabbleState  extends GameState {
      */
     public ScrabbleState(){
 
-        for(int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
+        //fills the board with 'blank' scrabble letters
+        for(int i = 0; i < BOARD_MAX; i++) {
+            for (int j = 0; j < BOARD_MAX; j++) {
                 board[i][j] = new ScrabbleLetter(' ');
             }
         }
 
+        //initializes the pool
         initPool();
 
+        //initializes the player ones' hand by taking from the pool
         ArrayList<ScrabbleLetter> hand = new ArrayList<>();
-        while(hand.size() != 7){
+        while(hand.size() != HAND_MAX){
             Random r = new Random();
-            int high = 100;
-            int num = r.nextInt(high);
+            int num = r.nextInt(POOL_MAX);
             if(pool[num] != null){
                 hand.add(pool[num]);
                 pool[num] = null;
@@ -126,20 +119,17 @@ public class ScrabbleState  extends GameState {
         player1Hand = hand.toArray(player1Hand);
 
         hand.clear();
-        while(hand.size() != 7){
+        while(hand.size() != HAND_MAX){
             Random r = new Random();
-            int high = 100;
-            int num = r.nextInt(high);
+            int num = r.nextInt(POOL_MAX);
             if(pool[num] != null){
                 hand.add(pool[num]);
                 pool[num] = null;
             }
         }
         player2Hand = hand.toArray(player2Hand);
-        //player 0 is human player
-        playerToMove = 0;
-        //0 = playing, 1 = pause
-        gamePause = 0;
+        playerToMove = HUMAN;
+        gamePause = PLAYING;
 
         //sets the id
         id = 0;
@@ -275,18 +265,22 @@ public class ScrabbleState  extends GameState {
 
         //setting the pool variable as the converted array
         this.pool = letterPool.toArray(this.pool);
-    }
 
-    /** External Citation:
-     Date: 18 April 2021
-     Problem: Needed to convert array list to string
-     Resource: https://stackoverflow.com/questions/599161/best-way-to-convert-an-arraylist-to-a-string
-     Solution: I used the example code from this post.
-     */
+    } // initPool
 
     /**
-     * Convert tiles placed on the board to a word
-     * @param arr
+     * Convert an array of Scrabble Letters to a string by using the
+     * getLetter() method for each element of the array.
+     *
+     * External Citation:
+     * Date: 18 April 2021
+     * Problem: Needed to convert array list to string
+     * Resource: https://stackoverflow.com/questions/599161/best-way-to-convert-an-arraylist-to-a-string
+     * Solution: I used the example code from this post.
+     *
+     * @author Anabel
+     * @param arr a ScrabbleLetter array that needs to be converted to a string
+     * @retrun word a string comprised of the array's character
      */
     public String arrToString(ScrabbleLetter[] arr){
         String word = "";
@@ -298,6 +292,8 @@ public class ScrabbleState  extends GameState {
 
     /**
      * Check if word starts at the center for the first move
+     *
+     * @author Samone
      * @param xPos
      * @param yPos
      */
@@ -378,6 +374,7 @@ public class ScrabbleState  extends GameState {
     /**
      * PlaceWord is a helper method that places the word on the board
      *
+     * @author Samone
      * @param word
      * @param board
      * @param x
@@ -394,6 +391,8 @@ public class ScrabbleState  extends GameState {
 
     /**
      * This calculates the score of the word that was played
+     *
+     * @author Anabel
      * @param wordToPlay
      * @param myBoard
      * @param xPositions
@@ -461,6 +460,8 @@ public class ScrabbleState  extends GameState {
     /**
      * This allows you to replace the tiles in the hand once you have
      * played a word
+     *
+     * @author Alec
      * @param lettersToExchange
      */
     public void replaceTiles(ScrabbleLetter[] lettersToExchange){
@@ -525,6 +526,7 @@ public class ScrabbleState  extends GameState {
      * This exchanges the letters in your hand
      * puts the letters that you wanted to exchange
      * back into the pool
+     * @author Anabel
      * @param lettersToExchange
      */
     public void exchange(ScrabbleLetter[] lettersToExchange){
@@ -592,8 +594,16 @@ public class ScrabbleState  extends GameState {
 
     /**
      * Performs an insertion sort on an int array
-     * @param points
-     * @return int[]
+     *
+     * EXTERNAL CITATION:
+     * Date: April 26th, 2021
+     * Problem: Needed help on remembering how to perform and insertion sorrt
+     * Resource: https://www.geeksforgeeks.org/insertion-sort/
+     * Solution: The code below is adapted from this resource
+     *
+     * @author Samone
+     * @param points an array of various points that needs to be sorted
+     * @return int[] a sorted array
      */
     public int[] sort(int[] points) {
 
@@ -614,22 +624,30 @@ public class ScrabbleState  extends GameState {
     /**
      *Checks to see if the word played is continuous
      *
+     * @author Samone
      * @param xPoints
      * @param yPoints
-     * @return
+     * @return true if isContinuous and false if not
      */
     public boolean isContinuous(int[] xPoints, int[] yPoints){
-        //checks if word placed builds off of another word
+
+        //sorts the x and y arrays from lowest to highest
         xPoints = sort(xPoints);
         yPoints = sort(yPoints);
 
+        //initializes variables for use later
         int xCurr = -1;
         int yCurr = -1;
         boolean xChange = true;
+
         for(int i = 0; i < xPoints.length; i++) {
+
             xCurr = xPoints[i];
             yCurr = yPoints[i];
-            if (i == 0) { //adjusting xChange
+
+            //if the for loop is at the beginning we must
+            //see if the x or the y variable is changing
+            if (i == 0) {
                 if (xPoints[1] == xCurr) {
                     xChange = false;
                 }
@@ -637,6 +655,9 @@ public class ScrabbleState  extends GameState {
                     xChange = true;
                 }
             }
+
+            //otherwise, once we know which variable is changing,
+            //make sure that the current is one set aove the previous
             else {
                 if(xChange){
                     if(xCurr != 1 + xPoints[i - 1]){
@@ -655,14 +676,21 @@ public class ScrabbleState  extends GameState {
     } //isContinuous
 
     /**
-     * Checks to see if the word is vertical
+     * Checks to see if the word is vertical, but assumes continuity.
+     * Because of this, it only checks the first and second indexes
+     *
+     * @author Samone
+     * @param xArray an array of the x values
+     * @param yArray an array of the y values
+     * @return isVertical a boolean that says whether the word is vertical
      */
     public boolean isVertical(int[] xArray, int[] yArray) {
         boolean isVertical = false;
 
         if (xArray[0] == xArray[1]) {
             isVertical = true;
-        } else if (yArray[0] == yArray[1]) {
+        }
+        else if (yArray[0] == yArray[1]) {
             isVertical = false;
         }
 

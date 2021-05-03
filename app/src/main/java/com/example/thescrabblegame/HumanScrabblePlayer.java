@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
@@ -26,6 +27,12 @@ import java.util.ArrayList;
  * @version April 2021
  */
 public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClickListener {
+
+    final static int NOT_SPECIAL = 0;
+    final static int TRIPLE_WORD = 1;
+    final static int DOUBLE_WORD = 2;
+    final static int TRIPLE_LETTER = 3;
+    final static int DOUBLE_LETTER = 4;
 
     private TextView score = null;
     public ScrabbleState scrabbleCopy;
@@ -695,32 +702,32 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             ScrabbleLetter[][] tempBoard = scrabbleCopy.getBoard();
             tempBoard[getSquare(button) /15][(getSquare(button) % 15) - 1] = lastLetter;
             scrabbleCopy.setBoard(tempBoard);
-//            ScrabbleLetter[] hand = scrabbleCopy.getPlayer1Hand();
-//            hand[tempInts.get(tempInts.size() - 1)] =  new ScrabbleLetter(' ');
-//            drawHand(scrabbleCopy);
             drawBoard(scrabbleCopy);
         }
     }
 
     /**
-     * Is called when playword is called in order to comprehensively fill various arrays with the
-     * missing letters' information
+     * Is called when playword is called in order to comprehensively fill
+     *  various arrays with the missing letters' information
      *
-     *
+     * @author Samone
      */
     public void fillWord(){
+
         int index = -1;
         int missingVal = -1;
         boolean xchanging;
         int prevX = tempXCords.get(0);
         int prevY = tempYCords.get(0);
 
+        //determining if the x or the y variable is changing.
         if(prevX == tempXCords.get(1) ){
             xchanging = true;
         }
         else{
             xchanging = false;
         }
+
         //finds the position in the array that needs to be found
         for(int i = 0; i < tempInts.size(); i++){
             if(xchanging){
@@ -764,8 +771,9 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
-     * updates the hand as it's played
+     * Updates the hand and the board as it's played
      *
+     * @author Alec
      * @param handButton
      */
     public void tmpAdd(View handButton){
@@ -778,8 +786,9 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
-     * gets the x-Coordinate of the tile hit on the board
+     * Gets the x-Coordinate of the tile hit on the board
      *
+     * @author Alec
      * @param tempInts
      * @return int[]
      */
@@ -793,10 +802,11 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
-     * gets the y-Coordinate of the tile hit on the board
+     * Gets the y-Coordinate of the tile hit on the board
      *
-     * @param tempInts
-     * @return int[]
+     * @author Alec
+     * @param tempInts an arraylist of the
+     * @return int[] an array of ints tht gives the
      */
     public int[] getYCoord(ArrayList<Integer> tempInts){
         int[] yArray;
@@ -810,6 +820,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     /**
      * gets the integer values of the tile hit on the board
      *
+     * @author Alec
      * @param tempInts
      * @return int[]
      */
@@ -824,8 +835,9 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     /**
      * convert array of tiles to letters
      *
-     * @param arrs
-     * @return ScrabbleLetter[]
+     * @author Anabel
+     * @param arrs an arrayList of
+     * @return ScrabbleLetter[] an array of ScrabbleLetters that
      */
     public ScrabbleLetter[] toScrabbleLetter(ArrayList<String> arrs){
         this.letter = new ScrabbleLetter[arrs.size()];
@@ -839,10 +851,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
-     * convert array of special tiles to letters
+     * Given an array of coordinates, find which tiles are on a special square
      *
-     * @param tempInts
-     * @return int[]
+     * @author Anabel
+     * @param tempInts an array of coordinates on the 15x15 board
+     * @return specialTileArray an array of integers that correspond
+     *         to the original tiles' bonus value (triple word, double letter, etc)
+     *
      */
     public int[] getSpecialArray(ArrayList<Integer> tempInts){
         specialTileArray = new int[tempInts.size()];
@@ -855,49 +870,42 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
-     * gets letter tile of the deck
+     * Given a
      *
-     * @param view
-     * @return char
+     * @author Samone
+     * @param view an ImageView that
+     * @return char the corresponding character
      */
     public char getCharacter(View view) {
 
         ScrabbleLetter[] myHand = scrabbleCopy.getPlayer1Hand();
-        switch (view.getId()) {
 
-            case R.id.aButton:
-                return myHand[0].getLetter();
-            case R.id.bButton:
-                return myHand[1].getLetter();
-            case R.id.cButton:
-                return myHand[2].getLetter();
-            case R.id.dButton:
-                return myHand[3].getLetter();
-            case R.id.gButton:
-                return myHand[4].getLetter();
-            case R.id.eButton:
-                return myHand[5].getLetter();
-            case R.id.fButton:
-                return myHand[6].getLetter();
-                default:
-                return ' ';
+        switch (view.getId()) {
+            case R.id.aButton: return myHand[0].getLetter();
+            case R.id.bButton: return myHand[1].getLetter();
+            case R.id.cButton: return myHand[2].getLetter();
+            case R.id.dButton: return myHand[3].getLetter();
+            case R.id.gButton: return myHand[4].getLetter();
+            case R.id.eButton: return myHand[5].getLetter();
+            case R.id.fButton: return myHand[6].getLetter();
+            default: return ' ';
         }
     }
 
     /**
-     * displays the player's deck of tiles
+     * Displays the player's hand given a copy of the ScrabbleState
      *
-     * @param state
+     * @author Samone
+     * @param state a copy of the ScrabbleState
      */
     public void drawHand(ScrabbleState state){
         ScrabbleLetter[] hand = state.getPlayer1Hand();
         ImageView img;
 
-
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < state.HAND_MAX; i++){
             img = getHandImageView(i);
             if(img == null){
-                int x = 2;
+                break;
             }
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
         }
@@ -905,44 +913,44 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
-     * Gets the image views of the players hand went clicked
+     * Gets the ImageView of the hand given an index
      *
-     * @param num
-     * @return ImageView
+     * @author Samone
+     * @param num the index of the hand array
+     * @return ImageView corresponding to the value num
      */
     public ImageView getHandImageView(int num){
+
         switch(num){
-            case 0:
-                return (ImageView)myActivity.findViewById(R.id.aButton);
-            case 1:
-                return (ImageView) myActivity.findViewById(R.id.bButton);
-            case 2:
-                return (ImageView)myActivity.findViewById(R.id.cButton);
-            case 3:
-                return (ImageView)myActivity.findViewById(R.id.dButton);
-            case 4:
-                return (ImageView)myActivity.findViewById(R.id.gButton);
-            case 5:
-                return (ImageView)myActivity.findViewById(R.id.eButton);
-            case 6:
-                return (ImageView)myActivity.findViewById(R.id.fButton);
-            default:
-                return null;
+            case 0: return (ImageView)myActivity.findViewById(R.id.aButton);
+            case 1: return (ImageView) myActivity.findViewById(R.id.bButton);
+            case 2: return (ImageView)myActivity.findViewById(R.id.cButton);
+            case 3: return (ImageView)myActivity.findViewById(R.id.dButton);
+            case 4: return (ImageView)myActivity.findViewById(R.id.gButton);
+            case 5: return (ImageView)myActivity.findViewById(R.id.eButton);
+            case 6: return (ImageView)myActivity.findViewById(R.id.fButton);
+            default: return null;
         }
+
     }
 
-    /** External Citation
-     Date: 15 April 2021
-     Problem: Needed to set height and width for the board
-     Resource: https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
-     Solution: I used the example code from this post.
-     */
+
     /**
-     * it draws the board
+     * Given a the scrabble state, makes a copy of the board and
+     * translates each of the scrabble letters into an image view
+     * using helper methods.
      *
-     * @param state
+     * External Citation
+     * Date: 15 April 2021
+     * Problem: Needed to set height and width for the board
+     * Resource: https://stackoverflow.com/questions/3144940/set-imageview-width-and-height-programmatically
+     * Solution: I used the example code from this post.
+     *
+     * @author Samone
+     * @param state a copy of the ScrabbleState
      */
     public void drawBoard(ScrabbleState state){
+
         ScrabbleLetter[][] board = state.getBoard();
         ImageView img;
 
@@ -966,7 +974,9 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     }
 
     /**
-     * it sets the list for the dictionary
+     * Reads each word from the dictionary text file into a master ArrayList
+     *
+     * @author Alec
      */
     public void setList(){
         InputStream is = myActivity.getResources().openRawResource(R.raw.words_alpha);
@@ -985,10 +995,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
 
     /**
-     * gets id's of the special tiles on the board
+     * Gets the value of a square's bonus
+     * EX: triple letter, triple word, double letter, double word
      *
-     * @param tile
-     * @return int
+     * @author Anabel
+     * @param tile an int that corresponds to a square on the 15x15 board
+     *             (this is a number out of 225)
+     * @return int the corresponding value of the bonus the square grants
      */
     public int getSpecialTile(int tile){
         switch (tile){
@@ -1000,7 +1013,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             case 121:
             case 128:
             case 225:
-                return 1;
+                return TRIPLE_WORD;
             case 17:
             case 29:
             case 33:
@@ -1017,7 +1030,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             case 193:
             case 197:
             case 209:
-                return 2;
+                return DOUBLE_WORD;
             case 21:
             case 25:
             case 77:
@@ -1030,7 +1043,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             case 149:
             case 201:
             case 205:
-                return 3;
+                return TRIPLE_LETTER;
             case 37:
             case 39:
             case 53:
@@ -1047,54 +1060,40 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             case 173:
             case 187:
             case 189:
-                return 4;
+                return DOUBLE_LETTER;
             default:
-                return 0;
+                return NOT_SPECIAL;
         }
 
     } //getSpecialTile
 
 
     /**
-     * gets id of each board tile
+     * Given an ImageView, getSquare() returns the corresponding square of the
+     * 15x15 array as if it were numbered as a number table.
      *
-     * @param view
-     * @return int
+     * @author Samone
+     * @param view an ImageView that corresponds to a square in the board
+     * @return int the corresponding number of the square on the board
      */
     public int getSquare(View view){
         switch(view.getId()){
-            case R.id.imageView:
-                return 1;
-            case R.id.imageView2:
-                return 2;
-            case R.id.imageView3:
-                return 3;
-            case R.id.imageView4:
-                return 4;
-            case R.id.imageView5:
-                return 5;
-            case R.id.imageView6:
-                return 6;
-            case R.id.imageView7:
-                return 7;
-            case R.id.imageView8:
-                return 8;
-            case R.id.imageView9:
-                return 9;
-            case R.id.imageView10:
-                return 10;
-            case R.id.imageView11:
-                return 11;
-            case R.id.imageView12:
-                return 12;
-            case R.id.imageView13:
-                return 13;
-            case R.id.imageView14:
-                return 14;
-            case R.id.imageView15:
-                return 15;
-            case R.id.imageView16:
-                return 16;
+            case R.id.imageView: return 1;
+            case R.id.imageView2: return 2;
+            case R.id.imageView3: return 3;
+            case R.id.imageView4: return 4;
+            case R.id.imageView5: return 5;
+            case R.id.imageView6: return 6;
+            case R.id.imageView7: return 7;
+            case R.id.imageView8: return 8;
+            case R.id.imageView9: return 9;
+            case R.id.imageView10: return 10;
+            case R.id.imageView11: return 11;
+            case R.id.imageView12: return 12;
+            case R.id.imageView13: return 13;
+            case R.id.imageView14: return 14;
+            case R.id.imageView15: return 15;
+            case R.id.imageView16: return 16;
             case R.id.imageView17: return 17;
             case R.id.imageView18: return 18;
             case R.id.imageView19: return 19;
@@ -1311,79 +1310,54 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
 
     /**
-     * gets the drable of the necessary letters
+     * Gets the drawable resource of any given letter
      *
-     * @param letter
-     * @return Drawable
+     * @author Samone
+     * @param letter the character that we want the drawable of
+     * @return the corresponding drawable file to the letter
      */
     public Drawable getDrawableLetter(char letter){
 
         switch(letter){
-            case 'a':
-                return myActivity.getDrawable(R.drawable.afinal);
-            case 'b':
-                return myActivity.getResources().getDrawable(R.drawable.bfinal);
-            case 'c':
-                return myActivity.getResources().getDrawable(R.drawable.cfinal);
-            case 'd':
-                return myActivity.getResources().getDrawable(R.drawable.dfinal);
-            case 'e':
-                return myActivity.getResources().getDrawable(R.drawable.efinal);
-            case 'f':
-                return myActivity.getResources().getDrawable(R.drawable.ffinal);
-            case 'g':
-                return myActivity.getResources().getDrawable(R.drawable.gfinal);
-            case 'h':
-                return myActivity.getResources().getDrawable(R.drawable.hfinal);
-            case 'i':
-                return myActivity.getResources().getDrawable(R.drawable.ifinal);
-            case 'j':
-                return myActivity.getResources().getDrawable(R.drawable.jfinal);
-            case 'k':
-                return myActivity.getResources().getDrawable(R.drawable.kfinal);
-            case 'l':
-                return myActivity.getResources().getDrawable(R.drawable.lfinal);
-            case 'm':
-                return myActivity.getResources().getDrawable(R.drawable.mfinal);
-            case 'n':
-                return myActivity.getResources().getDrawable(R.drawable.nfinal);
-            case 'o':
-                return myActivity.getResources().getDrawable(R.drawable.ofinal);
-            case 'p':
-                return myActivity.getResources().getDrawable(R.drawable.pfinal);
-            case 'q':
-                return myActivity.getResources().getDrawable(R.drawable.qfinal);
-            case 'r':
-                return myActivity.getResources().getDrawable(R.drawable.rfinal);
-            case 's':
-                return myActivity.getResources().getDrawable(R.drawable.sfinal);
-            case 't':
-                return myActivity.getResources().getDrawable(R.drawable.tfinal);
-            case 'u':
-                return myActivity.getResources().getDrawable(R.drawable.ufinal);
-            case 'v':
-                return myActivity.getResources().getDrawable(R.drawable.vfinal);
-            case 'w':
-                return myActivity.getResources().getDrawable(R.drawable.wfinal);
-            case 'x':
-                return myActivity.getResources().getDrawable(R.drawable.xfinal);
-            case 'y':
-                return myActivity.getResources().getDrawable(R.drawable.yfinal);
-            case 'z':
-                return myActivity.getResources().getDrawable(R.drawable.zfinal);
-            default:
-                return myActivity.getResources().getDrawable(R.drawable.backgroundsquare);
+            case 'a': return myActivity.getDrawable(R.drawable.afinal);
+            case 'b': return myActivity.getResources().getDrawable(R.drawable.bfinal);
+            case 'c': return myActivity.getResources().getDrawable(R.drawable.cfinal);
+            case 'd': return myActivity.getResources().getDrawable(R.drawable.dfinal);
+            case 'e': return myActivity.getResources().getDrawable(R.drawable.efinal);
+            case 'f': return myActivity.getResources().getDrawable(R.drawable.ffinal);
+            case 'g': return myActivity.getResources().getDrawable(R.drawable.gfinal);
+            case 'h': return myActivity.getResources().getDrawable(R.drawable.hfinal);
+            case 'i': return myActivity.getResources().getDrawable(R.drawable.ifinal);
+            case 'j': return myActivity.getResources().getDrawable(R.drawable.jfinal);
+            case 'k': return myActivity.getResources().getDrawable(R.drawable.kfinal);
+            case 'l': return myActivity.getResources().getDrawable(R.drawable.lfinal);
+            case 'm': return myActivity.getResources().getDrawable(R.drawable.mfinal);
+            case 'n': return myActivity.getResources().getDrawable(R.drawable.nfinal);
+            case 'o': return myActivity.getResources().getDrawable(R.drawable.ofinal);
+            case 'p': return myActivity.getResources().getDrawable(R.drawable.pfinal);
+            case 'q': return myActivity.getResources().getDrawable(R.drawable.qfinal);
+            case 'r': return myActivity.getResources().getDrawable(R.drawable.rfinal);
+            case 's': return myActivity.getResources().getDrawable(R.drawable.sfinal);
+            case 't': return myActivity.getResources().getDrawable(R.drawable.tfinal);
+            case 'u': return myActivity.getResources().getDrawable(R.drawable.ufinal);
+            case 'v': return myActivity.getResources().getDrawable(R.drawable.vfinal);
+            case 'w': return myActivity.getResources().getDrawable(R.drawable.wfinal);
+            case 'x': return myActivity.getResources().getDrawable(R.drawable.xfinal);
+            case 'y': return myActivity.getResources().getDrawable(R.drawable.yfinal);
+            case 'z': return myActivity.getResources().getDrawable(R.drawable.zfinal);
+            default: return myActivity.getResources().getDrawable(R.drawable.backgroundsquare);
         }
 
     } //getDrawableLetter
 
 
     /**
-     * gets ImageView for each tile on the board
+     * gets the ImageView for each tile on the 15x15 board
      *
-     * @param row
-     * @param col
-     * @return ImageView
+     * @author Alec
+     * @param row the x value of the tile
+     * @param col the y value of the tile
+     * @return the corresponding image view of the 15x15 board
      */
     public ImageView getImageView(int row, int col){
         if(row == 0){
