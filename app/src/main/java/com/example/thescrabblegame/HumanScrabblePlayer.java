@@ -28,11 +28,12 @@ import java.util.ArrayList;
  */
 public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClickListener {
 
-    final static int NOT_SPECIAL = 0;
-    final static int TRIPLE_WORD = 1;
-    final static int DOUBLE_WORD = 2;
-    final static int TRIPLE_LETTER = 3;
-    final static int DOUBLE_LETTER = 4;
+    private final static int HAND_MAX = 7;
+    private final static int NOT_SPECIAL = 0;
+    private final static int TRIPLE_WORD = 1;
+    private final static int DOUBLE_WORD = 2;
+    private final static int TRIPLE_LETTER = 3;
+    private final static int DOUBLE_LETTER = 4;
 
     private TextView score = null;
     public ScrabbleState scrabbleCopy;
@@ -669,10 +670,9 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
             getSpecialArray(tempInts);
 
             isVertical = scrabbleCopy.isVertical(getXCoord(tempInts), getYCoord(tempInts));
-            int myTempXCoords[] = getXCoord(tempInts);
-            int myTempYCoords[] = getYCoord(tempInts);
 
-            PlayWord playWord = new PlayWord(this, letter, specialTileArray,getXCoord(tempInts), getYCoord(tempInts), isVertical);
+            PlayWord playWord = new PlayWord(this, letter,
+                    specialTileArray,getXCoord(tempInts), getYCoord(tempInts), isVertical);
             game.sendAction(playWord);
             isFirst = true;
 
@@ -902,7 +902,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
         ScrabbleLetter[] hand = state.getPlayer1Hand();
         ImageView img;
 
-        for(int i = 0; i < state.HAND_MAX; i++){
+        for(int i = 0; i < HAND_MAX; i++){
             img = getHandImageView(i);
             if(img == null){
                 break;
@@ -975,6 +975,13 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
     /**
      * Reads each word from the dictionary text file into a master ArrayList
+     *
+     * EXTERNAL CITATION:
+     * Date: April 22, 2021
+     * Problem: We were having a difficult time implementing a comprehensive dictionary
+     * Resource: Dr. Oberoi & Dr. Tribelhorn
+     * Solution: Instead of reading in from a text file, we convert the txt file
+     *          to an arrayList that can be navigated.
      *
      * @author Alec
      */
