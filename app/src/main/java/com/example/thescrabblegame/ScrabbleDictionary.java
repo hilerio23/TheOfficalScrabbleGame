@@ -1,16 +1,5 @@
 package com.example.thescrabblegame;
 
-import android.content.res.Resources;
-
-import com.example.thescrabblegame.game.GameFramework.GameMainActivity;
-import com.example.thescrabblegame.game.GameFramework.players.GameHumanPlayer;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.*;
-
-import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
-
 /**
  * class ScrabbleState controls the state of the game
  *
@@ -26,7 +15,7 @@ public class ScrabbleDictionary {
      * @return boolean
      */
     public boolean isLegal(String word) {
-        if(dictionary.contains(word)){
+        if(HumanScrabblePlayer.dictionary.contains(word)){
             return true;
         }
         return false;
