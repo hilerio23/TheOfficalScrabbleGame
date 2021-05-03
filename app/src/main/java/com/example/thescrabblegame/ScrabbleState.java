@@ -16,13 +16,18 @@ import java.util.Random;
 public class ScrabbleState  extends GameState {
 
     //static variables for
-    final static int AI = 1;
-    final static int HUMAN = 0;
-    final static int POOL_MAX = 100;
-    final static int BOARD_MAX = 15;
-    final static int HAND_MAX = 7;
-    final static int PLAYING = 0;
-    final static int PAUSE = 1;
+    private final static int AI = 1;
+    private final static int HUMAN = 0;
+    private final static int POOL_MAX = 100;
+    private final static int BOARD_MAX = 15;
+    private final static int HAND_MAX = 7;
+    private final static int PLAYING = 0;
+    private final static int NOT_SPECIAL = 0;
+    private final static int TRIPLE_WORD = 1;
+    private final static int DOUBLE_WORD = 2;
+    private final static int TRIPLE_LETTER = 3;
+    private final static int DOUBLE_LETTER = 4;
+
 
     private ScrabbleLetter[][] board = new ScrabbleLetter[BOARD_MAX][BOARD_MAX]; //15 x 15 board
     private int playerToMove; //an int to tell whos move it is 0 for human 1 for AI
@@ -93,6 +98,7 @@ public class ScrabbleState  extends GameState {
      *  -sets it to first turn
      *  -sets the poolCounter to 0
      *
+     * @author
      */
     public ScrabbleState(){
 
@@ -115,7 +121,8 @@ public class ScrabbleState  extends GameState {
 
             //if(pool[num] != null){
                 hand.add(pool[num]);
-                ArrayList<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
+                ArrayList<ScrabbleLetter> poolArrayList =
+                        new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
                 poolArrayList.remove(num);
                 ScrabbleLetter[] tempArray = new ScrabbleLetter[1];
                 pool = poolArrayList.toArray(tempArray);
@@ -130,7 +137,8 @@ public class ScrabbleState  extends GameState {
             int num = r.nextInt(high);
             //if(pool[num] != null){
                 hand.add(pool[num]);
-                ArrayList<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
+                ArrayList<ScrabbleLetter> poolArrayList =
+                        new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
                 poolArrayList.remove(num);
                 ScrabbleLetter[] tempArray = new ScrabbleLetter[1];
                 pool = poolArrayList.toArray(tempArray);
@@ -294,7 +302,9 @@ public class ScrabbleState  extends GameState {
      * @param yPositions
      * @param isVertical
      */
-    public void playWord(ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xPositions, int[] yPositions, boolean isVertical){
+    public void playWord(ScrabbleLetter[] wordToPlay, int[] specialTiles, int[] xPositions,
+                         int[] yPositions, boolean isVertical){
+
         ScrabbleDictionary dict = new ScrabbleDictionary();
         numPasses = 0;
         ScrabbleLetter missingLetter = null;
@@ -312,36 +322,46 @@ public class ScrabbleState  extends GameState {
                 pass();
                 return;
             }
+
             if(firstTurn == 0){
                 if(!dict.isLegal(arrToString(wordToPlay))){
                     pass();
                     return;
                 }
             }
+
             int tmpX = -1;
             int tmpY = -1;
+
             //finds missing letter
             if (isVertical == true) {
                 for (int i = 0; i < wordToPlay.length; i++) {
                     //edge case
-                    if (myBoard[xPositions[i]][(yPositions[i]) + 1] == null || myBoard[xPositions[i]][(yPositions[i]) - 1] == null) {
+                    if (myBoard[xPositions[i]][(yPositions[i]) + 1] != null ||
+                            myBoard[xPositions[i]][(yPositions[i]) - 1] != null) {
+
                         if (myBoard[xPositions[i]][yPositions[i] + 1].getLetter() != ' ') {
                             missingLetter = myBoard[xPositions[i]][yPositions[i] + 1];
                             tmpY = yPositions[i] + 1;
-                        } else if (myBoard[xPositions[i]][yPositions[i] - 1].getLetter() != ' ') {
+                        }
+                        else if (myBoard[xPositions[i]][yPositions[i] - 1].getLetter() != ' ') {
                             missingLetter = myBoard[xPositions[i]][yPositions[i] - 1];
                             tmpY = yPositions[i] - 1;
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 for (int i = 0; i < wordToPlay.length; i++) {
                     //edge case
-                    if (myBoard[xPositions[i]+1][yPositions[i]] == null || myBoard[xPositions[i]-1][yPositions[i]] == null) {
+                    if (myBoard[xPositions[i]+1][yPositions[i]] != null ||
+                            myBoard[xPositions[i]-1][yPositions[i]] != null) {
+
                         if (myBoard[xPositions[i] + 1][yPositions[i]].getLetter() != ' ') {
                             missingLetter = myBoard[xPositions[i] + 1][yPositions[i]];
                             tmpX = yPositions[i] + 1;
-                        } else if (myBoard[xPositions[i] - 1][yPositions[i]].getLetter() != ' ') {
+                        }
+                        else if (myBoard[xPositions[i] - 1][yPositions[i]].getLetter() != ' ') {
                             missingLetter = myBoard[xPositions[i] - 1][yPositions[i]];
                             tmpX = yPositions[i] - 1;
                         }
@@ -351,18 +371,24 @@ public class ScrabbleState  extends GameState {
 
             //gets full word to see if is in the dictionary
             if (firstTurn != 0) {
+
                 String myWord = new String();
                 ArrayList<Character> tmpCharArray = new ArrayList<>();
+
                 if (isVertical) {
+
                     for (int i = 0; i < yPositions.length; i++) {
+
                         //adds chars to array list
                         char tmpChar = wordToPlay[i].getLetter();
                         tmpCharArray.add(tmpChar);
+
                         //inserts missing letter in the index of the array list
                         if (yPositions[i] - 1 == tmpY) {
                             char myChar = missingLetter.getLetter();
                             tmpCharArray.add(myChar);
-                        } else if (yPositions[i] + 1 == tmpY) {
+                        }
+                        else if (yPositions[i] + 1 == tmpY) {
                             char myChar = missingLetter.getLetter();
                             tmpCharArray.add(myChar);
                         }
@@ -373,14 +399,17 @@ public class ScrabbleState  extends GameState {
                 }
                 else{
                     for (int i = 0; i < xPositions.length; i++) {
+
                         //adds chars to array list
                         char tmpChar = wordToPlay[i].getLetter();
                         tmpCharArray.add(tmpChar);
+
                         //inserts missing letter in the index of the array list
                         if (xPositions[i] - 1 == tmpX) {
                             char myChar = missingLetter.getLetter();
                             tmpCharArray.add(myChar);
-                        } else if (xPositions[i] + 1 == tmpX) {
+                        }
+                        else if (xPositions[i] + 1 == tmpX) {
                             char myChar = missingLetter.getLetter();
                             tmpCharArray.add(myChar);
                         }
@@ -407,16 +436,16 @@ public class ScrabbleState  extends GameState {
         this.firstTurn++;
         this.board = myBoard;
 
-    }
+    } //playWord
 
     /**
      * PlaceWord is a helper method that places the word on the board
      *
      * @author Samone
-     * @param word
-     * @param board
-     * @param x
-     * @param y
+     * @param word an array of ScrabbleLetters that translates to the requested word
+     * @param board a copy of the state's board
+     * @param x an array of x values
+     * @param y an array of y values
      */
     public void placeWord(ScrabbleLetter[] word, ScrabbleLetter[][] board, int[] x, int[] y){
         for(int i = 0; i < x.length; i++){
@@ -441,25 +470,30 @@ public class ScrabbleState  extends GameState {
     public void score(ScrabbleLetter[] wordToPlay, ScrabbleLetter[][] myBoard, int[] xPositions,
                       int[] yPositions, ScrabbleLetter missingLetter, int[] specialTiles){
 
-        int type = 0;
+        int type = 1;
         int score = 0;
         for(int i = 0; i < wordToPlay.length; i++){
             //calculates scores for the special tiles
-            if(specialTiles[i] == 0) {
+            if(specialTiles[i] == NOT_SPECIAL) {
                 score += wordToPlay[i].getPoints();
             }
-            else if(specialTiles[i] == 1 || specialTiles[i] == 2){
-                type = 1;
+            else if(specialTiles[i] == TRIPLE_WORD){
+                type *= 3;
                 score += wordToPlay[i].getPoints();
             }
-            else if(specialTiles[i] == 3){
-                score += 3*wordToPlay[i].getPoints();
+            else if (specialTiles[i] == DOUBLE_WORD){
+                type *= 2;
+                score += wordToPlay[i].getPoints();
+            }
+            else if(specialTiles[i] == TRIPLE_LETTER){
+                score += TRIPLE_LETTER*wordToPlay[i].getPoints();
             }
             else{
-                score += 2*wordToPlay[i].getPoints();
+                score += DOUBLE_LETTER*wordToPlay[i].getPoints();
             }
         }
-        if(type == 1 || type == 2){
+
+        if(type % TRIPLE_WORD == 0 || type % DOUBLE_WORD == 0){
             score *= type;
         }
 
@@ -478,11 +512,13 @@ public class ScrabbleState  extends GameState {
             }
         }
 
-        if (id == 0) {
+        if (id == HUMAN) {
             this.player1Score += score;
-        } else if (id == 1) {
+        }
+        else if (id == AI) {
             this.player2Score += score;
         }
+
     } //score
 
     /**
@@ -495,6 +531,7 @@ public class ScrabbleState  extends GameState {
             player1Score -= hand[i].getPoints();
         }
     }
+
     /**
      * This allows you to replace the tiles in the hand once you have
      * played a word
@@ -503,12 +540,13 @@ public class ScrabbleState  extends GameState {
      * @param lettersToExchange
      */
     public void replaceTiles(ScrabbleLetter[] lettersToExchange){
+
         Random num = new Random();
         int randoNum;
-        //replaces the player's deck of tiles with new random letters
         numPasses = 0;
         int count = 0;
-        if(id == 0){
+
+        if(id == HUMAN){
             for(int i = 0; i < lettersToExchange.length; i++){
                 for(int j = 0; j < player1Hand.length; j++){
                     char tempChar1 = lettersToExchange[i].getLetter();
@@ -524,7 +562,8 @@ public class ScrabbleState  extends GameState {
                     randoNum = num.nextInt(pool.length);
 
                     player1Hand[i] = pool[randoNum];
-                    ArrayList<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
+                    ArrayList<ScrabbleLetter> poolArrayList =
+                            new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
                     poolArrayList.remove(randoNum);
                     ScrabbleLetter[] tempArray = new ScrabbleLetter[1];
                     pool = poolArrayList.toArray(tempArray);
@@ -550,7 +589,8 @@ public class ScrabbleState  extends GameState {
                     randoNum = num.nextInt(pool.length);
 
                     player1Hand[i] = pool[randoNum];
-                    ArrayList<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
+                    ArrayList<ScrabbleLetter> poolArrayList =
+                            new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
                     poolArrayList.remove(randoNum);
                     ScrabbleLetter[] tempArray = new ScrabbleLetter[1];
                     pool = poolArrayList.toArray(tempArray);
@@ -594,7 +634,8 @@ public class ScrabbleState  extends GameState {
                     randoNum = num.nextInt(pool.length);
 
                     player1Hand[i] = pool[randoNum];
-                    List<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
+                    List<ScrabbleLetter> poolArrayList =
+                            new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
                     poolArrayList.remove(randoNum);
                     poolArrayList.add(lettersToExchange[count]);
                     ScrabbleLetter[] tempArray = new ScrabbleLetter[1];
@@ -621,7 +662,8 @@ public class ScrabbleState  extends GameState {
                     randoNum = num.nextInt(pool.length);
 
                     player2Hand[i] = pool[randoNum];
-                    List<ScrabbleLetter> poolArrayList = new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
+                    List<ScrabbleLetter> poolArrayList =
+                            new ArrayList<ScrabbleLetter>(Arrays.asList(pool));
                     poolArrayList.remove(randoNum);
                     poolArrayList.add(lettersToExchange[count]);
                     ScrabbleLetter[] tempArray = new ScrabbleLetter[1];

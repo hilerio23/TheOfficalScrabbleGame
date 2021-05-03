@@ -24,12 +24,17 @@ import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
 /**
  * class EasyAI controls the Easy Computer Player
  *
- * @author Alec Uyematsu
+ * @author Alec Uyematsu and Tamsen Dean
  * @version April 2021
  */
 public class EasyAI extends GameComputerPlayer {
 
-    private ArrayList<String> sowpodsList; //for dictionary;
+    private ArrayList<String> sowpodsList; //for dictionary
+    private boolean playWordVertical;
+    private int[] playX;
+    private int[] playY;
+    private ScrabbleLetter[] wordToPlay;
+    private int[] specialTileArray;
 
     /**
      * constructor
@@ -63,14 +68,6 @@ public class EasyAI extends GameComputerPlayer {
         return random;
     }
 
-
-    //variables to be called in RecieveInfo
-    private boolean playWordVertical;
-    private int[] playX;
-    private int[] playY;
-    private ScrabbleLetter[] wordToPlay;
-    private int[] specialTileArray;
-
     /**
      * Method sets variables to then play a word in RecieveInfo
      * @param board
@@ -79,9 +76,12 @@ public class EasyAI extends GameComputerPlayer {
      * @param letter
      * @param myWords
      **/
-    public void findPlayWord(ScrabbleLetter[][] board, int x, int y, ScrabbleLetter letter, ArrayList<String> myWords) {
+    public void findPlayWord(ScrabbleLetter[][] board, int x, int y,
+                             ScrabbleLetter letter, ArrayList<String> myWords) {
+
         ArrayList<Integer> compareX = new ArrayList<Integer>();
         ArrayList<Integer> compareY = new ArrayList<Integer>();
+
         //adds x's and y's that are occupied to an arraylist
         for (int row = 0; row < 15; row++) {
             for (int col = 0; col < 15; col++) {
@@ -93,6 +93,7 @@ public class EasyAI extends GameComputerPlayer {
                 }
             }
         }
+
         //initalizing variables for the for loop
         int pointsToPlay = 0;
         boolean isVerticalToPlay = false;
@@ -100,8 +101,10 @@ public class EasyAI extends GameComputerPlayer {
 
         //going through words that have possibility to be played
         for (int j = 0; j < myWords.size(); j++) {
+
             //gets word at index j
             String word = myWords.get(j);
+
             //finds where the letter where the word needs to be played off of
             int index = word.indexOf(letter.getLetter());
 
@@ -110,33 +113,35 @@ public class EasyAI extends GameComputerPlayer {
             compareXCopy = compareX;
             compareYCopy = compareY;
             boolean isOverlap = false;
+
             //horizontal check to see if there is an overlap
             for (int i = 0; i < index; i++) {
-                //before index
-                //deals with edge
+
+                //before index deals with edge
                 if (x - index > 0) {
+
                     if (board[x - index + i][y].getLetter() != ' ') {
-                        //deals with edges
-                        if (i > 1) {
+
+                        if (i > 1) {//deals with edges
                             //makes sure letters can not be played next to each other
-                            if (board[x - index + i][y].getLetter() != ' ' && board[x - index + i - 1][y].getLetter() != ' ') {
+                            if (board[x - index + i][y].getLetter() != ' ' &&
+                                    board[x - index + i - 1][y].getLetter() != ' ') {
                                 isOverlap = true;
                             }
                         }
                     }
                 }
-                //so we don't play out of bounds word
-                else if(x - index < 0){
+
+                else if(x - index < 0){//so we don't play out of bounds word
                     isOverlap = true;
                 }
             }
             for(int i = 0; i < word.length() - index; i++) {
-                //after index
-                //deals with edge
-                if (x + 1 < 14) {
+
+                if (x + 1 < 14) {//after index deals with edge
                     if (board[x + 1 + i][y].getLetter() != ' ') {
-                        //deals with edges
-                        if (i < 14) {
+
+                        if (i < 14) { //deals with edges
                             //makes sure letters can not be played next to each other
                             if (board[x + 1 + i + 1][y].getLetter() != ' ') {
                                 isOverlap = true;
@@ -144,16 +149,17 @@ public class EasyAI extends GameComputerPlayer {
                         }
                     }
                 }
-                //so we don't play out of bounds word
-                else if(x + 1 > 14){
+
+                else if(x + 1 > 14){//so we don't play out of bounds word
                     isOverlap = true;
                 }
             }
             if (!isOverlap) {
-                //find the largest value word
-                if (toPoints(word) > pointsToPlay) {
+
+                if (toPoints(word) > pointsToPlay) {//find the largest value word
                     //sets points to pointsToPlay inorder to find the largest value word
                     pointsToPlay = toPoints(word);
+
                     //setting values to private variables in order to be called in different method
                     stringToPlay = word;
                     isVerticalToPlay = false;
@@ -161,15 +167,20 @@ public class EasyAI extends GameComputerPlayer {
                     this.playWordVertical = isVerticalToPlay;
                     int[] xArrayToPlay = new int[word.length()];
                     int[] yArrayToPlay = new int[word.length()];
+
                     for (int b = 0; b < word.length(); b++) {
                         xArrayToPlay[b] = x - index + b;
                         yArrayToPlay[b] = y;
                     }
+
                     this.playX = xArrayToPlay;
                     this.playY = yArrayToPlay;
+
                 }
             }
+
             isOverlap = false;
+
             for (int i = 0; i < index; i++) {
                 //before index
                 //deals with edge
@@ -265,18 +276,21 @@ public class EasyAI extends GameComputerPlayer {
         return points;
     }
 
-    /*
-     *Method takes in a String of chars and a letter and
-     * returns an ArrayList of all the words that contain that
-     * char and are in the dictionary
-     */
+
 
     /**
-     * External Citation
+     *
+     * Method takes in a String of chars and a letter and
+     * returns an ArrayList of all the words that contain that
+     * char and are in the dictionary
+     *
+     * EXTERNAL CITATION
      * Date: 22 April 2021
      * Problem: Couldn't search through a list of English words
      * Resource: https://stackoverflow.com/questions/31623184/find-all-words-in-dictionary-given-a-string-of-words
      * Solution: I used the example code from this post.
+     *
+     * @author Alec
      * @param  input
      * @param  letter
      * @return ArrayList<String>
