@@ -14,7 +14,7 @@ import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
 /**
  * class ScrabbleState controls the state of the game
  *
- * @author  Alec Uyematsu
+ * @author  Alec Uyematsu and Tamsen Dean
  * @version April 2021
  */
 public class ScrabbleDictionary {

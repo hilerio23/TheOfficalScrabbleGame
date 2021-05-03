@@ -24,7 +24,7 @@ import static com.example.thescrabblegame.HumanScrabblePlayer.dictionary;
 /**
  * class EasyAI controls the Easy Computer Player
  *
- * @author Alec Uyematsu
+ * @author Alec Uyematsu and Tamsen Dean
  * @version April 2021
  */
 public class EasyAI extends GameComputerPlayer {
