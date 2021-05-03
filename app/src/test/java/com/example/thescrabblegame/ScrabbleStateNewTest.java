@@ -2,13 +2,6 @@ package com.example.thescrabblegame;
 
 import junit.framework.TestCase;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
-import java.lang.SecurityManager;
-
-import java.security.spec.ECField;
-
 import static org.junit.Assert.assertNotEquals;
 
 public class ScrabbleStateNewTest extends TestCase {
@@ -310,24 +303,30 @@ public class ScrabbleStateNewTest extends TestCase {
     }
 
     //by Samone
+    // It won't pass due to the fact that it deals with class when running a unit test
+    // it doesn't get accessed
     public void testPlayWord() throws Exception {
         ScrabbleState state = new ScrabbleState();
-        ScrabbleLetter[] letters = new ScrabbleLetter[4];
+        ScrabbleLetter[] letters = new ScrabbleLetter[3];
         int wordIsPlayed = 0;
-        ScrabbleLetter b = new ScrabbleLetter('b');
-        ScrabbleLetter a = new ScrabbleLetter('a');
-        ScrabbleLetter n = new ScrabbleLetter('n');
-        ScrabbleLetter d = new ScrabbleLetter('d');
+
+        ScrabbleLetter b = new ScrabbleLetter('c');
+        ScrabbleLetter a = new ScrabbleLetter('u');
+        ScrabbleLetter n = new ScrabbleLetter('p');
+        //ScrabbleLetter d = new ScrabbleLetter('d');
         letters[0] = b;
         letters[1] = a;
         letters[2] = n;
-        letters[3] = d;
-        int[] xNums = {4, 5, 6, 7};
-        int[] yNums = {7, 7, 7, 7};
-        int[] special = {0, 0, 0, 0};
+        //letters[3] = d;
+        //int[] xNums = {4, 5, 6, 7};
+        int[] xNums = {5, 6, 7};
+        //int[] yNums = {7, 7, 7, 7};
+        int[] yNums = {7, 7, 7};
+        int[] special = {0, 0, 0};
         state.playWord(letters, special, xNums, yNums, false);
         ScrabbleLetter[][] board = state.getBoard();
-        ScrabbleLetter[] word = {board[4][7], board[5][7], board[6][7], board[7][7]};
+        //ScrabbleLetter[] word = {board[4][7], board[5][7], board[6][7], board[7][7]};
+        ScrabbleLetter[] word = {board[5][7], board[6][7], board[7][7]};
         for(int i = 0; i < word.length; i++){
             if(letters[i].equals(word[i])){
                 wordIsPlayed = 1;
