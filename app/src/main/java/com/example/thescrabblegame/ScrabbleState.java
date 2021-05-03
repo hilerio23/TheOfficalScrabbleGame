@@ -327,27 +327,26 @@ public class ScrabbleState  extends GameState {
                 for (int i = 0; i < wordToPlay.length; i++) {
                     //edge case
                     if (myBoard[xPositions[i]][(yPositions[i]) + 1] == null || myBoard[xPositions[i]][(yPositions[i]) - 1] == null) {
-                        return;
-                    }
-                    if (myBoard[xPositions[i]][yPositions[i] + 1].getLetter() != ' ') {
-                        missingLetter = myBoard[xPositions[i]][yPositions[i] + 1];
-                        tmpY = yPositions[i] + 1;
-                    } else if (myBoard[xPositions[i]][yPositions[i] - 1].getLetter() != ' ') {
-                        missingLetter = myBoard[xPositions[i]][yPositions[i] - 1];
-                        tmpY = yPositions[i] - 1;
+                        if (myBoard[xPositions[i]][yPositions[i] + 1].getLetter() != ' ') {
+                            missingLetter = myBoard[xPositions[i]][yPositions[i] + 1];
+                            tmpY = yPositions[i] + 1;
+                        } else if (myBoard[xPositions[i]][yPositions[i] - 1].getLetter() != ' ') {
+                            missingLetter = myBoard[xPositions[i]][yPositions[i] - 1];
+                            tmpY = yPositions[i] - 1;
+                        }
                     }
                 }
             } else {
                 for (int i = 0; i < wordToPlay.length; i++) {
-                    if (myBoard[xPositions[i]][yPositions[i] + 1] == null || myBoard[xPositions[i]][yPositions[i] - 1] == null) {
-                        return;
-                    }
-                    if (myBoard[xPositions[i] + 1][yPositions[i]].getLetter() != ' ') {
-                        missingLetter = myBoard[xPositions[i] + 1][yPositions[i]];
-                        tmpX = yPositions[i] + 1;
-                    } else if (myBoard[xPositions[i] - 1][yPositions[i]].getLetter() != ' ') {
-                        missingLetter = myBoard[xPositions[i] - 1][yPositions[i]];
-                        tmpX = yPositions[i] - 1;
+                    //edge case
+                    if (myBoard[xPositions[i]+1][yPositions[i]] == null || myBoard[xPositions[i]-1][yPositions[i]] == null) {
+                        if (myBoard[xPositions[i] + 1][yPositions[i]].getLetter() != ' ') {
+                            missingLetter = myBoard[xPositions[i] + 1][yPositions[i]];
+                            tmpX = yPositions[i] + 1;
+                        } else if (myBoard[xPositions[i] - 1][yPositions[i]].getLetter() != ' ') {
+                            missingLetter = myBoard[xPositions[i] - 1][yPositions[i]];
+                            tmpX = yPositions[i] - 1;
+                        }
                     }
                 }
             }
