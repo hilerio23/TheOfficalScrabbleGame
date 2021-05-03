@@ -332,20 +332,31 @@ public class ScrabbleState  extends GameState {
         if(id == 0) {
 
             //if it's not continuous it's invalid so exit trying
-            if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
+            if( !isCentered ||!isContinuous(xPositions, yPositions)){
                 pass();
                 return;
             }
+            if(firstTurn == 0){
+                if(!dict.isLegal(arrToString(wordToPlay))){
+                    pass();
+                    return;
+                }
+            }
+            int tmpX = -1;
+            int tmpY = -1;
             //finds missing letter
             if (isVertical == true) {
                 for (int i = 0; i < wordToPlay.length; i++) {
+                    //edge case
                     if (myBoard[xPositions[i]][(yPositions[i]) + 1] == null || myBoard[xPositions[i]][(yPositions[i]) - 1] == null) {
                         return;
                     }
                     if (myBoard[xPositions[i]][yPositions[i] + 1].getLetter() != ' ') {
                         missingLetter = myBoard[xPositions[i]][yPositions[i] + 1];
+                        tmpY = yPositions[i] + 1;
                     } else if (myBoard[xPositions[i]][yPositions[i] - 1].getLetter() != ' ') {
                         missingLetter = myBoard[xPositions[i]][yPositions[i] - 1];
+                        tmpY = yPositions[i] - 1;
                     }
                 }
             } else {
@@ -355,9 +366,57 @@ public class ScrabbleState  extends GameState {
                     }
                     if (myBoard[xPositions[i] + 1][yPositions[i]].getLetter() != ' ') {
                         missingLetter = myBoard[xPositions[i] + 1][yPositions[i]];
+                        tmpX = yPositions[i] + 1;
                     } else if (myBoard[xPositions[i] - 1][yPositions[i]].getLetter() != ' ') {
                         missingLetter = myBoard[xPositions[i] - 1][yPositions[i]];
+                        tmpX = yPositions[i] - 1;
                     }
+                }
+            }
+
+            //gets full word to see if is in the dictionary
+            if (firstTurn != 0) {
+                String myWord = new String();
+                ArrayList<Character> tmpCharArray = new ArrayList<>();
+                if (isVertical) {
+                    for (int i = 0; i < yPositions.length; i++) {
+                        //adds chars to array list
+                        char tmpChar = wordToPlay[i].getLetter();
+                        tmpCharArray.add(tmpChar);
+                        //inserts missing letter in the index of the array list
+                        if (yPositions[i] - 1 == tmpY) {
+                            char myChar = missingLetter.getLetter();
+                            tmpCharArray.add(myChar);
+                        } else if (yPositions[i] + 1 == tmpY) {
+                            char myChar = missingLetter.getLetter();
+                            tmpCharArray.add(myChar);
+                        }
+                    }
+                    for (char c : tmpCharArray) {
+                        myWord = myWord + c;
+                    }
+                }
+                else{
+                    for (int i = 0; i < xPositions.length; i++) {
+                        //adds chars to array list
+                        char tmpChar = wordToPlay[i].getLetter();
+                        tmpCharArray.add(tmpChar);
+                        //inserts missing letter in the index of the array list
+                        if (xPositions[i] - 1 == tmpX) {
+                            char myChar = missingLetter.getLetter();
+                            tmpCharArray.add(myChar);
+                        } else if (xPositions[i] + 1 == tmpX) {
+                            char myChar = missingLetter.getLetter();
+                            tmpCharArray.add(myChar);
+                        }
+                    }
+                    for (char c : tmpCharArray) {
+                        myWord = myWord + c;
+                    }
+                }
+                if (!dict.isLegal(myWord)) {
+                    pass();
+                    return;
                 }
             }
 
