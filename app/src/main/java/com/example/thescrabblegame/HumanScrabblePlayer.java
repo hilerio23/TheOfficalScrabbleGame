@@ -36,6 +36,7 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ArrayList<Integer> tempInts = new ArrayList<>();
     private ArrayList<Integer> tempXCords = new ArrayList<>();
     private ArrayList<Integer> tempYCords = new ArrayList<>();
+    public static ArrayList<String> dictionary = new ArrayList<>();
     private ImageView first;
     private ImageView second;
     private ImageView third;
@@ -44,7 +45,6 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
     private ImageView sixth;
     private ImageView seventh;
     private boolean isFirst;
-    public static ArrayList<String> dictionary = new ArrayList<>();
     private ScrabbleLetter lastLetter = null;
 
     /**
@@ -896,9 +896,6 @@ public class HumanScrabblePlayer extends GameHumanPlayer implements View.OnClick
 
         for(int i = 0; i < 7; i++){
             img = getHandImageView(i);
-            if(img == null){
-                int x = 2;
-            }
             img.setImageDrawable(getDrawableLetter(hand[i].getLetter()));
         }
 
