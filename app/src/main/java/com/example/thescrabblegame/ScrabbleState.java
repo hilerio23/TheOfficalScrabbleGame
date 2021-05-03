@@ -337,8 +337,8 @@ public class ScrabbleState  extends GameState {
             if (isVertical == true) {
                 for (int i = 0; i < wordToPlay.length; i++) {
                     //edge case
-                    if (myBoard[xPositions[i]][(yPositions[i]) + 1] == null ||
-                            myBoard[xPositions[i]][(yPositions[i]) - 1] == null) {
+                    if (myBoard[xPositions[i]][(yPositions[i]) + 1] != null ||
+                            myBoard[xPositions[i]][(yPositions[i]) - 1] != null) {
 
                         if (myBoard[xPositions[i]][yPositions[i] + 1].getLetter() != ' ') {
                             missingLetter = myBoard[xPositions[i]][yPositions[i] + 1];
@@ -354,8 +354,8 @@ public class ScrabbleState  extends GameState {
             else {
                 for (int i = 0; i < wordToPlay.length; i++) {
                     //edge case
-                    if (myBoard[xPositions[i]+1][yPositions[i]] == null ||
-                            myBoard[xPositions[i]-1][yPositions[i]] == null) {
+                    if (myBoard[xPositions[i]+1][yPositions[i]] != null ||
+                            myBoard[xPositions[i]-1][yPositions[i]] != null) {
 
                         if (myBoard[xPositions[i] + 1][yPositions[i]].getLetter() != ' ') {
                             missingLetter = myBoard[xPositions[i] + 1][yPositions[i]];
