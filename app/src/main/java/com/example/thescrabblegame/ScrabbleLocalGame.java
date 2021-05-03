@@ -20,6 +20,7 @@ public class ScrabbleLocalGame extends LocalGame {
         super();
         state = new ScrabbleState();
     }
+
     public ScrabbleLocalGame(ScrabbleState scrabbleState){
         super();
         state = new ScrabbleState(scrabbleState);
