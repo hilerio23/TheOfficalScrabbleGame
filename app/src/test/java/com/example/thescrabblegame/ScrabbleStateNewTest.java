@@ -446,4 +446,31 @@ public class ScrabbleStateNewTest extends TestCase {
         int checkOver = state.getOver();
         assertEquals(1, checkOver);
     }
+
+    //by Samone
+    public void testInitPool(){
+        ScrabbleState state = new ScrabbleState();
+        state.initPool();
+        ScrabbleLetter[] pool = state.getPool();
+        assertEquals(100, pool.length);
+    }
+
+    //by Samone
+    public void testPlaceWord(){
+        ScrabbleState state = new ScrabbleState();
+         ScrabbleLetter b = new ScrabbleLetter('b');
+         ScrabbleLetter[] word = {b, b, b, b};
+         int[] x= {4,5,6,7};
+         int[] y = {7,7,7,7};
+         state.placeWord(word, state.getBoard(), x, y);
+         ScrabbleLetter[][] board = state.getBoard();
+         ScrabbleLetter[] test = {board[4][7], board[5][7], board[6][7], board[7][7]};
+         boolean equal = true;
+         for(int i = 0; i < word.length; i++){
+             if(word[i] != test[i]){
+                 equal = false;
+             }
+         }
+         assertEquals(true, equal);
+    }
 }

@@ -83,6 +83,7 @@ public class ScrabbleState  extends GameState {
     public int getPlayer4Score(){ return player4Score; }
     public boolean getIsCentered() {return isCentered; }
     public ScrabbleLetter[][] getBoard() { return board; }
+    public ScrabbleLetter[] getPool(){ return pool; }
     public int getOver(){ return over; }
     public int getNumPasses(){ return numPasses; }
     public ScrabbleLetter[] getPlayer1Hand(){ return player1Hand; }
@@ -183,9 +184,26 @@ public class ScrabbleState  extends GameState {
         this.poolCounter = scrabbleStateCopy.poolCounter;
     }
 
+    /**
+     * This method initializes the pool to help a specific number of each tile,
+     * according to this website: https://en.wikipedia.org/wiki/Scrabble_letter_distributions
+     *
+     * Works by creating an arrayList to add ScrabbleLetters to then adding a
+     * specified number of each letter to the pool. Once done with that, the
+     * array list is converted to an array and the pool instance variable is
+     * initialized with that array.
+     *
+     * NOTE: Since blank tiles were not implemented, instead there is an extra
+     *       M and Y tile in the pool.
+     *
+     * @author: Samone
+     */
     public void initPool(){
+
+        //initializing the arrayList
         ArrayList<ScrabbleLetter> letterPool = new ArrayList<>();
 
+        //initializing each of the ScrabbleLetters
         ScrabbleLetter a = new ScrabbleLetter('a');
         ScrabbleLetter b = new ScrabbleLetter('b');
         ScrabbleLetter c = new ScrabbleLetter('c');
@@ -213,6 +231,7 @@ public class ScrabbleState  extends GameState {
         ScrabbleLetter y = new ScrabbleLetter('y');
         ScrabbleLetter z = new ScrabbleLetter('z');
 
+        //adding each letter to the pool according to Scrabble rules
         for(int num = 0; num < 12; num++){
             letterPool.add(e);
         }
@@ -254,10 +273,11 @@ public class ScrabbleState  extends GameState {
         letterPool.add(q);
         letterPool.add(z);
 
+        //setting the pool variable as the converted array
         this.pool = letterPool.toArray(this.pool);
     }
 
-    /** External Citation
+    /** External Citation:
      Date: 18 April 2021
      Problem: Needed to convert array list to string
      Resource: https://stackoverflow.com/questions/599161/best-way-to-convert-an-arraylist-to-a-string
@@ -313,11 +333,6 @@ public class ScrabbleState  extends GameState {
 
             //if it's not continuous it's invalid so exit trying
             if( !isCentered ||!isContinuous(xPositions, yPositions) || !dict.isLegal(arrToString(wordToPlay))){
-                //return tiles
-
-//                for(int i = 0; i < wordToPlay.length; i++){
-//                    myBoard[xPositions[i]][yPositions[i]] = new ScrabbleLetter(' ');
-//                }
                 pass();
                 return;
             }
@@ -433,6 +448,10 @@ public class ScrabbleState  extends GameState {
         }
     } //score
 
+    /**
+     * Subtracts the number of tiles in the players' hand once the game is
+     * finished per the official Scrabble Rules.
+     */
     public void scoreOver(){
         ScrabbleLetter[] hand = getPlayer1Hand();
         for(int i = 0; i < hand.length; i++){
