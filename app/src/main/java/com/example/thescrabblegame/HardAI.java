@@ -136,7 +136,7 @@ public class HardAI extends GameComputerPlayer {
             for(int i = 0; i < word.length() - index; i++) {
                 //after index
                 //deals with edge
-                if (x + 1 < 14) {
+                if (x + 1 < 13) {
                     if (board[x + 1 + i][y].getLetter() != ' ') {
                         //deals with edges
                         if (i < 14) {
@@ -148,7 +148,7 @@ public class HardAI extends GameComputerPlayer {
                     }
                 }
                 //so we don't play out of bounds word
-                else if(x + 1 > 14){
+                else if(x + 1 > 13){
                     isOverlap = true;
                 }
             }
@@ -197,7 +197,7 @@ public class HardAI extends GameComputerPlayer {
             for(int i = 0; i < word.length() - index; i++) {
                 //after index
                 //deals with edge
-                if(y+1 < 14) {
+                if(y+1 < 13) {
                     if (board[x][y + 1 + i].getLetter() != ' ') {
                         //deals with edges
                         if (i < 14) {
@@ -209,7 +209,7 @@ public class HardAI extends GameComputerPlayer {
                     }
                 }
                 //so we don't play out of bounds word
-                else if(y + 1 > 14){
+                else if(y + 1 > 13){
                     isOverlap = true;
                 }
             }

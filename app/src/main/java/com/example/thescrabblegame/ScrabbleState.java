@@ -359,11 +359,11 @@ public class ScrabbleState  extends GameState {
 
                         if (myBoard[xPositions[i] + 1][yPositions[i]].getLetter() != ' ') {
                             missingLetter = myBoard[xPositions[i] + 1][yPositions[i]];
-                            tmpX = yPositions[i] + 1;
+                            tmpX = xPositions[i] + 1;
                         }
                         else if (myBoard[xPositions[i] - 1][yPositions[i]].getLetter() != ' ') {
                             missingLetter = myBoard[xPositions[i] - 1][yPositions[i]];
-                            tmpX = yPositions[i] - 1;
+                            tmpX = xPositions[i] - 1;
                         }
                     }
                 }
@@ -386,11 +386,11 @@ public class ScrabbleState  extends GameState {
                         //inserts missing letter in the index of the array list
                         if (yPositions[i] - 1 == tmpY) {
                             char myChar = missingLetter.getLetter();
-                            tmpCharArray.add(myChar);
+                            tmpCharArray.add(i, myChar);
                         }
                         else if (yPositions[i] + 1 == tmpY) {
                             char myChar = missingLetter.getLetter();
-                            tmpCharArray.add(myChar);
+                            tmpCharArray.add(i, myChar);
                         }
                     }
                     for (char c : tmpCharArray) {
@@ -407,11 +407,11 @@ public class ScrabbleState  extends GameState {
                         //inserts missing letter in the index of the array list
                         if (xPositions[i] - 1 == tmpX) {
                             char myChar = missingLetter.getLetter();
-                            tmpCharArray.add(myChar);
+                            tmpCharArray.add(i, myChar);
                         }
                         else if (xPositions[i] + 1 == tmpX) {
                             char myChar = missingLetter.getLetter();
-                            tmpCharArray.add(myChar);
+                            tmpCharArray.add(i, myChar);
                         }
                     }
                     for (char c : tmpCharArray) {
